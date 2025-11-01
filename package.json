@@ -1,0 +1,60 @@
+{
+  "name": "agentic-kit",
+  "version": "1.0.0",
+  "description": "Comprehensive toolkit for AI-driven software development with 13 specialized agents and 14 powerful skills. Available in 3 variants: Lite (3 agents, no skills), Standard (13 agents, 8 skills), Pro (13 agents, 14 skills)",
+  "main": "index.js",
+  "bin": {
+    "agentic-kit": "./cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "validate": "node ./validate-package.js",
+    "prepublishOnly": "npm run validate"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "plugin",
+    "ai-agents",
+    "software-development",
+    "agile",
+    "scrum",
+    "product-management",
+    "development-tools",
+    "workflow-automation",
+    "pdf",
+    "docx",
+    "xlsx",
+    "pptx",
+    "document-generation"
+  ],
+  "author": "amrhas82 <avoidaccess@msn.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amrhas82/agentic-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/amrhas82/agentic-kit/issues"
+  },
+  "homepage": "https://github.com/amrhas82/agentic-kit#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "files": [
+    ".claude-plugin/",
+    "agents/",
+    "skills/",
+    "hooks/",
+    "resources/",
+    "cli.js",
+    "index.js",
+    "README.md",
+    "QUICK-START.md",
+    "VARIANTS.md",
+    "TROUBLESHOOTING.md",
+    "validate-references.sh"
+  ],
+  "dependencies": {},
+  "devDependencies": {}
+}

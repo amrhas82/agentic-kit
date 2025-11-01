@@ -1,0 +1,38 @@
+{
+  "name": "Agentic Toolkit - Lite",
+  "version": "1.0.0",
+  "description": "Lightweight variant with 3 core agents and no skills for minimal dependencies",
+  "variant": "lite",
+  "agents": [
+    {
+      "id": "master",
+      "name": "Master",
+      "description": "Central orchestration agent",
+      "path": "agents/master.md"
+    },
+    {
+      "id": "orchestrator",
+      "name": "Orchestrator",
+      "description": "Task orchestration and workflow management",
+      "path": "agents/orchestrator.md"
+    },
+    {
+      "id": "scrum-master",
+      "name": "Scrum Master",
+      "description": "Project management and team coordination",
+      "path": "agents/scrum-master.md"
+    }
+  ],
+  "skills": [],
+  "hooks": [
+    {
+      "name": "register-agents",
+      "path": "hooks/register-agents.js",
+      "event": "plugin-load"
+    }
+  ],
+  "resources": {
+    "path": "resources/",
+    "types": ["templates", "data", "utils"]
+  }
+}
