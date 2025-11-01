@@ -1,0 +1,10 @@
+bundle:
+  name: Team IDE Minimal
+  icon: ⚡
+  description: Only the bare minimum for the IDE PO scrum-master dev qa cycle.
+agents:
+  - po
+  - scrum-master
+  - dev
+  - qa
+workflows: null
