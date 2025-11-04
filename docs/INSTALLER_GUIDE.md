@@ -696,7 +696,7 @@ agentic-kit install
 **Goal**: Automated installation for CI/CD or scripts
 
 ```bash
-agentic-kit install --silent --variant=standard --tools=claude --path=/opt/ci/claude
+agentic-kit install --silent --variant=standard --tools=claude --path claude=/opt/ci/claude
 ```
 
 **Result**:
@@ -774,7 +774,7 @@ Usage:
 Options:
   --variant=<name>       Specify variant (lite, standard, pro)
   --tools=<list>         Specify tools (claude, opencode, ampcode, droid, all)
-  --path=<path>          Specify installation path (overrides default)
+  --path <tool>=<path>   Specify custom installation path for a tool
   --silent               Non-interactive installation
   --yes                  Auto-confirm all prompts
   --config=<file>        Load configuration from file
@@ -839,15 +839,15 @@ agentic-kit install --tools=all
 
 **Valid Values**: `claude`, `opencode`, `ampcode`, `droid`, `all`
 
-#### `--path=<path>`
+#### `--path <tool>=<path>`
 
-Specify custom installation path:
+Specify custom installation path for a specific tool:
 
 ```bash
 # Single tool with custom path
-agentic-kit install --tools=claude --path=/opt/ai/claude
+agentic-kit install --tools=claude --path claude=/opt/ai/claude
 
-# Note: For multiple tools, use --config instead
+# Note: For multiple tools with different paths, use --config file instead
 ```
 
 **Path Requirements**:
@@ -958,49 +958,19 @@ agentic-kit install --uninstall --tools=all
 agentic-kit install --uninstall --silent --tools=claude --yes
 ```
 
-### Advanced Flags
-
-#### `--dry-run`
-
-Simulate installation without making changes:
-
-```bash
-agentic-kit install --dry-run --variant=pro --tools=all
-```
-
-**Behavior**:
-- Shows what would be installed
-- Validates paths and permissions
-- Displays file counts and sizes
-- Does not create files or directories
-
-#### `--force`
-
-Force installation (skip validation warnings):
-
-```bash
-agentic-kit install --force --variant=pro --path=/custom/path
-```
-
-**Warning**: Use with caution. Bypasses safety checks.
-
 ### Flag Combinations
 
 **Common Combinations**:
 
 ```bash
 # Automated CI/CD installation
-agentic-kit install --silent --variant=standard --tools=claude --path=/opt/ci/claude
+agentic-kit install --silent --variant=standard --tools=claude --path claude=/opt/ci/claude
 
 # Quick default installation
 agentic-kit install --yes
 
 # Team configuration
 agentic-kit install --config=team-config.json --yes
-
-# Dry run before real installation
-agentic-kit install --dry-run --config=install.json
-agentic-kit install --config=install.json  # After reviewing
 
 # Clean uninstall
 agentic-kit install --uninstall --tools=all --yes
@@ -1058,7 +1028,7 @@ agentic-kit install
 
 2. **Run with appropriate permissions**:
 ```bash
-sudo agentic-kit install --path=/opt/agentic-kit/claude
+sudo agentic-kit install --tools=claude --path claude=/opt/agentic-kit/claude
 ```
 
 3. **Choose writable location**:
@@ -1175,7 +1145,7 @@ iostat -x 1
 4. **Install to faster filesystem**:
 ```bash
 # Avoid network drives, use local SSD
-agentic-kit install --path=/home/user/.claude/
+agentic-kit install --tools=claude --path claude=/home/user/.claude/
 ```
 
 ---
@@ -1208,7 +1178,7 @@ touch ~/.claude/test-write && rm ~/.claude/test-write
 
 3. **Use different path**:
 ```bash
-agentic-kit install --path=/tmp/.claude-test/
+agentic-kit install --tools=claude --path claude=/tmp/.claude-test/
 ```
 
 ---
@@ -1308,16 +1278,11 @@ If you encounter an issue not listed here:
 cat ~/.agentic-kit-install.log
 ```
 
-2. **Enable verbose output**:
-```bash
-agentic-kit install --verbose
-```
-
-3. **File an issue**:
+2. **File an issue**:
    - GitHub: https://github.com/amrhas82/agentic-kit/issues
    - Include: OS, Node.js version, error message, installation log
 
-4. **Community support**:
+3. **Community support**:
    - Discussions: https://github.com/amrhas82/agentic-kit/discussions
    - Discord: [link if available]
 
@@ -1410,10 +1375,7 @@ agentic-kit install --silent --variant=standard --tools=claude
 
 #### Q: How do I know what's in each variant?
 
-**A**: Check the [Variant Configuration documentation](./VARIANT_CONFIGURATION.md) or run:
-```bash
-agentic-kit info --variant=standard
-```
+**A**: Check the [Variant Configuration documentation](./VARIANT_CONFIGURATION.md) for detailed information about what's included in each variant.
 
 ---
 
@@ -1494,7 +1456,7 @@ node --version
 
 **A**: Yes! Use silent mode:
 ```bash
-agentic-kit install --silent --variant=standard --tools=claude --path=/opt/ci/claude
+agentic-kit install --silent --variant=standard --tools=claude --path claude=/opt/ci/claude
 ```
 
 #### Q: Does installation require compilation?
@@ -1581,10 +1543,7 @@ agentic-kit install --config=install-config.json
 
 #### Q: How do I migrate from an old installation?
 
-**A**: The installer auto-detects old installations and offers to migrate. Or manually:
-```bash
-agentic-kit install --migrate
-```
+**A**: Simply run the installer again. If an existing installation is detected, you'll be prompted to upgrade, replace, or install alongside it.
 
 #### Q: Can I install development/beta versions?
 
