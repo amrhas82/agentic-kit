@@ -1,0 +1,67 @@
+{
+  "name": "Agentic Kit Official",
+  "owner": "amrhas82",
+  "description": "Official marketplace for Agentic Kit - a comprehensive toolkit with 13 specialized agents and 14 powerful skills for AI-driven software development",
+  "version": "1.1.0",
+  "plugins": [
+    {
+      "name": "agentic-kit-standard",
+      "source": "github:amrhas82/agentic-kit",
+      "description": "Standard variant with 13 agents and 8 skills (recommended for most users)",
+      "variant": "standard",
+      "features": {
+        "agents": 13,
+        "skills": 8
+      },
+      "recommended_for": "Most users, general-purpose development, content creation"
+    },
+    {
+      "name": "agentic-kit-lite",
+      "source": "github:amrhas82/agentic-kit",
+      "description": "Lite variant with 3 core agents and no skills for minimal dependencies",
+      "variant": "lite",
+      "features": {
+        "agents": 3,
+        "skills": 0
+      },
+      "recommended_for": "Minimal CI/CD pipelines, embedded systems, low-resource environments"
+    },
+    {
+      "name": "agentic-kit-pro",
+      "source": "github:amrhas82/agentic-kit",
+      "description": "Pro variant with all 13 agents and 14 skills for maximum capabilities",
+      "variant": "pro",
+      "features": {
+        "agents": 13,
+        "skills": 14
+      },
+      "recommended_for": "Advanced users, designers, developers requiring full feature set"
+    }
+  ],
+  "categories": [
+    "development-tools",
+    "agents",
+    "product-management",
+    "agile",
+    "content-creation"
+  ],
+  "keywords": [
+    "agents",
+    "skills",
+    "product-management",
+    "scrum",
+    "agile",
+    "development",
+    "pdf",
+    "docx",
+    "xlsx",
+    "pptx",
+    "design",
+    "workflow"
+  ],
+  "repository": "https://github.com/amrhas82/agentic-kit",
+  "homepage": "https://github.com/amrhas82/agentic-kit#readme",
+  "documentation": "https://github.com/amrhas82/agentic-kit/blob/main/README.md",
+  "bugs": "https://github.com/amrhas82/agentic-kit/issues",
+  "license": "MIT"
+}

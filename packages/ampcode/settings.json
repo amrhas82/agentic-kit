@@ -1,0 +1,13 @@
+{
+  "amp.anthropic.thinking.enabled": true,
+  "amp.git.commit.ampThread.enabled": true,
+  "amp.git.commit.coauthor.enabled": true,
+  "amp.todos.enabled": true,
+  "amp.terminal.commands.nodeSpawn.loadProfile": "always",
+  "amp.tools.stopTimeout": 300,
+  "amp.updates.mode": "auto",
+  "amp.permissions": [],
+  "amp.tools.disable": [],
+  "amp.mcpServers": {},
+  "amp.mcpPermissions": []
+}

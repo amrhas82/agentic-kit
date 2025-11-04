@@ -1,0 +1,1 @@
+// Mock session start hook

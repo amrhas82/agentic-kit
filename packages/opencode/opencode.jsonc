@@ -1,0 +1,225 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+      "1-create-prd": {
+      "prompt": "{file:./agent/1-create-prd.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "1. Define Scope: use to clearly outlining what needs to be built with a Product Requirement Document (PRD)"
+    },
+        "2-generate-tasks": {
+      "prompt": "{file:./agent/2-generate-tasks.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "2. Detailed Planning: use to break down the PRD into a granular, actionable task list"
+    },
+        "3-process-task-list": {
+      "prompt": "{file:./agent/3-process-task-list.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "3. Iterative Implementation: use to guide the AI to tackle one task at a time, allowing you to review and approve each change"
+    },   
+    "ux-expert": {
+      "prompt": "{file:./agent/ux-expert.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "Use for UI/UX design, wireframes, prototypes, front-end specifications, and user experience optimization"
+    },
+    "scrum-master": {
+      "prompt": "{file:./agent/scrum-master.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "Use for story creation, epic management, retrospectives in party-mode, and agile process guidance"
+    },
+    "qa-test-architecht": {
+      "prompt": "{file:./agent/qa-test-architect.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "Use for comprehensive test architecture review, quality gate decisions, and code improvement. Provides thorough analysis including requirements traceability, risk assessment, and test strategy. Advisory only - teams choose their quality bar."
+    },
+    "product-owner": {
+      "prompt": "{file:./agent/product-owner.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "Use for backlog management, story refinement, acceptance criteria, sprint planning, and prioritization decisions"
+    },
+    "product-manager": {
+      "prompt": "{file:./agent/product-manager.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "Use for creating PRDs, product strategy, feature prioritization, roadmap planning, and stakeholder communication"
+    },
+    "full-stack-dev": {
+      "prompt": "{file:./agent/full-stack-dev.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "'Use for code implementation, debugging, refactoring, and development best practices'"
+    },
+    "orchestrator": {
+      "prompt": "{file:./agent/orchestrator.md}",
+      "mode": "primary",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "Use for workflow coordination, multi-agent tasks, role switching guidance, and when unsure which specialist to consult"
+    },
+    "master": {
+      "prompt": "{file:./agent/master.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "Use when you need comprehensive expertise across all domains, running 1 off tasks that do not require a persona, or just wanting to use the same agent for many things."
+    },
+    "holistic-architect": {
+      "prompt": "{file:./agent/holistic-architect.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "Use for system design, architecture documents, technology selection, API design, and infrastructure planning"
+    },
+    "business-analyst": {
+      "prompt": "{file:./agent/business-analyst.md}",
+      "mode": "all",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "Use for market research, brainstorming, competitive analysis, creating project briefs, initial project discovery, and documenting existing projects (brownfield)"
+    }
+  },
+  "command": {
+    "xlsx": {
+      "template": "{file:./xlsx.md}",
+      "description": "Create, edit, and analyze spreadsheets with formulas, formatting, data analysis, and visualization"
+    },
+    "webapp-testing": {
+      "template": "{file:./webapp-testing.md}",
+      "description": "Test local web applications using Playwright - verify functionality, debug UI, capture screenshots"
+    },
+    "systematic-debugging": {
+      "template": "{file:./systematic-debugging.md}",
+      "description": "Systematic four-phase debugging framework - investigate root cause before any fixes"
+    },
+    "slack-gif-creator": {
+      "template": "{file:./slack-gif-creator.md}",
+      "description": "Create animated GIFs optimized for Slack with size validation and composable animation primitives"
+    },
+    "verification-before-completion": {
+      "template": "{file:./verification-before-completion.md}",
+      "description": "Verify work meets requirements before marking complete - prevents incomplete deliverables"
+    },
+    "skill-creator": {
+      "template": "{file:./skill-creator.md}",
+      "description": "Create reusable skills with proper structure, validation, and documentation"
+    },
+    "test-driven-development": {
+      "template": "{file:./test-driven-development.md}",
+      "description": "Write test first, watch it fail, write minimal code to pass - ensures tests actually verify behavior"
+    },
+    "testing-anti-patterns": {
+      "template": "{file:./testing-anti-patterns.md}",
+      "description": "Identify and avoid common testing anti-patterns that create fragile, useless tests"
+    },
+    "theme-factory": {
+      "template": "{file:./theme-factory.md}",
+      "description": "Generate consistent themes with proper color systems, typography, and spacing"
+    },
+    "root-cause-tracing": {
+      "template": "{file:./root-cause-tracing.md}",
+      "description": "Trace issues to their root cause using systematic investigation techniques"
+    },
+    "internal-comms": {
+      "template": "{file:./internal-comms.md}",
+      "description": "Structure internal communications for clarity, actionability, and team alignment"
+    },
+    "pdf": {
+      "template": "{file:./pdf.md}",
+      "description": "Create, edit, and analyze PDF documents with proper formatting and structure"
+    },
+    "mcp-builder": {
+      "template": "{file:./mcp-builder.md}",
+      "description": "Build Model Context Protocol servers with proper tool definitions and error handling"
+    },
+    "condition-based-waiting": {
+      "template": "{file:./condition-based-waiting.md}",
+      "description": "Implement robust waiting mechanisms based on conditions rather than fixed delays"
+    },
+    "pptx": {
+      "template": "{file:./pptx.md}",
+      "description": "Create professional PowerPoint presentations with proper structure and design"
+    },
+    "docx": {
+      "template": "{file:./docx.md}",
+      "description": "Create and edit Word documents with proper formatting and structure"
+    },
+    "brand-guidelines": {
+      "template": "{file:./brand-guidelines.md}",
+      "description": "Establish comprehensive brand guidelines with visual identity and usage rules"
+    },
+    "brainstorming": {
+      "template": "{file:./brainstorming.md}",
+      "description": "Facilitate structured brainstorming sessions with proven techniques and frameworks"
+    },
+    "canvas-design": {
+      "template": "{file:./canvas-design.md}",
+      "description": "Design visual canvases for business models, user journeys, and strategic planning"
+    },
+    "artifacts-builder": {
+      "template": "{file:./artifacts-builder.md}",
+      "description": "Build structured artifacts with proper validation, formatting, and documentation"
+    },
+    "algorithmic-art": {
+      "template": "{file:./algorithmic-art.md}",
+      "description": "Generate algorithmic art with mathematical patterns and aesthetic principles"
+    },
+    "code-review": {
+      "template": "{file:./code-review.md}",
+      "description": "Conduct thorough code reviews with focus on quality, security, and maintainability"
+    }
+  }
+}

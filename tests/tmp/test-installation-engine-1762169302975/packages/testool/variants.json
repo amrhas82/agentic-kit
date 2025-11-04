@@ -1,0 +1,47 @@
+{
+  "lite": {
+    "name": "Lite",
+    "description": "Minimal installation",
+    "useCase": "Testing lite variant",
+    "targetUsers": "Test users",
+    "agents": [
+      "master",
+      "orchestrator",
+      "scrum-master"
+    ],
+    "skills": [],
+    "resources": [
+      "workflows.yaml"
+    ],
+    "hooks": [
+      "session-start.js"
+    ]
+  },
+  "standard": {
+    "name": "Standard",
+    "description": "Standard installation",
+    "useCase": "Testing standard variant",
+    "targetUsers": "Test users",
+    "agents": "*",
+    "skills": [
+      "pdf",
+      "docx"
+    ],
+    "resources": [
+      "workflows.yaml"
+    ],
+    "hooks": [
+      "session-start.js"
+    ]
+  },
+  "pro": {
+    "name": "Pro",
+    "description": "Full installation",
+    "useCase": "Testing pro variant",
+    "targetUsers": "Test users",
+    "agents": "*",
+    "skills": "*",
+    "resources": "*",
+    "hooks": "*"
+  }
+}

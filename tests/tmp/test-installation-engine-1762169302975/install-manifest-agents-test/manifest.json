@@ -1,0 +1,45 @@
+{
+  "tool": "testool",
+  "name": "Test Tool",
+  "description": "Tool for testing",
+  "optimization": "test-optimization",
+  "variant": "lite",
+  "version": "1.1.0",
+  "installed_at": "2025-11-03T11:28:23.664Z",
+  "variantInfo": {
+    "name": "Lite",
+    "description": "Minimal installation",
+    "useCase": "Testing lite variant",
+    "targetUsers": "Test users"
+  },
+  "components": {
+    "agents": 3,
+    "skills": 0,
+    "resources": 1,
+    "hooks": 1
+  },
+  "installedFiles": {
+    "agents": [
+      "master",
+      "orchestrator",
+      "scrum-master"
+    ],
+    "skills": [],
+    "resources": [
+      "workflows.yaml"
+    ],
+    "hooks": [
+      "session-start.js"
+    ]
+  },
+  "paths": {
+    "agents": "/home/hamr/PycharmProjects/agentic-kit/tests/tmp/test-installation-engine-1762169302975/install-manifest-agents-test/agents",
+    "skills": "/home/hamr/PycharmProjects/agentic-kit/tests/tmp/test-installation-engine-1762169302975/install-manifest-agents-test/skills",
+    "resources": "/home/hamr/PycharmProjects/agentic-kit/tests/tmp/test-installation-engine-1762169302975/install-manifest-agents-test/resources",
+    "hooks": "/home/hamr/PycharmProjects/agentic-kit/tests/tmp/test-installation-engine-1762169302975/install-manifest-agents-test/hooks"
+  },
+  "files": {
+    "total": 5,
+    "size": "204 Bytes"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "tool": "claude",
+  "name": "Claude Code",
+  "description": "Conversational AI development assistant",
+  "default_path": "~/.claude",
+  "optimization": "conversational-ai",
+  "integration_type": "plugin",
+  "manifest_format": "claude-plugin",
+  "supported_variants": ["lite", "standard", "pro"],
+  "agent_format": "claude-conversational",
+  "skill_compatibility": "claude-native",
+  "resource_format": "markdown",
+  "hook_integration": "claude-plugin"
+}

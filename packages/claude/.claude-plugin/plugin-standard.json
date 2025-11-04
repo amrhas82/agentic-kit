@@ -1,0 +1,152 @@
+{
+  "name": "Agentic Toolkit - Standard",
+  "version": "1.1.0",
+  "description": "Standard variant with all 13 agents and 8 core production skills",
+  "variant": "standard",
+  "agents": [
+    {
+      "id": "master",
+      "name": "Master",
+      "description": "Central orchestration agent",
+      "path": "agents/master.md"
+    },
+    {
+      "id": "orchestrator",
+      "name": "Orchestrator",
+      "description": "Task orchestration and workflow management",
+      "path": "agents/orchestrator.md"
+    },
+    {
+      "id": "product-manager",
+      "name": "Product Manager",
+      "description": "Product strategy and vision",
+      "path": "agents/product-manager.md"
+    },
+    {
+      "id": "product-owner",
+      "name": "Product Owner",
+      "description": "Requirements and backlog management",
+      "path": "agents/product-owner.md"
+    },
+    {
+      "id": "business-analyst",
+      "name": "Business Analyst",
+      "description": "Business requirements analysis",
+      "path": "agents/business-analyst.md"
+    },
+    {
+      "id": "full-stack-dev",
+      "name": "Full-Stack Developer",
+      "description": "Full-stack development implementation",
+      "path": "agents/full-stack-dev.md"
+    },
+    {
+      "id": "holistic-architect",
+      "name": "Holistic Architect",
+      "description": "System architecture and design",
+      "path": "agents/holistic-architect.md"
+    },
+    {
+      "id": "ux-expert",
+      "name": "UX Expert",
+      "description": "User experience and interface design",
+      "path": "agents/ux-expert.md"
+    },
+    {
+      "id": "qa-test-architect",
+      "name": "QA Test Architect",
+      "description": "Quality assurance and testing strategy",
+      "path": "agents/qa-test-architect.md"
+    },
+    {
+      "id": "scrum-master",
+      "name": "Scrum Master",
+      "description": "Project management and team coordination",
+      "path": "agents/scrum-master.md"
+    },
+    {
+      "id": "1-create-prd",
+      "name": "Create PRD",
+      "description": "Product Requirements Document generation",
+      "path": "agents/1-create-prd.md"
+    },
+    {
+      "id": "2-generate-tasks",
+      "name": "Generate Tasks",
+      "description": "Task generation and decomposition",
+      "path": "agents/2-generate-tasks.md"
+    },
+    {
+      "id": "3-process-task-list",
+      "name": "Process Task List",
+      "description": "Task list processing and tracking",
+      "path": "agents/3-process-task-list.md"
+    }
+  ],
+  "skills": [
+    {
+      "id": "pdf",
+      "name": "PDF",
+      "description": "PDF manipulation and document processing",
+      "path": "skills/pdf/"
+    },
+    {
+      "id": "docx",
+      "name": "DOCX",
+      "description": "Word document creation and editing",
+      "path": "skills/docx/"
+    },
+    {
+      "id": "xlsx",
+      "name": "XLSX",
+      "description": "Spreadsheet creation and analysis",
+      "path": "skills/xlsx/"
+    },
+    {
+      "id": "pptx",
+      "name": "PPTX",
+      "description": "Presentation creation and management",
+      "path": "skills/pptx/"
+    },
+    {
+      "id": "canvas-design",
+      "name": "Canvas Design",
+      "description": "Visual design and artwork creation",
+      "path": "skills/canvas-design/"
+    },
+    {
+      "id": "theme-factory",
+      "name": "Theme Factory",
+      "description": "Theme and styling application",
+      "path": "skills/theme-factory/"
+    },
+    {
+      "id": "brand-guidelines",
+      "name": "Brand Guidelines",
+      "description": "Brand compliance and styling",
+      "path": "skills/brand-guidelines/"
+    },
+    {
+      "id": "internal-comms",
+      "name": "Internal Communications",
+      "description": "Internal document and communication templates",
+      "path": "skills/internal-comms/"
+    }
+  ],
+  "hooks": [
+    {
+      "name": "register-agents",
+      "path": "hooks/register-agents.js",
+      "event": "plugin-load"
+    },
+    {
+      "name": "session-start",
+      "path": "hooks/session-start.js",
+      "event": "session-start"
+    }
+  ],
+  "resources": {
+    "path": "resources/",
+    "types": ["templates", "data", "utils"]
+  }
+}
