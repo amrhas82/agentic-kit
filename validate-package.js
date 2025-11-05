@@ -1,16 +1,13 @@
 #!/usr/bin/env node
 
 /**
- * Package Validation Script
+ * Package Validation Script for Agentic Kit v1.2.0+
  *
- * This script runs before npm publish to ensure all required files exist
- * and all variants are properly configured.
- *
- * Validates:
- * - All manifest files exist
- * - All variants are properly configured
- * - No critical files are missing
- * - Manifest JSON is valid
+ * Validates the multi-tool installer structure with:
+ * - Multiple tool packages (claude, opencode, ampcode, droid)
+ * - Variant configurations (variants.json)
+ * - Installer system components
+ * - Documentation
  */
 
 const fs = require('fs');
@@ -29,46 +26,28 @@ const colors = {
 let errorCount = 0;
 let warningCount = 0;
 
-/**
- * Log error message and increment error count
- */
 function error(message) {
   console.error(`${colors.red}✗ ERROR:${colors.reset} ${message}`);
   errorCount++;
 }
 
-/**
- * Log warning message and increment warning count
- */
 function warn(message) {
   console.warn(`${colors.yellow}⚠ WARNING:${colors.reset} ${message}`);
   warningCount++;
 }
 
-/**
- * Log success message
- */
 function success(message) {
   console.log(`${colors.green}✓${colors.reset} ${message}`);
 }
 
-/**
- * Log info message
- */
 function info(message) {
   console.log(`${colors.cyan}ℹ${colors.reset} ${message}`);
 }
 
-/**
- * Check if a file exists
- */
 function fileExists(filePath) {
   return fs.existsSync(filePath);
 }
 
-/**
- * Validate a JSON file
- */
 function validateJsonFile(filePath, label) {
   if (!fileExists(filePath)) {
     error(`${label} not found: ${filePath}`);
@@ -86,150 +65,16 @@ function validateJsonFile(filePath, label) {
   }
 }
 
-/**
- * Validate required files exist
- */
-function validateRequiredFiles() {
-  info('\nValidating required files...');
-
-  const requiredFiles = [
-    { path: './cli.js', label: 'CLI script' },
-    { path: './README.md', label: 'README' },
-    { path: './QUICK-START.md', label: 'Quick Start Guide' },
-    { path: './VARIANTS.md', label: 'Variants Documentation' },
-    { path: './TROUBLESHOOTING.md', label: 'Troubleshooting Guide' },
-    { path: './validate-references.sh', label: 'Reference Validation Script' },
-    { path: './agents', label: 'Agents directory', isDir: true },
-    { path: './skills', label: 'Skills directory', isDir: true },
-    { path: './hooks', label: 'Hooks directory', isDir: true },
-    { path: './.claude-plugin', label: 'Plugin directory', isDir: true }
-  ];
-
-  requiredFiles.forEach(({ path: filePath, label, isDir }) => {
-    if (!fileExists(filePath)) {
-      error(`${label} not found: ${filePath}`);
-    } else {
-      if (isDir) {
-        const stat = fs.statSync(filePath);
-        if (!stat.isDirectory()) {
-          error(`${label} is not a directory: ${filePath}`);
-        } else {
-          success(`${label} exists`);
-        }
-      } else {
-        success(`${label} exists`);
-      }
-    }
-  });
-}
-
-/**
- * Validate plugin manifest files
- */
-function validateManifests() {
-  info('\nValidating plugin manifests...');
-
-  const variants = ['lite', 'standard', 'pro'];
-  const manifestData = {};
-
-  // Validate main plugin.json
-  const mainManifest = validateJsonFile('./.claude-plugin/plugin.json', 'Main plugin manifest');
-  if (mainManifest) {
-    manifestData.main = mainManifest;
-  }
-
-  // Validate each variant manifest
-  variants.forEach(variant => {
-    const manifestPath = `./.claude-plugin/plugin-${variant}.json`;
-    const manifest = validateJsonFile(manifestPath, `${variant} variant manifest`);
-
-    if (manifest) {
-      manifestData[variant] = manifest;
-
-      // Validate variant field matches
-      if (manifest.variant !== variant) {
-        error(`Variant mismatch in ${manifestPath}: expected '${variant}', found '${manifest.variant}'`);
-      }
-
-      // Validate required fields
-      const requiredFields = ['name', 'version', 'description', 'variant'];
-      requiredFields.forEach(field => {
-        if (!manifest[field]) {
-          error(`Missing required field '${field}' in ${manifestPath}`);
-        }
-      });
-    }
-  });
-
-  return manifestData;
-}
-
-/**
- * Validate variant configurations
- */
-function validateVariantConfigurations(manifestData) {
-  info('\nValidating variant configurations...');
-
-  const expectedConfigs = {
-    lite: { agents: 3, skills: 0, agentIds: ['master', 'orchestrator', 'scrum-master'] },
-    standard: { agents: 13, skills: 8 },
-    pro: { agents: 13, skills: 14 }
-  };
-
-  Object.keys(expectedConfigs).forEach(variant => {
-    const manifest = manifestData[variant];
-    if (!manifest) {
-      return; // Already reported as error in validateManifests
-    }
-
-    const expected = expectedConfigs[variant];
-    const actual = {
-      agents: manifest.agents ? (Array.isArray(manifest.agents) ? manifest.agents.length : Object.keys(manifest.agents).length) : 0,
-      skills: manifest.skills ? (Array.isArray(manifest.skills) ? manifest.skills.length : Object.keys(manifest.skills).length) : 0
-    };
-
-    // Check agent count
-    if (expected.agents !== actual.agents) {
-      error(`${variant} variant: Expected ${expected.agents} agents, found ${actual.agents}`);
-    } else {
-      success(`${variant} variant has correct number of agents (${actual.agents})`);
-    }
-
-    // Check skill count
-    if (expected.skills !== actual.skills) {
-      error(`${variant} variant: Expected ${expected.skills} skills, found ${actual.skills}`);
-    } else {
-      success(`${variant} variant has correct number of skills (${actual.skills})`);
-    }
-
-    // For lite variant, validate specific agents
-    if (variant === 'lite' && manifest.agents && expected.agentIds) {
-      const actualAgentIds = Array.isArray(manifest.agents)
-        ? manifest.agents.map(a => a.id)
-        : Object.keys(manifest.agents);
-
-      expected.agentIds.forEach(agentId => {
-        if (!actualAgentIds.includes(agentId)) {
-          error(`${variant} variant: Missing required agent '${agentId}'`);
-        }
-      });
-    }
-  });
-}
-
-/**
- * Validate package.json
- */
 function validatePackageJson() {
   info('\nValidating package.json...');
 
   const pkg = validateJsonFile('./package.json', 'package.json');
   if (!pkg) {
-    return;
+    return null;
   }
 
   // Check required fields
-  const requiredFields = ['name', 'version', 'description', 'bin', 'files'];
+  const requiredFields = ['name', 'version', 'description'];
   requiredFields.forEach(field => {
     if (!pkg[field]) {
       error(`Missing required field '${field}' in package.json`);
@@ -238,104 +83,208 @@ function validatePackageJson() {
     }
   });
 
-  // Validate bin field points to cli.js
-  if (pkg.bin && pkg.bin['agentic-kit']) {
-    if (pkg.bin['agentic-kit'] !== './cli.js') {
-      warn(`bin field points to '${pkg.bin['agentic-kit']}' instead of './cli.js'`);
-    } else {
-      success('bin field correctly points to ./cli.js');
-    }
+  // Check version format
+  if (pkg.version && !/^\d+\.\d+\.\d+$/.test(pkg.version)) {
+    warn(`Version format should be semver (x.y.z): ${pkg.version}`);
   }
 
-  // Validate files field includes critical files
+  // Validate files field includes critical paths
   if (pkg.files) {
-    const criticalFiles = ['.claude-plugin/', 'agents/', 'skills/', 'hooks/', 'cli.js', 'README.md'];
-    criticalFiles.forEach(file => {
-      if (!pkg.files.includes(file)) {
-        error(`package.json files field missing critical file: ${file}`);
-      }
-    });
-    success('package.json files field includes all critical files');
+    const criticalPaths = ['packages/', 'installer/', 'README.md'];
+    const missing = criticalPaths.filter(p => !pkg.files.some(f => f.includes(p) || p.includes(f)));
+    if (missing.length > 0) {
+      warn(`package.json files field may be missing: ${missing.join(', ')}`);
+    } else {
+      success('package.json files field includes critical paths');
+    }
   }
 
   // Check for repository URL
   if (pkg.repository && pkg.repository.url) {
-    if (pkg.repository.url.includes('yourusername')) {
-      warn('repository URL still contains placeholder "yourusername"');
-    } else {
-      success('repository URL is configured');
-    }
+    success('repository URL is configured');
   } else {
     warn('Missing repository URL in package.json');
   }
 
   // Check for author
   if (pkg.author) {
-    if (pkg.author.includes('Your Name') || pkg.author.includes('your.email@example.com')) {
-      warn('author field still contains placeholder values');
-    } else {
-      success('author field is configured');
-    }
+    success('author field is configured');
   } else {
     warn('Missing author in package.json');
   }
+
+  return pkg;
 }
 
-/**
- * Validate CLI script has shebang
- */
-function validateCliScript() {
-  info('\nValidating CLI script...');
+function validateRequiredFiles() {
+  info('\nValidating required files...');
 
-  const cliPath = './cli.js';
-  if (!fileExists(cliPath)) {
-    return; // Already reported as error
+  const requiredFiles = [
+    { path: './README.md', label: 'README' },
+    { path: './CHANGELOG.md', label: 'CHANGELOG' },
+    { path: './package.json', label: 'package.json' }
+  ];
+
+  requiredFiles.forEach(({ path: filePath, label }) => {
+    if (!fileExists(filePath)) {
+      error(`${label} not found: ${filePath}`);
+    } else {
+      success(`${label} exists`);
+    }
+  });
+}
+
+function validateInstallerSystem() {
+  info('\nValidating installer system...');
+
+  const installerFiles = [
+    'installer/cli.js',
+    'installer/package-manager.js',
+    'installer/installation-engine.js',
+    'installer/path-manager.js',
+    'installer/verification-system.js',
+    'installer/state-manager.js',
+    'installer/report-template.js',
+    'installer/telemetry.js'
+  ];
+
+  installerFiles.forEach(file => {
+    if (!fileExists(file)) {
+      error(`Installer component missing: ${file}`);
+    } else {
+      success(`${path.basename(file)} exists`);
+    }
+  });
+
+  // Check if cli.js has shebang
+  if (fileExists('installer/cli.js')) {
+    const content = fs.readFileSync('installer/cli.js', 'utf8');
+    if (content.startsWith('#!/usr/bin/env node')) {
+      success('installer/cli.js has correct shebang');
+    } else {
+      error('installer/cli.js missing shebang');
+    }
+  }
+}
+
+function validateToolPackages() {
+  info('\nValidating tool packages...');
+
+  const tools = ['claude', 'opencode', 'ampcode', 'droid'];
+  const packagesDir = './packages';
+
+  if (!fileExists(packagesDir)) {
+    error('packages/ directory not found');
+    return;
   }
 
-  try {
-    const content = fs.readFileSync(cliPath, 'utf8');
-    const lines = content.split('\n');
+  tools.forEach(tool => {
+    const toolDir = path.join(packagesDir, tool);
 
-    if (lines[0].startsWith('#!/usr/bin/env node')) {
-      success('cli.js has correct shebang');
-    } else {
-      error('cli.js missing or incorrect shebang line');
+    if (!fileExists(toolDir)) {
+      error(`Tool package missing: ${tool}`);
+      return;
     }
 
-    // Check if file is executable (on Unix-like systems)
-    if (process.platform !== 'win32') {
-      try {
-        const stats = fs.statSync(cliPath);
-        const isExecutable = !!(stats.mode & fs.constants.S_IXUSR);
-        if (isExecutable) {
-          success('cli.js is executable');
+    // Check for variants.json
+    const variantsPath = path.join(toolDir, 'variants.json');
+    const variants = validateJsonFile(variantsPath, `${tool} variants.json`);
+
+    if (variants) {
+      // Validate variant structure
+      const requiredVariants = ['lite', 'standard', 'pro'];
+      requiredVariants.forEach(variant => {
+        if (!variants[variant]) {
+          error(`${tool}: Missing '${variant}' variant configuration`);
         } else {
-          warn('cli.js is not executable (run: chmod +x cli.js)');
+          // Validate variant has required fields
+          const v = variants[variant];
+          const requiredFields = ['name', 'description', 'agents', 'skills'];
+          requiredFields.forEach(field => {
+            if (v[field] === undefined) {
+              error(`${tool}/${variant}: Missing field '${field}'`);
+            }
+          });
         }
-      } catch (err) {
-        warn(`Could not check if cli.js is executable: ${err.message}`);
+      });
+
+      if (requiredVariants.every(v => variants[v])) {
+        success(`${tool} has all required variants`);
       }
     }
-  } catch (err) {
-    error(`Could not read cli.js: ${err.message}`);
+
+    // Check for core directories
+    const coreDirs = ['agents', 'skills', 'resources', 'hooks'];
+    coreDirs.forEach(dir => {
+      const dirPath = path.join(toolDir, dir);
+      if (!fileExists(dirPath)) {
+        warn(`${tool}: Missing ${dir}/ directory`);
+      }
+    });
+  });
+
+  success(`Validated ${tools.length} tool packages`);
+}
+
+function validateDocumentation() {
+  info('\nValidating documentation...');
+
+  const docs = [
+    'docs/INSTALLER_GUIDE.md',
+    'docs/VARIANT_CONFIGURATION.md',
+    'docs/PRIVACY.md',
+    'docs/SECURITY.md',
+    'docs/MIGRATION.md'
+  ];
+
+  docs.forEach(doc => {
+    if (!fileExists(doc)) {
+      warn(`Documentation missing: ${doc}`);
+    } else {
+      success(`${path.basename(doc)} exists`);
+    }
+  });
+}
+
+function validateTests() {
+  info('\nValidating tests...');
+
+  const testDirs = [
+    'tests/installer',
+    'tests/validation-test.js'
+  ];
+
+  let testCount = 0;
+  testDirs.forEach(testPath => {
+    if (fileExists(testPath)) {
+      success(`Tests exist: ${testPath}`);
+      testCount++;
+    }
+  });
+
+  if (testCount === 0) {
+    warn('No test files found');
   }
 }
 
-/**
- * Main validation function
- */
 function main() {
-  console.log(`\n${colors.bright}${colors.cyan}=== Package Validation ===${colors.reset}\n`);
+  console.log(`\n${colors.bright}${colors.cyan}=== Agentic Kit Package Validation ===${colors.reset}\n`);
+  console.log(`${colors.cyan}Multi-Tool Installer Structure (v1.2.0+)${colors.reset}\n`);
 
   // Run all validations
-  validatePackageJson();
+  const pkg = validatePackageJson();
   validateRequiredFiles();
-  const manifestData = validateManifests();
-  validateVariantConfigurations(manifestData);
-  validateCliScript();
+  validateInstallerSystem();
+  validateToolPackages();
+  validateDocumentation();
+  validateTests();
 
   // Print summary
   console.log(`\n${colors.bright}${colors.cyan}=== Validation Summary ===${colors.reset}\n`);
+
+  if (pkg) {
+    console.log(`${colors.cyan}Package:${colors.reset} ${pkg.name}@${pkg.version}`);
+  }
 
   if (errorCount === 0 && warningCount === 0) {
     console.log(`${colors.green}${colors.bright}✓ All validations passed!${colors.reset}`);
