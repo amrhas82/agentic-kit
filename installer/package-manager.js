@@ -34,11 +34,29 @@ class PackageManager {
       throw new Error(`Variants file not found for tool: ${toolId}`);
     }
 
-    // Read and parse JSON
+    // Read and parse JSON with security checks
     let config;
     try {
+      // Check file size before reading (max 1MB to prevent DoS)
+      const stats = await fs.promises.stat(variantsFilePath);
+      const maxSize = 1024 * 1024; // 1MB
+      if (stats.size > maxSize) {
+        throw new Error(`Variants file for tool ${toolId} is too large (${stats.size} bytes, max ${maxSize} bytes)`);
+      }
+
       const fileContent = await fs.promises.readFile(variantsFilePath, 'utf8');
+
+      // Check for null bytes (security risk)
+      if (fileContent.includes('\0')) {
+        throw new Error(`Variants file for tool ${toolId} contains null bytes (security risk)`);
+      }
+
       config = JSON.parse(fileContent);
+
+      // Validate config is an object (not array or primitive)
+      if (typeof config !== 'object' || config === null || Array.isArray(config)) {
+        throw new Error(`Variants file for tool ${toolId} must contain a JSON object`);
+      }
     } catch (error) {
       if (error instanceof SyntaxError) {
         throw new Error(`Invalid JSON in variants.json for tool ${toolId}: ${error.message}`);

@@ -21,6 +21,7 @@ class PathManager {
   
   /**
    * Expand user home path (~) to full path
+   * Includes security checks for path traversal
    */
   expandPath(pathStr) {
     if (pathStr.startsWith('~')) {
@@ -28,32 +29,134 @@ class PathManager {
     }
     return pathStr;
   }
+
+  /**
+   * Sanitize and validate path for security
+   * Prevents path traversal attacks and validates path safety
+   *
+   * @param {string} pathStr - Path to sanitize
+   * @returns {Object} Result with sanitized path or error
+   */
+  sanitizePath(pathStr) {
+    try {
+      // Expand tilde first
+      let sanitized = this.expandPath(pathStr);
+
+      // Resolve to absolute path (normalizes .. and .)
+      sanitized = path.resolve(sanitized);
+
+      // Check for null bytes (security risk)
+      if (sanitized.includes('\0')) {
+        return {
+          valid: false,
+          error: 'Path contains null bytes (security risk)'
+        };
+      }
+
+      // Ensure path is within user's home directory or /tmp for safety
+      // This prevents writing to system directories
+      const homeDir = this.homeDir;
+      const tmpDir = os.tmpdir();
+
+      const isInHome = sanitized.startsWith(homeDir);
+      const isInTmp = sanitized.startsWith(tmpDir);
+
+      if (!isInHome && !isInTmp) {
+        return {
+          valid: false,
+          error: `Path must be within home directory (${homeDir}) for security`
+        };
+      }
+
+      // Check for suspicious patterns
+      const suspiciousPatterns = [
+        '/etc/', '/var/', '/usr/', '/bin/', '/sbin/',
+        '/root/', '/boot/', '/dev/', '/proc/', '/sys/'
+      ];
+
+      for (const pattern of suspiciousPatterns) {
+        if (sanitized.includes(pattern)) {
+          return {
+            valid: false,
+            error: `Path contains suspicious directory: ${pattern}`
+          };
+        }
+      }
+
+      return {
+        valid: true,
+        path: sanitized
+      };
+    } catch (error) {
+      return {
+        valid: false,
+        error: `Path sanitization failed: ${error.message}`
+      };
+    }
+  }
   
   /**
    * Validate if a path is writable
+   * Includes security checks via sanitizePath
    */
   async validatePath(pathStr) {
-    const fullPath = this.expandPath(pathStr);
-    
+    // First, sanitize the path for security
+    const sanitizeResult = this.sanitizePath(pathStr);
+    if (!sanitizeResult.valid) {
+      return {
+        valid: false,
+        path: pathStr,
+        error: sanitizeResult.error
+      };
+    }
+
+    const fullPath = sanitizeResult.path;
+
     try {
+      // Resolve symlinks to real path
+      let realPath;
+      try {
+        realPath = await fs.promises.realpath(fullPath);
+      } catch (error) {
+        // Path doesn't exist yet, use parent directory
+        const parentDir = path.dirname(fullPath);
+        try {
+          const parentReal = await fs.promises.realpath(parentDir);
+          realPath = path.join(parentReal, path.basename(fullPath));
+        } catch (parentError) {
+          // Parent doesn't exist either, will be created
+          realPath = fullPath;
+        }
+      }
+
+      // Verify real path is still safe after symlink resolution
+      const realPathCheck = this.sanitizePath(realPath);
+      if (!realPathCheck.valid) {
+        return {
+          valid: false,
+          path: fullPath,
+          error: `Resolved path is unsafe: ${realPathCheck.error}`
+        };
+      }
+
       // Check if parent directory exists and is writable
       const parentDir = path.dirname(fullPath);
       await fs.promises.access(parentDir, fs.constants.W_OK);
-      
+
       // Try to create the directory if it doesn't exist
       await fs.promises.mkdir(fullPath, { recursive: true });
-      
+
       // Test write access
       const testFile = path.join(fullPath, '.install-test');
-      await fs.promises.writeFile(testFile, 'test');
+      await fs.promises.writeFile(testFile, 'test', { mode: 0o600 });
       await fs.promises.unlink(testFile);
-      
+
       return { valid: true, path: fullPath };
     } catch (error) {
-      return { 
-        valid: false, 
-        path: fullPath, 
-        error: error.message 
+      return {
+        valid: false,
+        path: fullPath,
+        error: error.message
       };
     }
   }
