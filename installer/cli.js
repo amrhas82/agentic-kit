@@ -376,6 +376,7 @@ ${colors.bright}For more information, visit:${colors.reset}
       const result = await installationEngine.uninstall(
         toolId,
         targetPath,
+        null, // confirmCallback (already confirmed above)
         (progress) => {
           // Display progress
           const percentage = Math.round((progress.filesRemoved / progress.totalFiles) * 100);

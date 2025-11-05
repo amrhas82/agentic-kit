@@ -2590,3 +2590,134 @@ node tests/installer/cross-platform-testing.test.js
 **Next Phase**: Phase 9.0 - Final Integration and Release Preparation
 
 **Awaiting**: User permission to proceed with Phase 9.0
+
+---
+
+### 2025-11-05 - Task 9.1 Complete: Actual Installation Testing
+
+**Phase 9.0 Status: 1/7 subtasks COMPLETE (14.3%)**
+**Updated Progress**: 50/55 subtasks complete (90.9%)
+
+**Objective**: Test installer with actual Claude Code CLI, verify all installation lifecycle stages, identify and fix integration issues.
+
+**Testing Completed**:
+
+1. ✅ **Fresh Installation (Lite variant)**
+   - Installed 104 files to ~/.claude
+   - Components: 4 agents, 7 skills, 6 resources, 2 hooks
+   - Coexists with Claude Code CLI files
+   - Manifest created successfully
+
+2. ✅ **Upgrade Testing**
+   - Lite → Standard: +9 files (now 9 agents, 11 skills)
+   - Standard → Pro: +15 files (now 13 agents, 22 skills)
+   - All backups created successfully
+   - Manifests updated correctly
+
+3. ✅ **Uninstall Testing**
+   - **BUG FOUND**: Uninstall failed (0 files removed)
+   - **ROOT CAUSE**: Wrong argument order in cli.js
+   - **FIX APPLIED**: Added `null` for confirmCallback parameter
+   - **VERIFIED**: Successfully removed 325 files after fix
+
+4. ✅ **Fresh Reinstallation**
+   - Clean uninstall verified (all files removed)
+   - Fresh install successful
+   - Lite variant correctly installed
+
+5. ⏭️ **Other Tools (Skipped)**
+   - Opencode: Not available in environment
+   - Ampcode: Not available in environment
+   - Droid: Not available in environment
+
+**Integration Issues Found**:
+
+### **Issue #1: Uninstall Bug [CRITICAL - FIXED]**
+
+**Problem**: Uninstall failed with 0 files removed, NaN% progress
+**Root Cause**: Function call in `installer/cli.js` line 376-384 passed progress callback as 3rd argument instead of 4th
+**Fix**: Added `null` as confirmCallback (3rd argument), moved progress callback to 4th position
+**Verification**: 325 files removed successfully, 26 directories removed, backup created
+
+```diff
+// BEFORE (WRONG):
+const result = await installationEngine.uninstall(
+  toolId,
+  targetPath,
+  (progress) => { ... }  // Wrong position!
+);
+
+// AFTER (CORRECT):
+const result = await installationEngine.uninstall(
+  toolId,
+  targetPath,
+  null, // confirmCallback
+  (progress) => { ... }  // Correct position!
+);
+```
+
+### **Issue #2: Verification False Positive [NON-CRITICAL]**
+
+**Problem**: Verification reports "Manifest file not found" even though file exists
+**Impact**: Low - installation succeeds, only verification warning misleading
+**Hypothesis**: Timing issue or path expansion inconsistency
+**Recommendation**: Add retry logic or delay in verification-system.js
+**Status**: Documented, not fixed (assign to future task)
+
+### **Issue #3: Installation Path Consideration [INFORMATIONAL]**
+
+**Observation**: Default path ~/.claude is shared with Claude Code CLI config
+**Current Behavior**: No conflicts - directories coexist successfully
+**Recommendation**: Consider alternative paths or namespacing in future versions
+**Status**: Documented for future reference
+
+**Files Created**:
+1. `/home/user/agentic-kit/docs/INTEGRATION_ISSUES_9.1.md` (comprehensive report)
+
+**Files Modified**:
+1. `/home/user/agentic-kit/installer/cli.js` (fixed uninstall bug)
+
+**Test Results Summary**:
+
+| Test | Variant | Files | Result | Notes |
+|------|---------|-------|--------|-------|
+| Fresh Install | Lite | 104 | ✅ PASS | 4 agents, 7 skills |
+| Upgrade | Lite→Std | +9 | ✅ PASS | 9 agents, 11 skills |
+| Upgrade | Std→Pro | +15 | ✅ PASS | 13 agents, 22 skills |
+| Uninstall (before) | Pro | 0 | ❌ FAIL | Bug #1 |
+| Uninstall (after) | Pro | 325 | ✅ PASS | Bug fixed |
+| Reinstall | Lite | 104 | ✅ PASS | Clean slate |
+
+**Variant Verification**:
+- **Lite**: ✅ 4 agents, ✅ 7 skills, ✅ 6 resources, ✅ 2 hooks
+- **Standard**: ✅ 9 agents, ✅ 11 skills, ✅ 6 resources, ✅ 2 hooks
+- **Pro**: ✅ 13 agents, ✅ 22 skills, ✅ 6 resources, ✅ 2 hooks
+
+**Environment**:
+- Platform: Linux 4.4.0 x64
+- Node.js: v22.21.0
+- Tool: Claude Code CLI (/opt/node22/bin/claude)
+- Installation Path: /root/.claude
+
+**Tools Tested**:
+- ✅ Claude Code (complete lifecycle tested)
+- ⏭️ Opencode (not available)
+- ⏭️ Ampcode (not available)
+- ⏭️ Droid (not available)
+
+**Phase 9.0 Progress**: 1/7 subtasks complete (14.3%)
+**Overall Progress**: 50/55 subtasks complete (90.9%)
+
+**Remaining Phase 9.0 Tasks**:
+- 9.2: Create installation report template
+- 9.3: Optional usage statistics (opt-in)
+- 9.4: Security review
+- 9.5: Legacy installation migration
+- 9.6: Fresh installation on clean system
+- 9.7: Version update and npm publish
+
+**Critical Success**: Found and fixed critical uninstall bug during testing. Installer lifecycle fully functional.
+
+**Next Task**: 9.2 - Create installation report template
+
+**Awaiting**: User permission to proceed with task 9.2

@@ -1,0 +1,7 @@
+{
+  "variant": "standard",
+  "tools": ["claude"],
+  "paths": {
+    "claude": "~/.claude"
+  }
+}
