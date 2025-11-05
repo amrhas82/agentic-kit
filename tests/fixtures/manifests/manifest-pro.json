@@ -1,0 +1,65 @@
+{
+  "tool": "claude",
+  "variant": "pro",
+  "version": "1.2.0",
+  "installedAt": "2025-11-05T00:00:00.000Z",
+  "components": {
+    "agents": 13,
+    "skills": 22,
+    "resources": 6,
+    "hooks": 2
+  },
+  "files": {
+    "agents": [
+      "0-think-process.md",
+      "1-fix-process-repl.md",
+      "2-create-prd.md",
+      "3-process-task-list.md",
+      "4-generate-tasks.md",
+      "master.md",
+      "orchestrator.md",
+      "product-manager.md",
+      "scrum-master.md",
+      "product-owner.md",
+      "business-analyst.md",
+      "full-stack-dev.md",
+      "holistic-architect.md"
+    ],
+    "skills": [
+      "pdf",
+      "docx",
+      "xlsx",
+      "pptx",
+      "canvas-design",
+      "theme-factory",
+      "brand-guidelines",
+      "internal-comms",
+      "video-production",
+      "audio-transcription",
+      "data-visualization",
+      "web-scraping",
+      "api-integration",
+      "database-query",
+      "machine-learning",
+      "blockchain-tools",
+      "iot-integration",
+      "security-audit",
+      "performance-profiling",
+      "devops-automation",
+      "cloud-deployment",
+      "code-migration"
+    ],
+    "resources": [
+      "master.txt",
+      "orchestrator.txt",
+      "product-manager.txt",
+      "scrum-master.txt",
+      "product-owner.txt",
+      "business-analyst.txt"
+    ],
+    "hooks": [
+      "register-agents.js",
+      "session-start.js"
+    ]
+  }
+}

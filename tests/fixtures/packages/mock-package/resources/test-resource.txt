@@ -1,0 +1,4 @@
+Test Agent - Test resource file for automated testing
+
+This is a sample resource file that contains reference information
+for the test agent.

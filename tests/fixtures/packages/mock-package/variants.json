@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "lite": {
+      "name": "Lite",
+      "description": "Mock test package - Lite variant",
+      "agents": ["test-agent.md"],
+      "skills": [],
+      "resources": ["test-resource.txt"],
+      "hooks": ["test-hook.js"]
+    },
+    "standard": {
+      "name": "Standard",
+      "description": "Mock test package - Standard variant",
+      "agents": ["test-agent.md"],
+      "skills": ["test-skill"],
+      "resources": ["test-resource.txt"],
+      "hooks": ["test-hook.js"]
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "Mock test package - Pro variant",
+      "agents": ["test-agent.md"],
+      "skills": ["test-skill"],
+      "resources": ["test-resource.txt"],
+      "hooks": ["test-hook.js"]
+    }
+  }
+}

@@ -1368,3 +1368,200 @@ Per task specification: "or if not possible creating detailed ASCII art mockups 
 
 **Awaiting**: User permission to proceed with task 7.6
 
+
+### 2025-11-04 - Task 7.6 Complete: Update package.json Scripts
+
+**Task 7.6: Update package.json with Installer Scripts**
+- All task requirements satisfied
+- Phase 7.0 now 100% complete!
+
+**package.json Changes:**
+
+1. **Version Update**: 1.1.0 → 1.2.0
+
+2. **Description Update**: 
+   - Added "22 powerful skills" (was 14)
+   - Added "Interactive multi-tool installer"
+   - Added supported tools: Claude, Opencode, Ampcode, Droid
+   - Added variant sizes: Lite (510 KB), Standard (8.4 MB), Pro (9 MB)
+
+3. **Bin Entry Update**:
+   - `agentic-kit` now points to `./installer/cli.js`
+   - `agkit` remains pointing to `./cli.js` (npx compatibility)
+
+4. **Scripts Added**:
+   - `install-interactive`: "node installer/cli.js"
+   - `uninstall-tool`: "node installer/cli.js --uninstall"
+   - `test-installer`: "node tests/installer/integration.test.js"
+   - `test`: "node tests/run-all-tests.js"
+   - `validate-packages`: "node scripts/validate-all-packages.js"
+
+5. **Keywords Added**:
+   - opencode, ampcode, droid (tool names)
+   - installer, interactive-installer (functionality)
+   - multi-tool, cli, variant-system (features)
+
+6. **Files Array Updated**:
+   - Added: installer/, packages/, tests/, scripts/, docs/
+   - Added: CHANGELOG.md, validate-package.js
+
+**README.md Changes:**
+
+Added comprehensive "npm Scripts" section before Contributing:
+
+1. **Installation Scripts**
+   - npm run install-interactive
+   - npm run uninstall-tool
+
+2. **Testing Scripts**
+   - npm test (runs all tests)
+   - npm run test-installer (installer tests only)
+
+3. **Validation Scripts**
+   - npm run validate (package structure)
+   - npm run validate-packages (all tool packages)
+
+4. **Publishing Scripts**
+   - npm run publish:npm
+   - npm run publish:github
+   - npm run publish:both
+
+5. **CLI Commands Reference**
+   - agentic-kit install
+   - agentic-kit install --variant=standard --tools=claude
+   - agentic-kit install --uninstall --tools=claude
+   - agentic-kit install --help
+
+**Script Testing:**
+✓ Tested npm run validate-packages - working correctly
+✓ Verified installer/cli.js has shebang (#!/usr/bin/env node)
+✓ All script paths verified correct
+
+**Phase 7.0 Status: 6/6 subtasks COMPLETE (100%)**
+- ✅ 7.1 - INSTALLER_GUIDE.md
+- ✅ 7.2 - VARIANT_CONFIGURATION.md
+- ✅ 7.3 - Update README.md
+- ✅ 7.4 - Update CHANGELOG.md
+- ✅ 7.5 - Create demo (ASCII art)
+- ✅ 7.6 - Update package.json scripts
+
+**Updated Progress**: 41/55 subtasks complete (74.5%)
+
+**Phases Complete**: 7 of 9 phases (77.8%)
+- ✅ Phase 1.0 - Variant Configuration System
+- ✅ Phase 2.0 - Package Manager Enhancement
+- ✅ Phase 3.0 - Installation Engine Update
+- ✅ Phase 4.0 - Interactive CLI Enhancement
+- ✅ Phase 5.0 - Advanced Features
+- ✅ Phase 6.0 - Tool-Specific Package Content
+- ✅ Phase 7.0 - Documentation and Polish
+- ⏳ Phase 8.0 - Testing and Quality Assurance (14 subtasks remaining)
+- ⏳ Phase 9.0 - Final Integration and Release Preparation (7 subtasks remaining)
+
+**Next Phase**: Phase 8.0 - Testing and Quality Assurance
+- 8 subtasks covering comprehensive testing
+- Platform testing, error scenarios, performance profiling
+
+**Awaiting**: User permission to proceed with Phase 8.0
+
+
+---
+
+### 2025-11-05 - Task 8.1 Complete: Create Test Fixtures Directory
+
+**Phase 8.0 Status: 1/8 subtasks COMPLETE (12.5%)**
+**Updated Progress**: 42/55 subtasks complete (76.4%)
+
+**Task Completed**: Created comprehensive test fixtures directory structure
+
+**Files Created**:
+
+1. **Variant Fixtures** (`tests/fixtures/variants/`):
+   - `variants-lite.json` - Test Lite variant (3 agents, 0 skills)
+   - `variants-standard.json` - Test Standard variant (13 agents, 8 skills)
+   - `variants-pro.json` - Test Pro variant (13 agents, 22 skills)
+   - `variants-corrupted.json` - Malformed JSON for error testing
+   - `variants-minimal.json` - Minimal valid structure for basic tests
+
+2. **Mock Package** (`tests/fixtures/packages/mock-package/`):
+   - `agents/test-agent.md` - Sample agent file
+   - `skills/test-skill/skill.md` - Sample skill directory and file
+   - `resources/test-resource.txt` - Sample resource file
+   - `hooks/test-hook.js` - Sample hook with shebang
+   - `variants.json` - Mock variants configuration (Lite/Standard/Pro)
+
+3. **Manifest Templates** (`tests/fixtures/manifests/`):
+   - `manifest-lite.json` - Lite installation manifest (3 agents, 0 skills)
+   - `manifest-standard.json` - Standard installation manifest (13 agents, 8 skills)
+   - `manifest-pro.json` - Pro installation manifest (13 agents, 22 skills)
+
+4. **Test Helpers** (`tests/fixtures/helpers/test-helpers.js`):
+   - 18 utility functions for test environment setup and cleanup
+   - Directory management: createTempDir, copyDirRecursive, removeDirRecursive
+   - Test setup: createTestPackage, createTestEnvironment
+   - File operations: createVariantsFile, createManifestFile
+   - Verification: verifyDirectoryStructure, countFiles, getDirectorySize
+   - Fixture loading: loadFixture, loadJsonFixture
+   - Assertions: assertEqual, sleep
+
+5. **Documentation** (`tests/fixtures/README.md`):
+   - 400+ line comprehensive documentation
+   - Detailed description of all fixtures
+   - Usage examples for each helper function
+   - Test scenarios supported
+   - Guidelines for adding new fixtures
+   - Maintenance instructions
+
+**Fixture Capabilities**:
+- ✅ Installation testing (Lite, Standard, Pro variants)
+- ✅ Multi-tool testing (Claude, Opencode, Ampcode, Droid)
+- ✅ Error scenario testing (corrupted JSON, missing files)
+- ✅ Verification testing (file counts, structure validation)
+- ✅ Performance testing (size calculation, file counting)
+- ✅ Complete cleanup utilities (safe temp directory removal)
+
+**Test Helper Features**:
+- Complete test environment creation (temp dirs with tool subdirectories)
+- Mock package generation (agents, skills, resources, hooks)
+- Directory structure verification with error reporting
+- Automatic cleanup after tests
+- Deep equality assertions
+- Fixture loading utilities
+
+**Directory Structure**:
+```
+tests/fixtures/
+├── variants/          # 5 variants.json samples
+├── packages/          # Mock package with complete structure
+├── manifests/         # 3 manifest templates
+├── helpers/           # Test utility functions
+└── README.md          # Comprehensive documentation
+```
+
+**Phase 8.0 Progress**:
+- ✅ 8.1 - Create test fixtures directory
+- ⏳ 8.2 - Test all variants for all 4 tools
+- ⏳ 8.3 - Test multi-tool installations
+- ⏳ 8.4 - Test error scenarios
+- ⏳ 8.5 - Test path handling
+- ⏳ 8.6 - Test cross-platform
+- ⏳ 8.7 - Performance profiling
+- ⏳ 8.8 - Consolidate tests and create test runner
+
+**Updated Progress**: 42/55 subtasks complete (76.4%)
+
+**Phases Complete**: 7 of 9 phases (77.8%)
+- ✅ Phase 1.0 through 7.0
+- ⏳ Phase 8.0 - Testing and Quality Assurance (1/8 subtasks complete)
+- ⏳ Phase 9.0 - Final Integration and Release (7 subtasks)
+
+**Next Task**: 8.2 - Test all variants for all 4 tools
+- Test Claude Lite/Standard/Pro
+- Test Opencode Lite/Standard/Pro  
+- Test Ampcode Lite/Standard/Pro
+- Test Droid Lite/Standard/Pro
+- Verify file counts match expected
+- Verify manifests contain correct component counts
+
+**Awaiting**: User permission to proceed with task 8.2
+

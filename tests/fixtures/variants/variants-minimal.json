@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "lite": {
+      "name": "Lite",
+      "description": "Minimal test variant",
+      "agents": ["test-agent.md"],
+      "skills": [],
+      "resources": ["test-resource.txt"],
+      "hooks": ["test-hook.js"]
+    }
+  }
+}

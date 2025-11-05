@@ -1,0 +1,75 @@
+{
+  "variants": {
+    "lite": {
+      "name": "Lite",
+      "description": "Minimal setup",
+      "agents": [],
+      "skills": [],
+      "resources": [],
+      "hooks": []
+    },
+    "standard": {
+      "name": "Standard",
+      "description": "Full agents with core skills",
+      "agents": [],
+      "skills": [],
+      "resources": [],
+      "hooks": []
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "Everything including advanced skills",
+      "agents": [
+        "0-think-process.md",
+        "1-fix-process-repl.md",
+        "2-create-prd.md",
+        "3-process-task-list.md",
+        "4-generate-tasks.md",
+        "master.md",
+        "orchestrator.md",
+        "product-manager.md",
+        "scrum-master.md",
+        "product-owner.md",
+        "business-analyst.md",
+        "full-stack-dev.md",
+        "holistic-architect.md"
+      ],
+      "skills": [
+        "pdf",
+        "docx",
+        "xlsx",
+        "pptx",
+        "canvas-design",
+        "theme-factory",
+        "brand-guidelines",
+        "internal-comms",
+        "video-production",
+        "audio-transcription",
+        "data-visualization",
+        "web-scraping",
+        "api-integration",
+        "database-query",
+        "machine-learning",
+        "blockchain-tools",
+        "iot-integration",
+        "security-audit",
+        "performance-profiling",
+        "devops-automation",
+        "cloud-deployment",
+        "code-migration"
+      ],
+      "resources": [
+        "master.txt",
+        "orchestrator.txt",
+        "product-manager.txt",
+        "scrum-master.txt",
+        "product-owner.txt",
+        "business-analyst.txt"
+      ],
+      "hooks": [
+        "register-agents.js",
+        "session-start.js"
+      ]
+    }
+  }
+}

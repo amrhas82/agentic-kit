@@ -1,0 +1,11 @@
+{
+  "variants": {
+    "lite": {
+      "name": "Lite",
+      "description": "Minimal setup",
+      "agents": [
+        "0-think-process.md"
+      ],
+      "skills": [],
+      "resources": []
+      // Missing closing bracket - intentionally corrupted JSON

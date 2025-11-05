@@ -1,0 +1,42 @@
+{
+  "variants": {
+    "lite": {
+      "name": "Lite",
+      "description": "Minimal setup with 3 core agents",
+      "agents": [
+        "0-think-process.md",
+        "1-fix-process-repl.md",
+        "2-create-prd.md"
+      ],
+      "skills": [],
+      "resources": [
+        "master.txt",
+        "orchestrator.txt",
+        "product-manager.txt",
+        "scrum-master.txt",
+        "product-owner.txt",
+        "business-analyst.txt"
+      ],
+      "hooks": [
+        "register-agents.js",
+        "session-start.js"
+      ]
+    },
+    "standard": {
+      "name": "Standard",
+      "description": "Full agents with core skills",
+      "agents": [],
+      "skills": [],
+      "resources": [],
+      "hooks": []
+    },
+    "pro": {
+      "name": "Pro",
+      "description": "Everything including advanced skills",
+      "agents": [],
+      "skills": [],
+      "resources": [],
+      "hooks": []
+    }
+  }
+}
