@@ -16,20 +16,13 @@ if [ -z "$GITHUB_TOKEN" ]; then
     # Check if pass is available and has the token
     if command -v pass &> /dev/null; then
         echo "🔑 Attempting to retrieve token from pass..."
-        if pass show amr/github &> /dev/null; then
-            # Extract token from notes (looks for "token: ghp_xxxxx")
-            PASS_OUTPUT=$(pass show amr/github)
-            if echo "$PASS_OUTPUT" | grep -q "^token:"; then
-                export GITHUB_TOKEN=$(echo "$PASS_OUTPUT" | grep "^token:" | cut -d' ' -f2)
-                echo "✓ Token extracted from pass notes (amr/github)"
-            else
-                # Fallback: use first line (password field)
-                export GITHUB_TOKEN=$(echo "$PASS_OUTPUT" | head -n1)
-                echo "✓ Token retrieved from pass password field (amr/github)"
-            fi
+        if pass show amr/github_token &> /dev/null; then
+            # Get token from password field (first line)
+            export GITHUB_TOKEN=$(pass show amr/github_token | head -n1)
+            echo "✓ Token retrieved from pass (amr/github_token)"
             GITHUB_ONLY=true
         else
-            echo "⚠️  Token not found in pass at amr/github"
+            echo "⚠️  Token not found in pass at amr/github_token"
             echo ""
             read -p "Continue with npm.js only? (y/n) " -n 1 -r
             echo
@@ -43,7 +36,7 @@ if [ -z "$GITHUB_TOKEN" ]; then
         echo "    Publishing to GitHub Packages will fail"
         echo "    Options:"
         echo "      1. Set manually: export GITHUB_TOKEN=ghp_your_token_here"
-        echo "      2. Use pass: export GITHUB_TOKEN=\$(pass show amr/github)"
+        echo "      2. Use pass: export GITHUB_TOKEN=\$(pass show amr/github_token)"
         echo ""
         read -p "Continue with npm.js only? (y/n) " -n 1 -r
         echo
