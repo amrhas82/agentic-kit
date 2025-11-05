@@ -41,6 +41,7 @@ agentic-kit install --silent --variant=standard --tools=claude
 ```
 
 📖 **[Full Installation Guide →](docs/INSTALLER_GUIDE.md)**
+🎬 **[Visual Demo (ASCII) →](docs/INSTALLATION_DEMO.md)** - See the installer in action!
 
 ### Variants
 
@@ -80,6 +81,7 @@ agentic-kit install --silent --variant=standard --tools=claude
 | Document | Description |
 |----------|-------------|
 | **[INSTALLER_GUIDE.md](docs/INSTALLER_GUIDE.md)** | 📦 Complete installation guide with troubleshooting |
+| **[INSTALLATION_DEMO.md](docs/INSTALLATION_DEMO.md)** | 🎬 Visual demo with ASCII art showing installer in action |
 | **[KNOWLEDGE_BASE.md](docs/KNOWLEDGE_BASE.md)** | Complete reference: all agents, skills, architecture |
 | **[QUICK-START.md](QUICK-START.md)** | 15-minute onboarding guide |
 | **[VARIANTS.md](VARIANTS.md)** | Compare variants and choose the right one |
