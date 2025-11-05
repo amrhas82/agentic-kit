@@ -15,17 +15,17 @@ const fs = require('fs');
 const path = require('path');
 const { createTempDir, removeDirRecursive, verifyDirectoryStructure, countFiles } = require('../fixtures/helpers/test-helpers');
 
-// Expected component counts for each variant
+// Expected component counts for each variant (updated 2025-11-05)
 const EXPECTED_COUNTS = {
   lite: {
-    agents: 3,
-    skills: 0,
+    agents: 4,
+    skills: 7,
     resources: 6,
     hooks: 2
   },
   standard: {
-    agents: 13,
-    skills: 8,
+    agents: 9,
+    skills: 11,
     resources: 6,
     hooks: 2
   },
@@ -38,18 +38,21 @@ const EXPECTED_COUNTS = {
 };
 
 // Expected agent files for Lite variant (same for all tools)
-const LITE_AGENTS = ['master.md', 'orchestrator.md', 'scrum-master.md'];
+const LITE_AGENTS = ['1-create-prd.md', '2-generate-tasks.md', '3-process-task-list.md', 'master.md'];
 
 // Expected skills for Standard variant (same for all tools)
 const STANDARD_SKILLS = [
-  'pdf',
   'docx',
+  'pdf',
+  'code-review',
+  'brainstorming',
+  'root-cause-tracing',
+  'mcp-builder',
+  'webapp-testing',
   'xlsx',
-  'pptx',
-  'canvas-design',
-  'theme-factory',
-  'brand-guidelines',
-  'internal-comms'
+  'systematic-debugging',
+  'verification-before-completion',
+  'skill-creator'
 ];
 
 // Test results tracker
