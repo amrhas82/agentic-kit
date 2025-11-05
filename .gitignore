@@ -30,3 +30,16 @@ Thumbs.db
 # Temporary files
 *.tmp
 .temp/
+
+# Test temporary files and artifacts
+tests/tmp/
+tests/**/*.log
+tests/**/test-*-[0-9]*/
+*.test.log
+
+# Installation test artifacts
+test-installation-*/
+*-test-claude/
+*-test-opencode/
+*-test-ampcode/
+*-test-droid/

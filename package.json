@@ -12,9 +12,11 @@
     "test-installer": "node tests/installer/integration.test.js",
     "install-interactive": "node installer/cli.js",
     "uninstall-tool": "node installer/cli.js --uninstall",
+    "clean": "rm -rf tests/tmp/ && echo 'Cleaned test artifacts'",
+    "clean:git": "git clean -fdx tests/tmp/",
     "validate": "node ./validate-package.js",
     "validate-packages": "node scripts/validate-all-packages.js",
-    "prepublishOnly": "npm run validate",
+    "prepublishOnly": "npm run clean && npm run validate",
     "publish:npm": "npm publish --registry https://registry.npmjs.org --access public",
     "publish:github": "npm publish --registry https://npm.pkg.github.com",
     "publish:both": "npm run publish:npm && npm run publish:github"
@@ -62,15 +64,8 @@
     "node": ">=14.0.0"
   },
   "files": [
-    ".claude-plugin/",
-    "agents/",
-    "skills/",
-    "hooks/",
-    "resources/",
     "installer/",
     "packages/",
-    "tests/",
-    "scripts/",
     "docs/",
     "cli.js",
     "index.js",
@@ -79,8 +74,7 @@
     "VARIANTS.md",
     "TROUBLESHOOTING.md",
     "CHANGELOG.md",
-    "validate-references.sh",
-    "validate-package.js"
+    "LICENSE"
   ],
   "dependencies": {},
   "devDependencies": {}

@@ -1,6 +1,0 @@
-{
-  "tool": "testool",
-  "name": "Test Tool",
-  "description": "Tool for testing",
-  "optimization": "test-optimization"
-}
