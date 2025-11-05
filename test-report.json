@@ -1,0 +1,57 @@
+{
+  "timestamp": "2025-11-05T09:39:11.895Z",
+  "summary": {
+    "totalTests": 348,
+    "totalPassed": 345,
+    "totalFailed": 3,
+    "passRate": "99.1",
+    "duration": 6381
+  },
+  "suites": [
+    {
+      "name": "Variant Testing",
+      "total": 92,
+      "passed": 92,
+      "failed": 0,
+      "passRate": 100,
+      "duration": 2283,
+      "error": null
+    },
+    {
+      "name": "Multi-Tool Installation",
+      "total": 78,
+      "passed": 78,
+      "failed": 0,
+      "passRate": 100,
+      "duration": 3757,
+      "error": null
+    },
+    {
+      "name": "Error Scenario Testing",
+      "total": 36,
+      "passed": 35,
+      "failed": 1,
+      "passRate": 97.2,
+      "duration": 157,
+      "error": null
+    },
+    {
+      "name": "Path Handling Testing",
+      "total": 76,
+      "passed": 76,
+      "failed": 0,
+      "passRate": 100,
+      "duration": 99,
+      "error": null
+    },
+    {
+      "name": "Cross-Platform Testing",
+      "total": 66,
+      "passed": 64,
+      "failed": 2,
+      "passRate": 97,
+      "duration": 79,
+      "error": null
+    }
+  ]
+}
