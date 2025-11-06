@@ -53,35 +53,89 @@ fi
 
 echo ""
 echo "Step 1: Validating package..."
-npm run validate
+if npm run validate; then
+    VALIDATION_SUCCESS=true
+    echo "✓ Validation passed"
+else
+    echo "✗ Validation failed"
+    exit 1
+fi
 
 echo ""
 echo "Step 2: Publishing to npm.js..."
-npm run publish:npm
+if npm run publish:npm 2>&1 | tee /tmp/npm-publish.log; then
+    NPM_SUCCESS=true
+else
+    # Check if error is "already published" (which is actually success)
+    if grep -q "You cannot publish over the previously published versions" /tmp/npm-publish.log; then
+        NPM_SUCCESS=true
+        echo "ℹ Package already published to npm (this is OK)"
+    else
+        NPM_SUCCESS=false
+    fi
+fi
 
+GITHUB_SUCCESS=false
 if [ "$GITHUB_ONLY" = true ]; then
     echo ""
     echo "Step 3: Publishing to GitHub Packages..."
-    npm run publish:github
+    if npm run publish:github 2>&1 | tee /tmp/github-publish.log; then
+        GITHUB_SUCCESS=true
+    else
+        # Check if error is "already published"
+        if grep -q "You cannot publish over the previously published versions" /tmp/github-publish.log; then
+            GITHUB_SUCCESS=true
+            echo "ℹ Package already published to GitHub (this is OK)"
+        else
+            GITHUB_SUCCESS=false
+        fi
+    fi
+fi
 
-    echo ""
-    echo "=========================================="
-    echo "✓ Published to both registries!"
-    echo "=========================================="
-    echo ""
-    echo "npm.js: https://www.npmjs.com/package/@amrhas82/agentic-kit"
-    echo "GitHub: https://github.com/amrhas82/agentic-kit/packages"
+# Final Summary
+echo ""
+echo "=========================================="
+echo "PUBLISHING SUMMARY"
+echo "=========================================="
+echo ""
+echo "Package: @amrhas82/agentic-kit"
+echo "Version: $(node -p "require('./package.json').version")"
+echo ""
+
+if [ "$NPM_SUCCESS" = true ]; then
+    echo "✓ npm.js: SUCCESS"
+    echo "  → https://www.npmjs.com/package/@amrhas82/agentic-kit"
 else
-    echo ""
-    echo "=========================================="
-    echo "✓ Published to npm.js only"
-    echo "=========================================="
-    echo ""
-    echo "npm.js: https://www.npmjs.com/package/@amrhas82/agentic-kit"
+    echo "✗ npm.js: FAILED"
+fi
+
+if [ "$GITHUB_ONLY" = true ]; then
+    if [ "$GITHUB_SUCCESS" = true ]; then
+        echo "✓ GitHub Packages: SUCCESS"
+        echo "  → https://github.com/amrhas82/agentic-kit/packages"
+    else
+        echo "✗ GitHub Packages: FAILED"
+    fi
+else
+    echo "○ GitHub Packages: SKIPPED (no token)"
     echo ""
     echo "To publish to GitHub Packages later:"
     echo "  1. Set GITHUB_TOKEN: export GITHUB_TOKEN=ghp_your_token_here"
     echo "  2. Run: npm run publish:github"
+fi
+
+echo ""
+echo "=========================================="
+
+# Exit with error if any required publish failed
+if [ "$NPM_SUCCESS" != true ]; then
+    echo "✗ Publishing FAILED"
+    exit 1
+elif [ "$GITHUB_ONLY" = true ] && [ "$GITHUB_SUCCESS" != true ]; then
+    echo "⚠ npm.js succeeded, but GitHub Packages failed"
+    exit 1
+else
+    echo "✓ Publishing COMPLETED"
 fi
 
 echo ""
