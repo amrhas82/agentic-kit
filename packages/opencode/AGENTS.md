@@ -1,19 +1,21 @@
-# Project Agents
+# Global Opencode Agents
 
 This file provides guidance and memory for your coding CLI.
 
 # Opencode subagents and Tasks (OpenCode)
 
-OpenCode reads AGENTS.md during initialization and uses it as part of its system prompt for the session. 
+Opencode reads AGENTS.md during initialization and uses it as part of its system prompt for the session. 
 
 ## How To Use With Claude
 
-- Copy/paste `claude` subfolders in this project to ~/.claude and Claude will read and access agents from ~/.claude/agents and tasks from ~/.claude/tasks,
+Activate agents by mentioning their ID in your prompts:
+- `"@qa-test-architect review this code"`
+- Copy/paste `opencode` subfolders in this project to ~/.config/opencode and Opencode will read and access agents from ~/.config/opencode/agent and tasks from ~~/.config/opencode/resources/tasks-bried.md,
 - You can access agents using "@ux-expert", or you can reference a role naturally, e.g., "As ux-expert, implement ..." or use commands defined in your tasks.
 
 Note
-- Orchestrators run as mode: primary; other agents as all.
-- All agents have tools enabled: write, edit, bash.
+- Orchestrators/master run as mode: primary; other agents as mode: subagents.
+- All agents have enbaled tools: write, edit, bash.
 
 ## Agents
 

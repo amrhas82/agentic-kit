@@ -1,13 +1,21 @@
 # Global Amp Agents
 
-This file defines specialized agent personas available globally across all Amp workspaces.
+This file defines specialized agent personas available globally across all Amp workspaces, and provides guidance and memory for your coding CLI.
 
-## How To Use
+# AmpCode subagents and Tasks (Amp)
+
+Ampcode reads AGENTS.md during initialization and uses it as part of its system prompt for the session. 
+
+## How To Use with Amp
 
 Activate agents by mentioning their ID in your prompts:
 - `"As full-stack-dev, implement the login feature"`
-- `"@qa-test-architect review this code"`
-- `"As architect, design the system"`
+- `"invoke subagent qa-test-architect"`
+- Copy/paste `ampcode` subfolders in this project to ~/.config/amp and Opencode will read and access agents from ~/.config/opencode/agent and tasks from ~~/.config/amp/resources/tasks-brief.md,
+
+Note
+- Orchestrators/master run as mode: primary; other agents as mode: subagents.
+- All agents have enbaled tools: write, edit, bash.
 
 ## Agents Directory
 

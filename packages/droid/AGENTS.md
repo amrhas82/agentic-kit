@@ -1,19 +1,23 @@
-# Project Agents
+# Global Droid Agents
 
 This file provides guidance and memory for your coding CLI.
 
-# Opencode subagents and Tasks (OpenCode)
+# Droid CLI subagents and Tasks (Droid)
 
-OpenCode reads AGENTS.md during initialization and uses it as part of its system prompt for the session. 
+Droid reads AGENTS.md when other subagents want to invoke other subagents, tasks, or resources
 
-## How To Use With Claude
+## How To Use With Droid
 
-- Copy/paste `claude` subfolders in this project to ~/.claude and Claude will read and access agents from ~/.claude/agents and tasks from ~/.claude/tasks,
+Activate agents by mentioning their ID in your prompts:
+- `"As full-stack-dev, implement the login feature"`
+- `"invoke droid qa-test-architect"`
+
+- Copy/paste `droid` subfolders in this project to ~/.factory and droid will read and access agents from ~/.factory/droids and tasks from ~/.factory/resources/tasks-brief.md,
 - You can access agents using "@ux-expert", or you can reference a role naturally, e.g., "As ux-expert, implement ..." or use commands defined in your tasks.
 
 Note
-- Orchestrators run as mode: primary; other agents as all.
-- All agents have tools enabled: write, edit, bash.
+- Orchestrators/master run as mode: primary; other agents as mode: subagents.
+- All agents have enbaled tools: write, edit, bash.
 
 ## Agents
 

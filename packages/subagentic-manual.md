@@ -10,7 +10,7 @@ Complete guide to ready-to-use AI subagents for Claude Code, OpenCode, and Amp. 
 ```bash
 git clone https://github.com/amrhas82/agentic-toolkit
 cd agentic-toolkit
-cp -r ai/subagents/claude/* ~/.claude/
+cp -rv ai/subagents/claude/* ~/.claude/
 # Invoke: @agent-name or "As agent-name, ..." in Claude Code
 ```
 
@@ -18,18 +18,28 @@ cp -r ai/subagents/claude/* ~/.claude/
 ```bash
 git clone https://github.com/amrhas82/agentic-toolkit
 cd agentic-toolkit
-cp -r ai/subagents/opencode/* ~/.config/opencode/
-# Invoke: "As agent-name, ..." in natural language
+cp -rv ai/subagents/opencode/* ~/.config/opencode/
+# Invoke: @agent-name or "As agent-name, ..." in Claude Code
 ```
 
 ### For Amp:
 ```bash
 git clone https://github.com/amrhas82/agentic-toolkit
 cd agentic-toolkit
-cp -r ai/subagents/ampcode/* ~/.amp/
+cp -rv ai/subagents/ampcode/* ~/.amp/
 # Invoke: "As agent-name, ..." in natural language
 ```
 
+### For Droid:
+```bash
+git clone https://github.com/amrhas82/agentic-toolkit
+cd agentic-toolkit
+cp -rv ai/subagents/ampcode/* ~/.amp/
+# Invoke: "As agent-name, or invoke droid agent_name..." in natural language
+
+#go to and edit ~/.factory/settings.json change below to true
+  "enableCustomDroids": true,
+```
 ---
 
 ## 📦 What's Included

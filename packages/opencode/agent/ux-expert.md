@@ -3,7 +3,6 @@ name: ux-expert
 description: Use this agent for UI/UX design tasks, wireframes, prototypes, front-end specifications, user experience optimization, AI UI tool prompts (v0, Lovable), user research analysis, interaction patterns, and accessibility improvements.
 model: inherit
 mode: subagent
-model: inherit
 temperature: 0.4
 tools:
   write: false
