@@ -138,7 +138,7 @@ Available in: **Claude**, **OpenCode**
 
 ---
 
-## 📋 Reusable Tasks (Claude & OpenCode Only)
+## 📋 Reusable Tasks (Claude, OpenCode, Droid and Amp)
 
 22 pre-built task workflows available in Claude and OpenCode kits:
 
