@@ -134,91 +134,91 @@
   },
   "command": {
     "xlsx": {
-      "template": "{file:./xlsx.md}",
+      "template": "{file:./command/xlsx.md}",
       "description": "Create, edit, and analyze spreadsheets with formulas, formatting, data analysis, and visualization"
     },
     "webapp-testing": {
-      "template": "{file:./webapp-testing.md}",
+      "template": "{file:./command/webapp-testing.md}",
       "description": "Test local web applications using Playwright - verify functionality, debug UI, capture screenshots"
     },
     "systematic-debugging": {
-      "template": "{file:./systematic-debugging.md}",
+      "template": "{file:./command/systematic-debugging.md}",
       "description": "Systematic four-phase debugging framework - investigate root cause before any fixes"
     },
     "slack-gif-creator": {
-      "template": "{file:./slack-gif-creator.md}",
+      "template": "{file:./command/slack-gif-creator.md}",
       "description": "Create animated GIFs optimized for Slack with size validation and composable animation primitives"
     },
     "verification-before-completion": {
-      "template": "{file:./verification-before-completion.md}",
+      "template": "{file:./command/verification-before-completion.md}",
       "description": "Verify work meets requirements before marking complete - prevents incomplete deliverables"
     },
     "skill-creator": {
-      "template": "{file:./skill-creator.md}",
+      "template": "{file:./command/skill-creator.md}",
       "description": "Create reusable skills with proper structure, validation, and documentation"
     },
     "test-driven-development": {
-      "template": "{file:./test-driven-development.md}",
+      "template": "{file:./command/test-driven-development.md}",
       "description": "Write test first, watch it fail, write minimal code to pass - ensures tests actually verify behavior"
     },
     "testing-anti-patterns": {
-      "template": "{file:./testing-anti-patterns.md}",
+      "template": "{file:./command/testing-anti-patterns.md}",
       "description": "Identify and avoid common testing anti-patterns that create fragile, useless tests"
     },
     "theme-factory": {
-      "template": "{file:./theme-factory.md}",
+      "template": "{file:./command/theme-factory.md}",
       "description": "Generate consistent themes with proper color systems, typography, and spacing"
     },
     "root-cause-tracing": {
-      "template": "{file:./root-cause-tracing.md}",
+      "template": "{file:./command/root-cause-tracing.md}",
       "description": "Trace issues to their root cause using systematic investigation techniques"
     },
     "internal-comms": {
-      "template": "{file:./internal-comms.md}",
+      "template": "{file:./command/internal-comms.md}",
       "description": "Structure internal communications for clarity, actionability, and team alignment"
     },
     "pdf": {
-      "template": "{file:./pdf.md}",
+      "template": "{file:./command/pdf.md}",
       "description": "Create, edit, and analyze PDF documents with proper formatting and structure"
     },
     "mcp-builder": {
-      "template": "{file:./mcp-builder.md}",
+      "template": "{file:./command/mcp-builder.md}",
       "description": "Build Model Context Protocol servers with proper tool definitions and error handling"
     },
     "condition-based-waiting": {
-      "template": "{file:./condition-based-waiting.md}",
+      "template": "{file:./command/condition-based-waiting.md}",
       "description": "Implement robust waiting mechanisms based on conditions rather than fixed delays"
     },
     "pptx": {
-      "template": "{file:./pptx.md}",
+      "template": "{file:./command/pptx.md}",
       "description": "Create professional PowerPoint presentations with proper structure and design"
     },
     "docx": {
-      "template": "{file:./docx.md}",
+      "template": "{file:./command/docx.md}",
       "description": "Create and edit Word documents with proper formatting and structure"
     },
     "brand-guidelines": {
-      "template": "{file:./brand-guidelines.md}",
+      "template": "{file:./command/brand-guidelines.md}",
       "description": "Establish comprehensive brand guidelines with visual identity and usage rules"
     },
     "brainstorming": {
-      "template": "{file:./brainstorming.md}",
+      "template": "{file:./command/brainstorming.md}",
       "description": "Facilitate structured brainstorming sessions with proven techniques and frameworks"
     },
     "canvas-design": {
-      "template": "{file:./canvas-design.md}",
+      "template": "{file:./command/canvas-design.md}",
       "description": "Design visual canvases for business models, user journeys, and strategic planning"
     },
     "artifacts-builder": {
-      "template": "{file:./artifacts-builder.md}",
+      "template": "{file:./command/artifacts-builder.md}",
       "description": "Build structured artifacts with proper validation, formatting, and documentation"
     },
     "algorithmic-art": {
-      "template": "{file:./algorithmic-art.md}",
+      "template": "{file:./command/algorithmic-art.md}",
       "description": "Generate algorithmic art with mathematical patterns and aesthetic principles"
     },
     "code-review": {
-      "template": "{file:./code-review.md}",
+      "template": "{file:./command/code-review.md}",
       "description": "Conduct thorough code reviews with focus on quality, security, and maintainability"
     }
   }
