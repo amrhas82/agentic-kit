@@ -1,6 +1,6 @@
 {
   "name": "@amrhas82/agentic-kit",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Comprehensive toolkit for AI-driven software development with 13 specialized agents and 22 powerful skills. Interactive multi-tool installer supports Claude, Opencode, Ampcode, and Droid. Available in 3 variants: Lite (3 agents, 510 KB), Standard (13 agents, 8 skills, 8.4 MB), Pro (13 agents, 22 skills, 9 MB)",
   "main": "index.js",
   "bin": {
