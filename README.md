@@ -48,8 +48,8 @@ agentic-kit install --silent --variant=standard --tools=claude
  | Variant | Agents | Skills | Size | Best For |                                                            
  |---------|--------|--------|------|----------|                                                            
  | **Lite** | 4 (1-create-prd, 2-generate-tasks, 3-process-task-list, master) | 8 (docx, pdf, code-review, brainstorming, root-cause-tracing, mcp-builder, systematic-debugging, skill-creator) | 510 KB | Minimal setup, CI/CD,testing                                                                                     
- | **Standard** ⭐ | 9 (Lite + orchestrator, qa-test-architect, full-stack-dev, business-analyst, ux-expert ) | 12 (Lite + webapp-testing, xlsx, verification-before-completion) | 8.4 MB | Most users, document processing|                                                                                             
- | **Pro** | 13 (Standard + product-manager, product-owner, scrum-master, holistic-architect) | 22 (Standard + pptx, theme-factory, brand-guidelines, internal-comms, canvas-design, artifacts-builder, algorithmic-art, test-driven-development, testing-anti-patterns, condition-based-waiting, slack-gif-creator) | 9 MB | Advanced users, full features|                                                                    
+ | **Standard** ⭐ | 9 (Lite + orchestrator, quality-assurance, code-developer, market-researcher, ui-designer ) | 12 (Lite + webapp-testing, xlsx, verification-before-completion) | 8.4 MB | Most users, document processing|
+ | **Pro** | 13 (Standard + feature-planner, backlog-manager, story-writer, system-architect) | 22 (Standard + pptx, theme-factory, brand-guidelines, internal-comms, canvas-design, artifacts-builder, algorithmic-art, test-driven-development, testing-anti-patterns, condition-based-waiting, slack-gif-creator) | 9 MB | Advanced users, full features|                                                                    
 
 ### Supported Tools
 
@@ -65,7 +65,7 @@ agentic-kit install --silent --variant=standard --tools=claude
 @master: help
 
 # Create a Product Requirements Document
-@product-manager: Create a PRD for a task management app
+@feature-planner: Create a PRD for a task management app
 
 # Generate development tasks
 @generate-tasks: Break down this feature into tasks
@@ -172,18 +172,18 @@ npx agkit --variant=pro
 **Core Orchestration:**
 - Master - Central coordination
 - Orchestrator - Workflow management
-- Scrum Master - Agile project management
+- Story Writer - Agile project management
 
 **Product & Requirements:**
-- Product Manager - Strategy and vision
-- Product Owner - Backlog management
-- Business Analyst - Requirements analysis
+- Feature Planner - Strategy and vision
+- Backlog Manager - Backlog management
+- Market Researcher - Requirements analysis
 
 **Development:**
-- Full-Stack Developer - Implementation
-- Holistic Architect - System design
-- UX Expert - Interface design
-- QA Test Architect - Quality assurance
+- Code Developer - Implementation
+- System Architect - System design
+- UI Designer - Interface design
+- Quality Assurance - Quality assurance
 
 **Specialized Workflows:**
 - Create PRD - Generate product requirements
@@ -227,9 +227,9 @@ npx agkit --variant=pro
 
 **Create a Product:**
 ```
-@product-manager: Create a PRD for a mobile expense tracker
+@feature-planner: Create a PRD for a mobile expense tracker
 @generate-tasks: Generate implementation tasks from the PRD
-@full-stack-dev: Implement the first task
+@code-developer: Implement the first task
 ```
 
 **Generate Documents:**
@@ -240,7 +240,7 @@ npx agkit --variant=pro
 
 **Design & Branding:**
 ```
-@ux-expert: Create wireframes for the login flow
+@ui-designer: Create wireframes for the login flow
 @master: Apply our brand guidelines to this design
 ```
 

@@ -25,11 +25,11 @@ Droid reads AGENTS.md when other subagents want to invoke other subagents, tasks
 ## How To Use With Droid
 
 Activate agents by mentioning their ID in your prompts:
-- `"As full-stack-dev, implement the login feature"`
-- `"invoke droid qa-test-architect"`
+- `"As code-developer, implement the login feature"`
+- `"invoke droid quality-assurance"`
 
 - Copy/paste `droid` subfolders in this project to ~/.factory and Droid will read and access agents from ~/.factory/droids and tasks from ~/.factory/resources/tasks-brief.md,
-- You can access agents using "@ux-expert", or you can reference a role naturally, e.g., "As ux-expert, implement ..." or use commands defined in your tasks.
+- You can access agents using "@ui-designer", or you can reference a role naturally, e.g., "As ui-designer, implement ..." or use commands defined in your tasks.
 
 Note
 - Orchestrators/master run as mode: primary; other agents as mode: subagents.
@@ -44,17 +44,18 @@ Note
 | 1-Create PRD | 1-create-prd | 1. Define Scope: use to clearly outlining what needs to be built with a Product Requirement Document (PRD) |
 | 2-Generate Tasks | 2-generate-tasks | 2. Detailed Planning: use to break down the PRD into a granular, actionable task list |
 | 3-Process Task List | 3-process-task-list | 3. Iterative Implementation: use to guide the AI to tackle one task at a time, allowing you to review and approve each change |
-| UX Expert | ux-expert | Use for UI/UX design, wireframes, prototypes, front-end specifications, and user experience optimization |
-| Scrum Master | scrum-master | Use for story creation, epic management, retrospectives in party-mode, and agile process guidance |
-| Test Architect & Quality Advisor | qa-test-architect | Use for comprehensive test architecture review, quality gate decisions, and code improvement. Provides thorough analysis including requirements traceability, risk assessment, and test strategy. Advisory only - teams choose their quality bar. |
-| Product Owner | product-owner | Use for backlog management, story refinement, acceptance criteria, sprint planning, and prioritization decisions |
-| Product Manager | product-manager | Use for creating PRDs, product strategy, feature prioritization, roadmap planning, and stakeholder communication |
-| Full Stack Developer | full-stack-dev | Use for code implementation, debugging, refactoring, and development best practices |
+| UX Expert | ui-designer | Use for UI/UX design, wireframes, prototypes, front-end specifications, and user experience optimization |
+| Scrum Master | story-writer | Use for story creation, epic management, retrospectives in party-mode, and agile process guidance |
+| Test Architect & Quality Advisor | quality-assurance | Use for comprehensive test architecture review, quality gate decisions, and code improvement. Provides thorough analysis including requirements traceability, risk assessment, and test strategy. Advisory only - teams choose their quality bar. |
+| Product Owner | backlog-manager | Use for backlog management, story refinement, acceptance criteria, sprint planning, and prioritization decisions |
+| Product Manager | feature-planner | Use for creating PRDs, product strategy, feature prioritization, roadmap planning, and stakeholder communication |
+| Full Stack Developer | code-developer | Use for code implementation, debugging, refactoring, and development best practices |
 | Master Orchestrator | orchestrator | Use for workflow coordination, multi-agent tasks, role switching guidance, and when unsure which specialist to consult |
 | Master Task Executor | master | Use when you need comprehensive expertise across all domains, running 1 off tasks that do not require a persona, or just wanting to use the same agent for many things. |
-| Architect | holistic-architect | Use for system design, architecture documents, technology selection, API design, and infrastructure planning |
-| Business Analyst | business-analyst | Use for market research, brainstorming, competitive analysis, creating project briefs, initial project discovery, and documenting existing projects (brownfield) |
-| Context Initializer | context-initializer | Use to initialize Droid context for new/existing projects, discover and organize documentation, create AGENTS.md and KNOWLEDGE_BASE.md for optimal token-efficient memory |
+| Architect | system-architect | Use for system design, architecture documents, technology selection, API design, and infrastructure planning |
+| Business Analyst | market-researcher | Use for market research, brainstorming, competitive analysis, creating project briefs, initial project discovery, and documenting existing projects (brownfield) |
+| Context Initializer | context-builder | Use to initialize Droid context for new/existing projects, discover and organize documentation, create AGENTS.md and KNOWLEDGE_BASE.md for optimal token-efficient memory |
+| Documentation Architect | docs-builder | Use to create comprehensive project documentation with structured /docs hierarchy (00-context, 01-product, 02-features, 03-logs, 04-process) |
 
 ## Common Workflow Patterns
 
@@ -65,7 +66,7 @@ The orchestrator uses these patterns to match user intent to multi-agent workflo
 **Workflow**:
 ```
 orchestrator analyzes → asks: "Research competitive approaches first?"
-  ├─ Yes → business-analyst (research) → ask: "Create formal PRD?"
+  ├─ Yes → market-researcher (research) → ask: "Create formal PRD?"
   │   ├─ Yes → 1-create-prd → ask: "Generate implementation tasks?"
   │   │   ├─ Yes → 2-generate-tasks → ask: "Start systematic implementation?"
   │   │   │   ├─ Yes → 3-process-task-list
@@ -80,9 +81,9 @@ orchestrator analyzes → asks: "Research competitive approaches first?"
 **Workflow**:
 ```
 orchestrator → ask: "Follow product definition workflow?"
-└─ Yes → product-manager (strategy, vision) → ask: "Define user stories?"
-    └─ Yes → product-owner (backlog, stories) → ask: "Technical feasibility assessment?"
-        └─ Yes → holistic-architect (platform decisions, technical design)
+└─ Yes → feature-planner (strategy, vision) → ask: "Define user stories?"
+    └─ Yes → backlog-manager (backlog, stories) → ask: "Technical feasibility assessment?"
+        └─ Yes → system-architect (platform decisions, technical design)
 ```
 
 ### 3. Story Implementation Flow
@@ -90,37 +91,37 @@ orchestrator → ask: "Follow product definition workflow?"
 **Workflow**:
 ```
 orchestrator → ask: "Validate story readiness first?"
-├─ Yes → product-owner (validate acceptance criteria) → full-stack-dev → qa-test-architect
-└─ No → full-stack-dev (implement) → qa-test-architect (quality gate)
+├─ Yes → backlog-manager (validate acceptance criteria) → code-developer → quality-assurance
+└─ No → code-developer (implement) → quality-assurance (quality gate)
 ```
 
 ### 4. Architecture Decision Flow
 **User Intent**: "Should we use [tech A] or [tech B]?", "How should we architect [system]?"
 **Workflow**:
 ```
-orchestrator → business-analyst (gather constraints, requirements)
-            → holistic-architect (options analysis, tradeoffs)
+orchestrator → market-researcher (gather constraints, requirements)
+            → system-architect (options analysis, tradeoffs)
             → ask: "Need product alignment?"
-            └─ Yes → product-manager (strategic alignment, decision rationale)
+            └─ Yes → feature-planner (strategic alignment, decision rationale)
 ```
 
 ### 5. UI Development Flow
 **User Intent**: "Build [UI component]", "Design and implement [interface]"
 **Workflow**:
 ```
-orchestrator → ux-expert (wireframes, design system)
+orchestrator → ui-designer (wireframes, design system)
             → ask: "Complex enough to need PRD?"
-            ├─ Yes → 1-create-prd → full-stack-dev → qa-test-architect
-            └─ No → full-stack-dev (implement) → qa-test-architect (validate)
+            ├─ Yes → 1-create-prd → code-developer → quality-assurance
+            └─ No → code-developer (implement) → quality-assurance (validate)
 ```
 
 ### 6. Bug Triage Flow
 **User Intent**: "Bug: [description]", "Fix [broken behavior]"
 **Workflow**:
 ```
-orchestrator → full-stack-dev (investigate root cause)
+orchestrator → code-developer (investigate root cause)
             → ask: "Severity level?"
-            ├─ Critical → full-stack-dev (immediate fix) → qa-test-architect (verify)
+            ├─ Critical → code-developer (immediate fix) → quality-assurance (verify)
             └─ Non-critical → 1-create-prd (bug story) → backlog (for sprint planning)
 ```
 
@@ -128,30 +129,30 @@ orchestrator → full-stack-dev (investigate root cause)
 **User Intent**: "Help me understand this codebase", "Document existing system"
 **Workflow**:
 ```
-orchestrator → context-initializer (build knowledge base, discover patterns)
-            → business-analyst (document current state, stakeholders)
+orchestrator → context-builder (build knowledge base, discover patterns)
+            → market-researcher (document current state, stakeholders)
             → ask: "Assess technical debt and modernization opportunities?"
-            └─ Yes → holistic-architect (technical assessment, recommendations)
+            └─ Yes → system-architect (technical assessment, recommendations)
 ```
 
 ### 8. Quality Validation Flow
 **User Intent**: "Review this PR", "Check code quality before merge"
 **Workflow**:
 ```
-orchestrator → qa-test-architect (comprehensive review)
+orchestrator → quality-assurance (comprehensive review)
             → [Decision gate]
             ├─ PASS → Done (ready to merge)
             ├─ CONCERNS → Present issues → user decides next step
-            └─ FAIL → full-stack-dev (apply fixes) → qa-test-architect (re-validate)
+            └─ FAIL → code-developer (apply fixes) → quality-assurance (re-validate)
 ```
 
 ### 9. Sprint Planning Flow
 **User Intent**: "Plan next sprint", "Prepare sprint backlog"
 **Workflow**:
 ```
-orchestrator → product-manager (prioritize features for sprint)
-            → scrum-master (break into user stories)
-            → product-owner (add acceptance criteria)
+orchestrator → feature-planner (prioritize features for sprint)
+            → story-writer (break into user stories)
+            → backlog-manager (add acceptance criteria)
             → 2-generate-tasks (create sprint backlog with tasks)
 ```
 
@@ -169,71 +170,71 @@ When orchestrator invokes specialists, it passes **minimal necessary context**:
 - Unrelated workflow step outputs
 - Tangential project context
 
-**Example**: When invoking `qa-test-architect`:
+**Example**: When invoking `quality-assurance`:
 - ✓ Include: code diff, test requirements, acceptance criteria
 - ✗ Exclude: PRD creation discussions, UI wireframes, database schema decisions
 
 ### 1-Create PRD (id: 1-create-prd) 
-Source: [./droids/ux-expert.md](./droids/1-create-prd.md)
+Source: [./droids/ui-designer.md](./droids/1-create-prd.md)
 
 - When to use: Define Scope: use to clearly outlining what needs to be built with a Product Requirement Document (PRD)  optimization
 - How to activate: Mention "create prd, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
 ### 2-Generate Tasks (id: 2-generate-tasks) 
-Source: [./droids/ux-expert.md](./droids/2-generate-tasks.md)
+Source: [./droids/ui-designer.md](./droids/2-generate-tasks.md)
 
 - When to use: 2. Detailed Planning: use to break down the PRD into a granular, actionable task list
 - How to activate: Mention "generate tasks, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
 ### 3-Process Task List (id: 3-process-task-list)
-Source: [./droids/ux-expert.md](./droids/3-process-task-list.md)
+Source: [./droids/ui-designer.md](./droids/3-process-task-list.md)
 
 - When to use: 3. Iterative Implementation: use to guide the AI to tackle one task at a time, allowing you to review and approve each change
 - How to activate: Mention "process task list, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
-### UX Expert (id: ux-expert)
-Source: [./droids/ux-expert.md](./droids/ux-expert.md)
+### UX Expert (id: ui-designer)
+Source: [./droids/ui-designer.md](./droids/ui-designer.md)
 
 - When to use: Use for UI/UX design, wireframes, prototypes, front-end specifications, and user experience optimization
-- How to activate: Mention "As ux-expert, ..." to get role-aligned behavior
+- How to activate: Mention "As ui-designer, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
-### Scrum Master (id: scrum-master)
-Source: [./droids/scrum-master.md](./droids/scrum-master.md)
+### Scrum Master (id: story-writer)
+Source: [./droids/story-writer.md](./droids/story-writer.md)
 
 - When to use: Use for story creation, epic management, retrospectives in party-mode, and agile process guidance
-- How to activate: Mention "As scrum-master, ..." to get role-aligned behavior
+- How to activate: Mention "As story-writer, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
-### Test Architect & Quality Advisor (id: qa-test-architect)
-Source: [./droids/qa-test-architect.md](./droids/qa-test-architect.md)
+### Test Architect & Quality Advisor (id: quality-assurance)
+Source: [./droids/quality-assurance.md](./droids/quality-assurance.md)
 
 - When to use: Use for comprehensive test architecture review, quality gate decisions, and code improvement. Provides thorough analysis including requirements traceability, risk assessment, and test strategy. Advisory only - teams choose their quality bar.
 - How to activate: Mention "As qa, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
-### Product Owner (id: product-owner)
-Source: [./droids/product-owner.md](./droids/product-owner.md)
+### Product Owner (id: backlog-manager)
+Source: [./droids/backlog-manager.md](./droids/backlog-manager.md)
 
 - When to use: Use for backlog management, story refinement, acceptance criteria, sprint planning, and prioritization decisions
-- How to activate: Mention "As product-owner, ..." to get role-aligned behavior
+- How to activate: Mention "As backlog-manager, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
-### Product Manager (id: product-manager)
-Source: [./droids/product-manager.md](./droids/product-manager.md)
+### Product Manager (id: feature-planner)
+Source: [./droids/feature-planner.md](./droids/feature-planner.md)
 
 - When to use: Use for creating PRDs, product strategy, feature prioritization, roadmap planning, and stakeholder communication
-- How to activate: Mention "As product-manager, ..." to get role-aligned behavior
+- How to activate: Mention "As feature-planner, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
-### Full Stack Developer (id: full-stack-dev)
-Source: [./droids/full-stack-dev.md](./droids/full-stack-dev.md)
+### Full Stack Developer (id: code-developer)
+Source: [./droids/code-developer.md](./droids/code-developer.md)
 
 - When to use: Use for code implementation, debugging, refactoring, and development best practices
-- How to activate: Mention "As full-stack-dev, ..." to get role-aligned behavior
+- How to activate: Mention "As code-developer, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
 ### Master Orchestrator (id: orchestrator)
@@ -250,25 +251,32 @@ Source: [./droids/master.md](./droids/master.md)
 - How to activate: Mention "As master, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
-### Architect (id: holistic-architect)
-Source: [./droids/holistic-architect.md](./droids/holistic-architect.md)
+### Architect (id: system-architect)
+Source: [./droids/system-architect.md](./droids/system-architect.md)
 
 - When to use: Use for system design, architecture documents, technology selection, API design, and infrastructure planning
 - How to activate: Mention "As architect, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
-### Context Initializer (id: context-initializer)
-Source: [./droids/context-initializer.md](./droids/context-initializer.md)
+### Context Initializer (id: context-builder)
+Source: [./droids/context-builder.md](./droids/context-builder.md)
 
 - When to use: Use to initialize Droid context for new/existing projects, discover and organize documentation, create AGENTS.md and KNOWLEDGE_BASE.md for optimal token-efficient memory
-- How to activate: Mention "@context-initializer" or "As context-initializer, ..." to get role-aligned behavior
+- How to activate: Mention "@context-builder" or "As context-builder, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
-### Business Analyst (id: business-analyst)
-Source: [./droids/business-analyst.md](./droids/business-analyst.md)
+### Business Analyst (id: market-researcher)
+Source: [./droids/market-researcher.md](./droids/market-researcher.md)
 
 - When to use: Use for market research, brainstorming, competitive analysis, creating project briefs, initial project discovery, and documenting existing projects (brownfield)
 - How to activate: Mention "As analyst, ..." to get role-aligned behavior
+- Full definition: open the source file above (content not embedded)
+
+### Documentation Architect (id: docs-builder)
+Source: [./droids/docs-builder.md](./droids/docs-builder.md)
+
+- When to use: Use to create comprehensive project documentation with structured /docs hierarchy (00-context, 01-product, 02-features, 03-logs, 04-process)
+- How to activate: Mention "As docs-builder, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
 ## Tasks
@@ -305,7 +313,7 @@ Source: [./resources/task-briefs.md#review-story](./resources/task-briefs.md#rev
 - How to use: Reference the task in your prompt or execute via your configured commands.
 - Full brief: open the source file above (content not embedded)
 
-### Task: qa-test-architect-gate
+### Task: quality-assurance-gate
 Source: [./resources/task-briefs.md#qa-gate](./resources/task-briefs.md#qa-gate)
 - How to use: Reference the task in your prompt or execute via your configured commands.
 - Full brief: open the source file above (content not embedded)

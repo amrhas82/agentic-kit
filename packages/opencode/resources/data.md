@@ -39,7 +39,7 @@ This file consolidates all data reference files.
 
 11. **Five Whys**: Ask "why" and wait for their answer before asking next "why"
 12. **Morphological Analysis**: Ask them to list parameters first, then explore combinations together
-13. **Provocation Technique (product-owner)**: Give one provocative statement, ask them to extract useful ideas
+13. **Provocation Technique (backlog-manager)**: Give one provocative statement, ask them to extract useful ideas
 
 ## Advanced Techniques
 
@@ -135,7 +135,7 @@ This file consolidates all data reference files.
 - Product Owner: Focus on user value and business impact
 - Scrum Master: Examine process flow and team dynamics
 - Developer: Assess technical implementation and complexity
-- qa-test-architect: Identify testing scenarios and quality concerns
+- quality-assurance: Identify testing scenarios and quality concerns
 
 **Stakeholder Round Table**
 
@@ -172,7 +172,7 @@ This file consolidates all data reference files.
 - Combine specific role expertise with elicitation pattern
 - Architect + Risk Analysis: Deep technical risk assessment
 - UX Expert + User Journey: End-to-end experience critique
-- product-manager + Stakeholder Analysis: Multi-perspective impact review
+- feature-planner + Stakeholder Analysis: Multi-perspective impact review
 
 **Emergent Collaboration Discovery**
 
@@ -245,7 +245,7 @@ Agentic Kit Method (Breakthrough Method of Agile AI-driven Development) is a fra
 Agentic Kit transforms you into a "Vibe CEO" - directing a team of specialized AI agents through structured workflows. Here's how:
 
 1. **You Direct, AI Executes**: You provide vision and decisions; agents handle implementation details
-2. **Specialized Agents**: Each agent masters one role (product-manager, Developer, Architect, etc.)
+2. **Specialized Agents**: Each agent masters one role (feature-planner, Developer, Architect, etc.)
 3. **Structured Workflows**: Proven patterns guide you from idea to deployed code
 4. **Clean Handoffs**: Fresh context windows ensure agents stay focused and effective
 
@@ -261,14 +261,14 @@ Agentic Kit transforms you into a "Vibe CEO" - directing a team of specialized A
 #### Phase 2: Development (IDE - Implementation)
 
 - Shard documents into manageable pieces
-- Execute focused scrum-master → Dev cycles
+- Execute focused story-writer → Dev cycles
 - One story at a time, sequential progress
 - Real-time file operations and testing
 
 ### The Development Loop
 
 ```text
-1. scrum-master Agent (New Chat) → Creates next story from sharded docs
+1. story-writer Agent (New Chat) → Creates next story from sharded docs
 2. You → Review and approve story
 3. Dev Agent (New Chat) → Implements approved story
 4. QA Agent (New Chat) → Reviews and refactors code
@@ -344,7 +344,7 @@ npx agentic-kit install
 - Active development and coding
 - File operations and project integration
 - Document sharding and story management
-- Implementation workflow (scrum-master/Dev cycles)
+- Implementation workflow (story-writer/Dev cycles)
 
 **Cost-Saving Tip**: Create large documents (PRDs, architecture) in web UI, then copy to `docs/prd.md` and `docs/architecture.md` in your project before switching to IDE for development.
 
@@ -368,30 +368,30 @@ npx agentic-kit install
 
 **Using Web Agents in IDE**:
 
-- **NOT RECOMMENDED**: Web agents (product-manager, Architect) have rich dependencies designed for large contexts
+- **NOT RECOMMENDED**: Web agents (feature-planner, Architect) have rich dependencies designed for large contexts
 - **Why it matters**: Dev agents are kept lean to maximize coding context
 - **The principle**: "Dev agents code, planning agents plan" - mixing breaks this optimization
 
 **Aboutmaster andorchestrator**:
 
 - **kit-master**: CAN do any task without switching agents, BUT...
-- **Still use specialized agents for planning**: product-manager, Architect, and UX Expert have tuned personas that produce better results
+- **Still use specialized agents for planning**: feature-planner, Architect, and UX Expert have tuned personas that produce better results
 - **Why specialization matters**: Each agent's personality and focus creates higher quality outputs
 - **If usingmaster/orchestrator**: Fine for planning phases, but...
 
 **CRITICAL RULE for Development**:
 
-- **ALWAYS use scrum-master agent for story creation** - Never usemaster ororchestrator
+- **ALWAYS use story-writer agent for story creation** - Never usemaster ororchestrator
 - **ALWAYS use Dev agent for implementation** - Never usemaster ororchestrator
-- **Why this matters**: scrum-master and Dev agents are specifically optimized for the development workflow
-- **No exceptions**: Even if usingmaster for everything else, switch to scrum-master → Dev for implementation
+- **Why this matters**: story-writer and Dev agents are specifically optimized for the development workflow
+- **No exceptions**: Even if usingmaster for everything else, switch to story-writer → Dev for implementation
 
 **Best Practice for IDE-Only**:
 
 1. Use PM/Architect/UX agents for planning (better thanmaster)
 2. Create documents directly in project
 3. Shard immediately after creation
-4. **MUST switch to scrum-master agent** for story creation
+4. **MUST switch to story-writer agent** for story creation
 5. **MUST switch to Dev agent** for implementation
 6. Keep planning and coding in separate chat sessions
 
@@ -493,14 +493,14 @@ You are the "Vibe CEO" - thinking like a CEO with unlimited resources and a sing
 
 | Agent                | Role               | Primary Functions                       | When to Use                            |
 |----------------------| ------------------ | --------------------------------------- | -------------------------------------- |
-| `business-analyst`            | Business Analyst   | Market research, requirements gathering | Project planning, competitive analysis |
-| `product-manager`    | Product Manager    | PRD creation, feature prioritization    | Strategic planning, roadmaps           |
-| `holistic-architect` | Solution Architect | System design, technical architecture   | Complex systems, scalability planning  |
-| `full-stack-dev`     | Developer          | Code implementation, debugging          | All development tasks                  |
-| `qa-test-architect`  | QA Specialist      | Test planning, quality assurance        | Testing strategies, bug validation     |
-| `ux-expert`          | UX Designer        | UI/UX design, prototypes                | User experience, interface design      |
-| `product-owner`         | Product Owner      | Backlog management, story validation    | Story refinement, acceptance criteria  |
-| `scrum-master`       | Scrum Master       | Sprint planning, story creation         | Project management, workflow           |
+| `market-researcher`            | Business Analyst   | Market research, requirements gathering | Project planning, competitive analysis |
+| `feature-planner`    | Product Manager    | PRD creation, feature prioritization    | Strategic planning, roadmaps           |
+| `system-architect` | Solution Architect | System design, technical architecture   | Complex systems, scalability planning  |
+| `code-developer`     | Developer          | Code implementation, debugging          | All development tasks                  |
+| `quality-assurance`  | QA Specialist      | Test planning, quality assurance        | Testing strategies, bug validation     |
+| `ui-designer`          | UX Designer        | UI/UX design, prototypes                | User experience, interface design      |
+| `backlog-manager`         | Product Owner      | Backlog management, story validation    | Story refinement, acceptance criteria  |
+| `story-writer`       | Scrum Master       | Sprint planning, story creation         | Project management, workflow           |
 
 ### Meta Agents
 
@@ -535,7 +535,7 @@ You are the "Vibe CEO" - thinking like a CEO with unlimited resources and a sing
 - `*exit` - Exit the agent mode
 - `*shard-doc docs/prd.md prd` - Shard PRD into manageable pieces
 - `*shard-doc docs/architecture.md architecture` - Shard architecture document
-- `*create` - Run create-next-story task (scrum-master agent)
+- `*create` - Run create-next-story task (story-writer agent)
 
 **In Web UI**:
 
@@ -656,13 +656,13 @@ This architecture enables seamless operation across environments while maintaini
 **For Brownfield Projects - Start Here!**:
 
 1. **Upload entire project to Gemini Web** (GitHub URL, files, or zip)
-2. **Document existing system**: `/business-analyst` → `*document-project`
+2. **Document existing system**: `/market-researcher` → `*document-project`
 3. **Creates comprehensive docs** from entire codebase analysis
 
 **For All Projects**:
 
-1. **Optional Analysis**: `/business-analyst` - Market research, competitive analysis
-2. **Project Brief**: Create foundation document (business-analyst or user)
+1. **Optional Analysis**: `/market-researcher` - Market research, competitive analysis
+2. **Project Brief**: Create foundation document (market-researcher or user)
 3. **PRD Creation**: `/pm create-doc prd` - Comprehensive product requirements
 4. **Architecture Design**: `/architect create-doc architecture` - Technical foundation
 5. **Validation & Alignment**: `/po` run master checklist to ensure document consistency
@@ -708,7 +708,7 @@ that can handle [specific requirements]."
 2. **Verify Sharded Content**:
    - At least one `epic-n.md` file in `docs/prd/` with stories in development order
    - Source tree document and coding standards for dev agent reference
-   - Sharded docs for scrum-master agent story creation
+   - Sharded docs for story-writer agent story creation
 
 Resulting Folder Structure:
 
@@ -720,12 +720,12 @@ Resulting Folder Structure:
 
    **CRITICAL CONTEXT MANAGEMENT**:
    - **Context windows matter!** Always use fresh, clean context windows
-   - **Model selection matters!** Use most powerful thinking model for scrum-master story creation
-   - **ALWAYS start new chat between scrum-master, Dev, and QA work**
+   - **Model selection matters!** Use most powerful thinking model for story-writer story creation
+   - **ALWAYS start new chat between story-writer, Dev, and QA work**
 
    **Step 1 - Story Creation**:
-   - **NEW CLEAN CHAT** → Select powerful model → `@scrum-master` → `*create`
-   - scrum-master executes create-next-story task
+   - **NEW CLEAN CHAT** → Select powerful model → `@story-writer` → `*create`
+   - story-writer executes create-next-story task
    - Review generated story in `docs/stories/`
    - Update status from "Draft" to "Approved"
 
@@ -745,7 +745,7 @@ Resulting Folder Structure:
    - If approved: Status → "Done"
    - If changes needed: Status stays "Review" with unchecked items for dev
 
-   **Step 4 - Repeat**: Continue scrum-master → Dev → QA cycle until all epic stories complete
+   **Step 4 - Repeat**: Continue story-writer → Dev → QA cycle until all epic stories complete
 
 **Important**: Only 1 story in progress at a time, worked sequentially until all epic stories complete.
 
@@ -777,8 +777,8 @@ Each status change requires user verification and approval before proceeding.
 
 1. **Upload project to Gemini Web** (GitHub URL, files, or zip)
 2. **Create PRD first**: `@pm` → `*create-doc brownfield-prd`
-3. **Focused documentation**: `@business-analyst` → `*document-project`
-   - business-analyst asks for focus if no PRD provided
+3. **Focused documentation**: `@market-researcher` → `*document-project`
+   - market-researcher asks for focus if no PRD provided
    - Choose "single document" format for Web UI
    - Uses PRD to document ONLY relevant areas
    - Creates one comprehensive markdown file
@@ -787,7 +787,7 @@ Each status change requires user verification and approval before proceeding.
 **Option 2: Document-First (Good for Smaller Projects)**:
 
 1. **Upload project to Gemini Web**
-2. **Document everything**: `@business-analyst` → `*document-project`
+2. **Document everything**: `@market-researcher` → `*document-project`
 3. **Then create PRD**: `@pm` → `*create-doc brownfield-prd`
    - More thorough but can create excessive documentation
 
@@ -924,7 +924,7 @@ Use the `shard-doc` task or `@kayvan/markdown-tree-parser` tool for automatic sh
 
 - **Use Gemini for big picture planning** - The team-fullstack bundle provides collaborative expertise
 - **Usemaster for document organization** - Sharding creates manageable chunks
-- **Follow the scrum-master → Dev cycle religiously** - This ensures systematic progress
+- **Follow the story-writer → Dev cycle religiously** - This ensures systematic progress
 - **Keep conversations focused** - One agent, one task per conversation
 - **Review everything** - Always review and approve before marking complete
 

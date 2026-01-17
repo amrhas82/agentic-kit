@@ -80,7 +80,7 @@ The headline feature of v1.2.0 is a complete installation system supporting four
 
 ### Components
 
-- **13 Specialized Agents**: master, orchestrator, scrum-master, product-manager, and more
+- **13 Specialized Agents**: master, orchestrator, story-writer, feature-planner, and more
 - **22 Skills**: pdf, docx, xlsx, pptx, canvas-design, theme-factory, and 16 others
 - **8 Core Skills** (Standard): Essential document and design tools
 - **14 Advanced Skills** (Pro only): Specialized tools for power users

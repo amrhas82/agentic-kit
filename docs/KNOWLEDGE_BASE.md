@@ -149,8 +149,8 @@ Inspired by [obra/superpowers](https://github.com/obra/superpowers), we now auto
 ```
 
 #### 3. Scrum Master
-**File:** `agents/scrum-master.md`
-**ID:** `scrum-master`
+**File:** `agents/story-writer.md`
+**ID:** `story-writer`
 **Variants:** All
 
 **Purpose:** Agile project management and team coordination
@@ -170,8 +170,8 @@ Inspired by [obra/superpowers](https://github.com/obra/superpowers), we now auto
 ### Product & Requirements Agents
 
 #### 4. Product Manager
-**File:** `agents/product-manager.md`
-**ID:** `product-manager`
+**File:** `agents/feature-planner.md`
+**ID:** `feature-planner`
 **Variants:** Standard, Pro
 
 **Purpose:** Product strategy, vision, and roadmap planning
@@ -189,8 +189,8 @@ Inspired by [obra/superpowers](https://github.com/obra/superpowers), we now auto
 ```
 
 #### 5. Product Owner
-**File:** `agents/product-owner.md`
-**ID:** `product-owner`
+**File:** `agents/backlog-manager.md`
+**ID:** `backlog-manager`
 **Variants:** Standard, Pro
 
 **Purpose:** Backlog management and requirement refinement
@@ -208,8 +208,8 @@ Inspired by [obra/superpowers](https://github.com/obra/superpowers), we now auto
 ```
 
 #### 6. Business Analyst
-**File:** `agents/business-analyst.md`
-**ID:** `business-analyst`
+**File:** `agents/market-researcher.md`
+**ID:** `market-researcher`
 **Variants:** Standard, Pro
 
 **Purpose:** Business requirements analysis and strategic insights
@@ -229,8 +229,8 @@ Inspired by [obra/superpowers](https://github.com/obra/superpowers), we now auto
 ### Development Agents
 
 #### 7. Full-Stack Developer
-**File:** `agents/full-stack-dev.md`
-**ID:** `full-stack-dev`
+**File:** `agents/code-developer.md`
+**ID:** `code-developer`
 **Variants:** Standard, Pro
 
 **Purpose:** Full-stack implementation and code development
@@ -248,8 +248,8 @@ Inspired by [obra/superpowers](https://github.com/obra/superpowers), we now auto
 ```
 
 #### 8. Holistic Architect
-**File:** `agents/holistic-architect.md`
-**ID:** `holistic-architect`
+**File:** `agents/system-architect.md`
+**ID:** `system-architect`
 **Variants:** Standard, Pro
 
 **Purpose:** System architecture and technical design
@@ -267,8 +267,8 @@ Inspired by [obra/superpowers](https://github.com/obra/superpowers), we now auto
 ```
 
 #### 9. UX Expert
-**File:** `agents/ux-expert.md`
-**ID:** `ux-expert`
+**File:** `agents/ui-designer.md`
+**ID:** `ui-designer`
 **Variants:** Standard, Pro
 
 **Purpose:** User experience and interface design
@@ -286,8 +286,8 @@ Inspired by [obra/superpowers](https://github.com/obra/superpowers), we now auto
 ```
 
 #### 10. QA Test Architect
-**File:** `agents/qa-test-architect.md`
-**ID:** `qa-test-architect`
+**File:** `agents/quality-assurance.md`
+**ID:** `quality-assurance`
 **Variants:** Standard, Pro
 
 **Purpose:** Quality assurance and testing strategy

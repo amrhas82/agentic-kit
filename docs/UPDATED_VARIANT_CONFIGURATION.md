@@ -71,10 +71,10 @@ Essential workflow management with core document processing and debugging skills
 3. `3-process-task-list`
 4. `master`
 5. `orchestrator`
-6. `qa-test-architect`
-7. `full-stack-dev`
-8. `business-analyst`
-9. `ux-expert`
+6. `quality-assurance`
+7. `code-developer`
+8. `market-researcher`
+9. `ui-designer`
 
 ### Skills (11)
 1. `docx` - Document processing
@@ -112,16 +112,16 @@ Complete workflow and development team with enhanced testing and validation skil
 1. `1-create-prd`
 2. `2-generate-tasks`
 3. `3-process-task-list`
-4. `business-analyst`
-5. `full-stack-dev`
-6. `holistic-architect`
+4. `market-researcher`
+5. `code-developer`
+6. `system-architect`
 7. `master`
 8. `orchestrator`
-9. `product-manager`
-10. `product-owner`
-11. `qa-test-architect`
-12. `scrum-master`
-13. `ux-expert`
+9. `feature-planner`
+10. `backlog-manager`
+11. `quality-assurance`
+12. `story-writer`
+13. `ui-designer`
 
 ### Skills (22) - ALL SKILLS
 **Core Skills (from Lite):**
@@ -211,12 +211,12 @@ Complete installation with all capabilities. For power users, enterprises, and t
 **If upgrading from old Lite to new Lite:**
 - ✅ Gain: 1 additional agent (1-create-prd, 2-generate-tasks, 3-process-task-list)
 - ✅ Gain: 7 new skills
-- ⚠️ Change: Lost orchestrator and scrum-master (moved to Standard)
+- ⚠️ Change: Lost orchestrator and story-writer (moved to Standard)
 
 **If upgrading from old Standard to new Standard:**
 - ⚠️ Change: Reduced from 13 to 9 agents
 - ✅ Gain: 3 additional skills (verification-before-completion, skill-creator, webapp-testing)
-- Lost agents: product-manager, product-owner, scrum-master, holistic-architect (moved to Pro only)
+- Lost agents: feature-planner, backlog-manager, story-writer, system-architect (moved to Pro only)
 
 **If using Pro:**
 - ✅ No changes - still includes everything

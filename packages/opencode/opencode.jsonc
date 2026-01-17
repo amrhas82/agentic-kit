@@ -31,8 +31,8 @@
       },
       "description": "3. Iterative Implementation: use to guide the AI to tackle one task at a time, allowing you to review and approve each change"
     },   
-    "ux-expert": {
-      "prompt": "{file:./agent/ux-expert.md}",
+    "ui-designer": {
+      "prompt": "{file:./agent/ui-designer.md}",
       "mode": "subagent",
       "tools": {
         "write": true,
@@ -41,8 +41,8 @@
       },
       "description": "Use for UI/UX design, wireframes, prototypes, front-end specifications, and user experience optimization"
     },
-    "scrum-master": {
-      "prompt": "{file:./agent/scrum-master.md}",
+    "story-writer": {
+      "prompt": "{file:./agent/story-writer.md}",
       "mode": "subagent",
       "tools": {
         "write": true,
@@ -52,7 +52,7 @@
       "description": "Use for story creation, epic management, retrospectives in party-mode, and agile process guidance"
     },
     "qa-test-architecht": {
-      "prompt": "{file:./agent/qa-test-architect.md}",
+      "prompt": "{file:./agent/quality-assurance.md}",
       "mode": "subagent",
       "tools": {
         "write": true,
@@ -61,8 +61,8 @@
       },
       "description": "Use for comprehensive test architecture review, quality gate decisions, and code improvement. Provides thorough analysis including requirements traceability, risk assessment, and test strategy. Advisory only - teams choose their quality bar."
     },
-    "product-owner": {
-      "prompt": "{file:./agent/product-owner.md}",
+    "backlog-manager": {
+      "prompt": "{file:./agent/backlog-manager.md}",
       "mode": "subagent",
       "tools": {
         "write": true,
@@ -71,8 +71,8 @@
       },
       "description": "Use for backlog management, story refinement, acceptance criteria, sprint planning, and prioritization decisions"
     },
-    "product-manager": {
-      "prompt": "{file:./agent/product-manager.md}",
+    "feature-planner": {
+      "prompt": "{file:./agent/feature-planner.md}",
       "mode": "subagent",
       "tools": {
         "write": true,
@@ -81,8 +81,8 @@
       },
       "description": "Use for creating PRDs, product strategy, feature prioritization, roadmap planning, and stakeholder communication"
     },
-    "full-stack-dev": {
-      "prompt": "{file:./agent/full-stack-dev.md}",
+    "code-developer": {
+      "prompt": "{file:./agent/code-developer.md}",
       "mode": "subagent",
       "tools": {
         "write": true,
@@ -111,8 +111,8 @@
       },
       "description": "Use when you need comprehensive expertise across all domains, running 1 off tasks that do not require a persona, or just wanting to use the same agent for many things."
     },
-    "holistic-architect": {
-      "prompt": "{file:./agent/holistic-architect.md}",
+    "system-architect": {
+      "prompt": "{file:./agent/system-architect.md}",
       "mode": "subagent",
       "tools": {
         "write": true,
@@ -121,8 +121,8 @@
       },
       "description": "Use for system design, architecture documents, technology selection, API design, and infrastructure planning"
       },
-          "context-initializer": {
-      "prompt": "{file:./agent/context-initializer.md}",
+          "context-builder": {
+      "prompt": "{file:./agent/context-builder.md}",
       "mode": "subagent",
       "tools": {
         "write": true,
@@ -131,8 +131,8 @@
       },
       "description": "Use to initialize Opencode context for new/existing projects, discover and organize documentation for optimal token-efficient memory"
     },
-    "business-analyst": {
-      "prompt": "{file:./agent/business-analyst.md}",
+    "market-researcher": {
+      "prompt": "{file:./agent/market-researcher.md}",
       "mode": "subagent",
       "tools": {
         "write": true,
@@ -140,6 +140,16 @@
         "bash": true
       },
       "description": "Use for market research, brainstorming, competitive analysis, creating project briefs, initial project discovery, and documenting existing projects (brownfield)"
+    },
+    "docs-builder": {
+      "prompt": "{file:./agent/docs-builder.md}",
+      "mode": "subagent",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "description": "Use to create comprehensive project documentation with structured /docs hierarchy (00-context, 01-product, 02-features, 03-logs, 04-process)"
     }
   },
   "command": {

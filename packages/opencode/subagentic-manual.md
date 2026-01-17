@@ -25,15 +25,15 @@ Install and invoke for your platform:
 
 ## 📦 What's Included
 
-**Per-kit contents** (14 subagents + 22 skills + 20+ tasks):
+**Per-kit contents** (15 subagents + 22 skills + 20+ tasks):
 - **3 Workflow Subagents** – Three-phase development: 1-Create PRD → 2-Generate Tasks → 3-Process Task List
-- **11 Specialist Subagents** – Expert roles (UX, QA, Product, Dev, Architecture, etc.)
+- **12 Specialist Subagents** – Expert roles (UX, QA, Product, Dev, Architecture, Documentation, etc.)
 - **22 Reusable Skills** – Code creation, testing, debugging, docs, design, file processing
 - **20+ Task Templates** – Validation, planning, development, documentation, specialized workflows
 - **Zero Configuration** – Ready to use immediately
 ---
 
-## 🤖 14 Subagents
+## 🤖 15 Subagents
 
 ### Workflow Phase Agents (3)
 | Agent | Purpose | Token Load* |
@@ -44,22 +44,23 @@ Install and invoke for your platform:
 
 **Recommended Workflow:** PRD → Tasks → Process → Complete
 
-### Specialist Agents (11)
+### Specialist Agents (12)
 | Agent | Purpose | Token Load*    |
 |-------|---------|----------------|
-| **ux-expert** | UI/UX design, wireframes, prototypes, front-end specifications | ~1,113 tokens  |
-| **scrum-master** | User stories, epic management, agile process guidance | ~927 tokens    |
-| **qa-test-architect** | Test architecture, quality gates, code review feedback | ~1,351 tokens  |
-| **product-owner** | Backlog management, story refinement, acceptance criteria | ~1,299 tokens  |
-| **product-manager** | PRDs, product strategy, feature prioritization, roadmaps | ~1,243 tokens  |
-| **full-stack-dev** | Code implementation, debugging, refactoring | ~1,025 tokens  |
-| **holistic-architect** | System design, architecture docs, API design, scalability | ~1,427 tokens  |
-| **business-analyst** | Market research, competitive analysis, project discovery | ~1,295 tokens  |
+| **ui-designer** | UI/UX design, wireframes, prototypes, front-end specifications | ~1,113 tokens  |
+| **story-writer** | User stories, epic management, agile process guidance | ~927 tokens    |
+| **quality-assurance** | Test architecture, quality gates, code review feedback | ~1,351 tokens  |
+| **backlog-manager** | Backlog management, story refinement, acceptance criteria | ~1,299 tokens  |
+| **feature-planner** | PRDs, product strategy, feature prioritization, roadmaps | ~1,243 tokens  |
+| **code-developer** | Code implementation, debugging, refactoring | ~1,025 tokens  |
+| **system-architect** | System design, architecture docs, API design, scalability | ~1,427 tokens  |
+| **market-researcher** | Market research, competitive analysis, project discovery | ~1,295 tokens  |
 | **orchestrator** | Workflow coordination, multi-agent task management, automatic routing | ~902 tokens    |
 | **master** | Comprehensive expertise across all domains, universal executor | ~1,073 tokens  |
-| **context-initializer** | Project context setup, documentation discovery, creates CLAUDE.md with agent system | ~1,614 tokens |
+| **context-builder** | Project context setup, documentation discovery, creates CLAUDE.md with agent system | ~1,614 tokens |
+| **docs-builder** | Comprehensive project documentation with structured /docs hierarchy (00-context, 01-product, 02-features, 03-logs, 04-process) | ~1,759 tokens  |
 
-**\*Progressive Disclosure:** Token loads shown are **full agent sizes when invoked**. Your base conversation only loads lightweight stubs (~50-90 tokens each, ~967 tokens total for all 14 agents). Full agent content loads only when you invoke that specific agent via `Task` tool. Check with `/context` command to see actual current usage.
+**\*Progressive Disclosure:** Token loads shown are **full agent sizes when invoked**. Your base conversation only loads lightweight stubs (~50-90 tokens each, ~1,050 tokens total for all 15 agents). Full agent content loads only when you invoke that specific agent via `Task` tool. Check with `/context` command to see actual current usage.
 
 ---
 
@@ -159,8 +160,8 @@ Pre-built workflows for common development patterns (available in all kits):
 
 **Key files:**
 - `~/.claude/CLAUDE.md` – Agent system with orchestrator-first routing and 9 workflows
-- `~/.claude/agents/` – 14 specialist agents (orchestrator, 1-create-prd, full-stack-dev, qa, etc.)
-- Project `CLAUDE.md` – Auto-created by context-initializer with agent system reminder
+- `~/.claude/agents/` – 15 specialist agents (orchestrator, 1-create-prd, code-developer, docs-builder, qa, etc.)
+- Project `CLAUDE.md` – Auto-created by context-builder with agent system reminder
 
 ### Other Platforms
 1. **Clone and Install** – Copy files to your CLI's config directory

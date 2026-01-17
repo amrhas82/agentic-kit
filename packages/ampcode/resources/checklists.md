@@ -611,7 +611,7 @@ This proposal guides all subsequent work.]]
 - [ ] **Recommended Path Forward:** Chosen solution with rationale.
 - [ ] **PRD MVP Impact:** Changes to scope/goals (if any).
 - [ ] **High-Level Action Plan:** Next steps for stories/updates.
-- [ ] **Agent Handoff Plan:** Identify roles needed (product-manager, Arch, Design Arch, PO).
+- [ ] **Agent Handoff Plan:** Identify roles needed (feature-planner, Arch, Design Arch, PO).
 
 ## 6. Final Review & Handoff
 
@@ -650,9 +650,9 @@ Keep it action-oriented and forward-looking.]]
 
 # Product Manager (PM) Requirements Checklist
 
-This checklist serves as a comprehensive framework to ensure the Product Requirements Document (PRD) and Epic definitions are complete, well-structured, and appropriately scoped for MVP development. The product-manager should systematically work through each item during the product definition process.
+This checklist serves as a comprehensive framework to ensure the Product Requirements Document (PRD) and Epic definitions are complete, well-structured, and appropriately scoped for MVP development. The feature-planner should systematically work through each item during the product definition process.
 
-[[LLM: INITIALIZATION INSTRUCTIONS - product-manager CHECKLIST
+[[LLM: INITIALIZATION INSTRUCTIONS - feature-planner CHECKLIST
 
 Before proceeding with this checklist, ensure you have access to:
 
@@ -949,7 +949,7 @@ Ask the user if they want to work through the checklist:
 
 ## PRD & EPIC VALIDATION SUMMARY
 
-[[LLM: FINAL product-manager CHECKLIST REPORT GENERATION
+[[LLM: FINAL feature-planner CHECKLIST REPORT GENERATION
 
 Create a comprehensive validation report that includes:
 

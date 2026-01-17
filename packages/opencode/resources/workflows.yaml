@@ -14,7 +14,7 @@ workflows:
       - integration-enhancement
       sequence:
       - step: enhancement_classification
-        agent: business-analyst
+        agent: market-researcher
         action: classify enhancement scope
         notes: |
   Determine enhancement complexity to route to appropriate path:
@@ -27,12 +27,12 @@ workflows:
         condition: based_on_classification
         routes:
           single_story:
-            agent: product-manager
+            agent: feature-planner
             uses: brownfield-create-story
             notes: Create single story for immediate implementation. Exit workflow
               after story creation.
           small_feature:
-            agent: product-manager
+            agent: feature-planner
             uses: brownfield-create-epic
             notes: Create focused epic with 1-3 stories. Exit workflow after epic
               creation.
@@ -40,7 +40,7 @@ workflows:
             continue: to_next_step
             notes: Continue with comprehensive planning workflow below.
       - step: documentation_check
-        agent: business-analyst
+        agent: market-researcher
         action: check existing documentation
         condition: major_enhancement_path
         notes: 'Check if adequate project documentation exists:
@@ -61,7 +61,7 @@ workflows:
         condition: documentation_inadequate
         notes: Run document-project to capture current system state, technical debt,
           and constraints. Pass findings to PRD creation.
-      - agent: product-manager
+      - agent: feature-planner
         creates: prd.md
         uses: brownfield-prd-template
         requires: existing_documentation_or_analysis
@@ -74,7 +74,7 @@ workflows:
 
           '
       - step: architecture_decision
-        agent: product-manager/architect
+        agent: feature-planner/architect
         action: determine if architecture document needed
         condition: after_prd_creation
         notes: |
@@ -91,23 +91,23 @@ workflows:
         condition: architecture_changes_needed
         notes: 'Creates architecture ONLY for significant architectural changes. SAVE
           OUTPUT: Copy final architecture.md to your project''s docs/ folder.'
-      - agent: product-owner
+      - agent: backlog-manager
         validates: all_artifacts
-        uses: product-owner-master-checklist
+        uses: backlog-manager-master-checklist
         notes: Validates all documents for integration safety and completeness. May
           require updates to any document.
       - agent: various
         updates: any_flagged_documents
         condition: po_checklist_issues
-        notes: If product-owner finds issues, return to relevant agent to fix and
+        notes: If backlog-manager finds issues, return to relevant agent to fix and
           re-export updated documents to docs/ folder.
-      - agent: product-owner
+      - agent: backlog-manager
         action: shard_documents
         creates: sharded_docs
         requires: all_artifacts_in_project
         notes: 'Shard documents for IDE development:
 
-          - Option A: Use product-owner agent to shard: @product-owner then ask to
+          - Option A: Use backlog-manager agent to shard: @backlog-manager then ask to
           shard docs/prd.md
 
           - Option B: Manual: Drag shard-doc task + docs/prd.md into chat
@@ -115,20 +115,20 @@ workflows:
           - Creates docs/prd/ and docs/architecture/ folders with sharded content
 
           '
-      - agent: scrum-master
+      - agent: story-writer
         action: create_story
         creates: story.md
         requires: sharded_docs_or_brownfield_docs
         repeats: for_each_epic_or_enhancement
         notes: |
   Story creation cycle:
-  - For sharded PRD: @scrum-master \u2192 *create (uses create-next-story)
-  - For brownfield docs: @scrum-master \u2192 use create-brownfield-story task
+  - For sharded PRD: @story-writer \u2192 *create (uses create-next-story)
+  - For brownfield docs: @story-writer \u2192 use create-brownfield-story task
   - Creates story from available documentation
   - Story starts in "Draft" status
   - May require additional context gathering for brownfield
   
-      - agent: business-analyst/product-manager
+      - agent: market-researcher/feature-planner
         action: review_draft_story
         updates: story.md
         requires: story.md
@@ -179,10 +179,10 @@ workflows:
       - step: repeat_development_cycle
         action: continue_for_all_stories
         notes: |
-  Repeat story cycle (scrum-master \u2192 Dev \u2192 QA) for all epic stories
+  Repeat story cycle (story-writer \u2192 Dev \u2192 QA) for all epic stories
   Continue until all stories in PRD are complete
   
-      - agent: product-owner
+      - agent: backlog-manager
         action: epic_retrospective
         creates: epic-retrospective.md
         condition: epic_complete
@@ -209,31 +209,31 @@ workflows:
       flow_diagram: |
   ```mermaid
   graph TD
-      A[Start: Brownfield Enhancement] --> B[business-analyst: classify enhancement scope]
+      A[Start: Brownfield Enhancement] --> B[market-researcher: classify enhancement scope]
       B --> C{Enhancement Size?}
       
-      C -->|Single Story| D[product-manager: brownfield-create-story]
-      C -->|1-3 Stories| E[product-manager: brownfield-create-epic]
-      C -->|Major Enhancement| F[business-analyst: check documentation]
+      C -->|Single Story| D[feature-planner: brownfield-create-story]
+      C -->|1-3 Stories| E[feature-planner: brownfield-create-epic]
+      C -->|Major Enhancement| F[market-researcher: check documentation]
       
       D --> END1[To Dev Implementation]
       E --> END2[To Story Creation]
   F --> G{Docs Adequate?}
       G -->|No| H[architect: document-project]
-      G -->|Yes| I[product-manager: brownfield PRD]
+      G -->|Yes| I[feature-planner: brownfield PRD]
       H --> I
       
       I --> J{Architecture Needed?}
       J -->|Yes| K[architect: architecture.md]
-      J -->|No| L[product-owner: validate artifacts]
+      J -->|No| L[backlog-manager: validate artifacts]
       K --> L
       
-      L --> M{product-owner finds issues?}
+      L --> M{backlog-manager finds issues?}
       M -->|Yes| N[Fix issues]
-      M -->|No| O[product-owner: shard documents]
+      M -->|No| O[backlog-manager: shard documents]
       N --> L
       
-      O --> P[scrum-master: create story]
+      O --> P[story-writer: create story]
       P --> Q{Story Type?}
       Q -->|Sharded PRD| R[create-next-story]
       Q -->|Brownfield Docs| S[create-brownfield-story]
@@ -252,7 +252,7 @@ workflows:
       AA --> X
       Y -->|Yes| P
       Y -->|No| AB{Retrospective?}
-      AB -->|Yes| AC[product-owner: retrospective]
+      AB -->|Yes| AC[backlog-manager: retrospective]
       AB -->|No| AD[Complete]
       AC --> AD
   
@@ -299,7 +299,7 @@ workflows:
           before PRD.
 
           '
-        document_project_to_product-manager: 'Project analysis complete. Key findings
+        document_project_to_feature-planner: 'Project analysis complete. Key findings
           documented in:
 
           - {{document_list}}
@@ -308,20 +308,20 @@ workflows:
           aspects.
 
           '
-        product-manager_to_architect_decision: |
+        feature-planner_to_architect_decision: |
   PRD complete and saved as docs/prd.md.Architectural changes identified: {{yes/no}}
   {{if yes}}: Proceeding to create architecture document for: {{specific_changes}}
   {{if no}}: No architectural changes needed. Proceeding to validation.
   
         architect_to_po: Architecture complete. Save it as docs/architecture.md. Please
           validate all artifacts for integration safety.
-        product-owner_to_scrum-master: |
+        backlog-manager_to_story-writer: |
   All artifacts validated. 
   Documentation type available: {{sharded_prd / brownfield_docs}}
   {{if sharded}}: Use standard create-next-story task.
   {{if brownfield}}: Use create-brownfield-story task to handle varied documentation formats.
   
-        scrum-master_story_creation: 'Creating story from {{documentation_type}}.
+        story-writer_story_creation: 'Creating story from {{documentation_type}}.
 
           {{if missing_context}}: May need to gather additional context from user
           during story creation.
@@ -350,7 +350,7 @@ workflows:
         creates: multiple documents per the document-project template
         notes: Review existing service documentation, codebase, performance metrics,
           and identify integration dependencies.
-      - agent: product-manager
+      - agent: feature-planner
         creates: prd.md
         uses: brownfield-prd-template
         requires: existing_service_analysis
@@ -364,23 +364,23 @@ workflows:
         notes: 'Creates architecture with service integration strategy and API evolution
           planning. SAVE OUTPUT: Copy final architecture.md to your project''s docs/
           folder.'
-      - agent: product-owner
+      - agent: backlog-manager
         validates: all_artifacts
-        uses: product-owner-master-checklist
+        uses: backlog-manager-master-checklist
         notes: Validates all documents for service integration safety and API compatibility.
           May require updates to any document.
       - agent: various
         updates: any_flagged_documents
         condition: po_checklist_issues
-        notes: If product-owner finds issues, return to relevant agent to fix and
+        notes: If backlog-manager finds issues, return to relevant agent to fix and
           re-export updated documents to docs/ folder.
-      - agent: product-owner
+      - agent: backlog-manager
         action: shard_documents
         creates: sharded_docs
         requires: all_artifacts_in_project
         notes: 'Shard documents for IDE development:
 
-          - Option A: Use product-owner agent to shard: @product-owner then ask to
+          - Option A: Use backlog-manager agent to shard: @backlog-manager then ask to
           shard docs/prd.md
 
           - Option B: Manual: Drag shard-doc task + docs/prd.md into chat
@@ -388,18 +388,18 @@ workflows:
           - Creates docs/prd/ and docs/architecture/ folders with sharded content
 
           '
-      - agent: scrum-master
+      - agent: story-writer
         action: create_story
         creates: story.md
         requires: sharded_docs
         repeats: for_each_epic
         notes: |
   Story creation cycle:
-  - scrum-master Agent (New Chat): @scrum-master \u2192 *create
+  - story-writer Agent (New Chat): @story-writer \u2192 *create
   - Creates next story from sharded docs
   - Story starts in "Draft" status
   
-      - agent: business-analyst/product-manager
+      - agent: market-researcher/feature-planner
         action: review_draft_story
         updates: story.md
         requires: story.md
@@ -450,10 +450,10 @@ workflows:
       - step: repeat_development_cycle
         action: continue_for_all_stories
         notes: |
-  Repeat story cycle (scrum-master \u2192 Dev \u2192 QA) for all epic stories
+  Repeat story cycle (story-writer \u2192 Dev \u2192 QA) for all epic stories
   Continue until all stories in PRD are complete
   
-      - agent: product-owner
+      - agent: backlog-manager
         action: epic_retrospective
         creates: epic-retrospective.md
         condition: epic_complete
@@ -479,18 +479,18 @@ workflows:
       flow_diagram: |
   ```mermaid
   graph TD
-      A[Start: Service Enhancement] --> B[business-analyst: analyze existing service]
-      B --> C[product-manager: prd.md]
+      A[Start: Service Enhancement] --> B[market-researcher: analyze existing service]
+      B --> C[feature-planner: prd.md]
       C --> D[architect: architecture.md]
-      D --> E[product-owner: validate with po-master-checklist]
-      E --> F{product-owner finds issues?}
+      D --> E[backlog-manager: validate with po-master-checklist]
+      E --> F{backlog-manager finds issues?}
       F -->|Yes| G[Return to relevant agent for fixes]
-      F -->|No| H[product-owner: shard documents]
+      F -->|No| H[backlog-manager: shard documents]
       G --> E
       
-      H --> I[scrum-master: create story]
+      H --> I[story-writer: create story]
       I --> J{Review draft story?}
-      J -->|Yes| K[business-analyst/product-manager: review & approve story]
+      J -->|Yes| K[market-researcher/feature-planner: review & approve story]
       J -->|No| L[dev: implement story]
       K --> L
       L --> M{QA review?}
@@ -502,7 +502,7 @@ workflows:
       Q --> N
       O -->|Yes| I
       O -->|No| R{Epic retrospective?}
-      R -->|Yes| S[product-owner: epic retrospective]
+      R -->|Yes| S[backlog-manager: epic retrospective]
       R -->|No| T[Project Complete]
       S --> T
   
@@ -525,13 +525,13 @@ workflows:
         - Performance or scalability improvements needed
         - Multiple integration points affected
       handoff_prompts:
-        business-analyst_to_product-manager: Service analysis complete. Create comprehensive
+        market-researcher_to_feature-planner: Service analysis complete. Create comprehensive
           PRD with service integration strategy.
-        product-manager_to_architect: PRD ready. Save it as docs/prd.md, then create
+        feature-planner_to_architect: PRD ready. Save it as docs/prd.md, then create
           the service architecture.
-        architect_to_product-owner: Architecture complete. Save it as docs/architecture.md.
+        architect_to_backlog-manager: Architecture complete. Save it as docs/architecture.md.
           Please validate all artifacts for service integration safety.
-        product-owner_issues: product-owner found issues with [document]. Please return
+        backlog-manager_issues: backlog-manager found issues with [document]. Please return
           to [agent] to fix and re-save the updated document.
         complete: All planning artifacts validated and saved in docs/ folder. Move
           to IDE environment to begin development.
@@ -555,14 +555,14 @@ workflows:
         creates: multiple documents per the document-project template
         notes: Review existing frontend application, user feedback, analytics data,
           and identify improvement areas.
-      - agent: product-manager
+      - agent: feature-planner
         creates: prd.md
         uses: brownfield-prd-template
         requires: existing_ui_analysis
         notes: 'Creates comprehensive PRD focused on UI enhancement with existing
           system analysis. SAVE OUTPUT: Copy final prd.md to your project''s docs/
           folder.'
-      - agent: ux-expert
+      - agent: ui-designer
         creates: front-end-spec.md
         uses: front-end-spec-tmpl
         requires: prd.md
@@ -577,7 +577,7 @@ workflows:
         notes: 'Creates frontend architecture with component integration strategy
           and migration planning. SAVE OUTPUT: Copy final architecture.md to your
           project''s docs/ folder.'
-      - agent: product-owner
+      - agent: backlog-manager
         validates: all_artifacts
         uses: po-master-checklist
         notes: Validates all documents for UI integration safety and design consistency.
@@ -585,15 +585,15 @@ workflows:
       - agent: various
         updates: any_flagged_documents
         condition: po_checklist_issues
-        notes: If product-owner finds issues, return to relevant agent to fix and
+        notes: If backlog-manager finds issues, return to relevant agent to fix and
           re-export updated documents to docs/ folder.
-      - agent: product-owner
+      - agent: backlog-manager
         action: shard_documents
         creates: sharded_docs
         requires: all_artifacts_in_project
         notes: 'Shard documents for IDE development:
 
-          - Option A: Use product-owner agent to shard: @product-owner then ask to
+          - Option A: Use backlog-manager agent to shard: @backlog-manager then ask to
           shard docs/prd.md
 
           - Option B: Manual: Drag shard-doc task + docs/prd.md into chat
@@ -601,18 +601,18 @@ workflows:
           - Creates docs/prd/ and docs/architecture/ folders with sharded content
 
           '
-      - agent: scrum-master
+      - agent: story-writer
         action: create_story
         creates: story.md
         requires: sharded_docs
         repeats: for_each_epic
         notes: |
   Story creation cycle:
-  - scrum-master Agent (New Chat): @scrum-master \u2192 *create
+  - story-writer Agent (New Chat): @story-writer \u2192 *create
   - Creates next story from sharded docs
   - Story starts in "Draft" status
   
-      - agent: business-analyst/product-manager
+      - agent: market-researcher/feature-planner
         action: review_draft_story
         updates: story.md
         requires: story.md
@@ -663,7 +663,7 @@ workflows:
       - step: repeat_development_cycle
         action: continue_for_all_stories
         notes: |
-  Repeat story cycle (scrum-master \u2192 Dev \u2192 QA) for all epic stories
+  Repeat story cycle (story-writer \u2192 Dev \u2192 QA) for all epic stories
   Continue until all stories in PRD are complete
   
       - agent: po
@@ -693,9 +693,9 @@ workflows:
       flow_diagram: |
   ```mermaid
   graph TD
-      A[Start: UI Enhancement] --> B[business-analyst: analyze existing UI]
-      B --> C[product-manager: prd.md]
-      C --> D[ux-expert: front-end-spec.md]
+      A[Start: UI Enhancement] --> B[market-researcher: analyze existing UI]
+      B --> C[feature-planner: prd.md]
+      C --> D[ui-designer: front-end-spec.md]
       D --> E[architect: architecture.md]
       E --> F[po: validate with po-master-checklist]
       F --> G{PO finds issues?}
@@ -703,9 +703,9 @@ workflows:
       G -->|No| I[po: shard documents]
       H --> F
       
-      I --> J[scrum-master: create story]
+      I --> J[story-writer: create story]
       J --> K{Review draft story?}
-      K -->|Yes| L[business-analyst/product-manager: review & approve story]
+      K -->|Yes| L[market-researcher/feature-planner: review & approve story]
       K -->|No| M[dev: implement story]
       L --> M
       M --> N{QA review?}
@@ -741,11 +741,11 @@ workflows:
         - User research and testing needed
         - Multiple team members will work on related changes
       handoff_prompts:
-        business-analyst_to_product-manager: UI analysis complete. Create comprehensive
+        market-researcher_to_feature-planner: UI analysis complete. Create comprehensive
           PRD with UI integration strategy.
-        product-manager_to_ux-expert: PRD ready. Save it as docs/prd.md, then create
+        feature-planner_to_ui-designer: PRD ready. Save it as docs/prd.md, then create
           the UI/UX specification.
-        ux-expert_to_architect: UI/UX spec complete. Save it as docs/front-end-spec.md,
+        ui-designer_to_architect: UI/UX spec complete. Save it as docs/front-end-spec.md,
           then create the frontend architecture.
         architect_to_po: Architecture complete. Save it as docs/architecture.md. Please
           validate all artifacts for UI integration safety.
@@ -768,7 +768,7 @@ workflows:
       - prototype
       - mvp
       sequence:
-      - agent: business-analyst
+      - agent: market-researcher
         creates: project-brief.md
         optional_steps:
         - brainstorming_session
@@ -776,19 +776,19 @@ workflows:
         notes: 'Can do brainstorming first, then optional deep research before creating
           project brief. SAVE OUTPUT: Copy final project-brief.md to your project''s
           docs/ folder.'
-      - agent: product-manager
+      - agent: feature-planner
         creates: prd.md
         requires: project-brief.md
         notes: 'Creates PRD from project brief using prd-template. SAVE OUTPUT: Copy final
           prd.md to your project''s docs/ folder.'
-      - agent: ux-expert
+      - agent: ui-designer
         creates: front-end-spec.md
         requires: prd.md
         optional_steps:
         - user_research_prompt
         notes: 'Creates UI/UX specification using front-end-spec-tmpl. SAVE OUTPUT:
           Copy final front-end-spec.md to your project''s docs/ folder.'
-      - agent: ux-expert
+      - agent: ui-designer
         creates: v0_prompt (optional)
         requires: front-end-spec.md
         condition: user_wants_ai_generation
@@ -807,13 +807,13 @@ workflows:
           If user generated UI with v0/Lovable, can incorporate the project structure
           into architecture. May suggest changes to PRD stories or new stories. SAVE
           OUTPUT: Copy final fullstack-architecture.md to your project''s docs/ folder.'
-      - agent: product-manager
+      - agent: feature-planner
         updates: prd.md (if needed)
         requires: fullstack-architecture.md
         condition: architecture_suggests_prd_changes
         notes: If architect suggests story changes, update PRD and re-export the complete
           unredacted prd.md to docs/ folder.
-      - agent: product-owner
+      - agent: backlog-manager
         validates: all_artifacts
         uses: po-master-checklist
         notes: Validates all documents for consistency and completeness. May require
@@ -821,7 +821,7 @@ workflows:
       - agent: various
         updates: any_flagged_documents
         condition: po_checklist_issues
-        notes: If product-owner finds issues, return to relevant agent to fix and
+        notes: If backlog-manager finds issues, return to relevant agent to fix and
           re-export updated documents to docs/ folder.
       - step: project_setup_guidance
         action: guide_project_structure
@@ -836,31 +836,31 @@ workflows:
           project/directory first. If backend-heavy or API-first, start with backend.
           For tightly coupled features, follow story sequence in monorepo setup. Reference
           sharded PRD epics for development order.'
-      - agent: product-owner
+      - agent: backlog-manager
         action: shard_documents
         creates: sharded_docs
         requires: all_artifacts_in_project
         notes: 'Shard documents for IDE development:
 
-          - Option A: Use product-owner agent to shard: @po then ask to shard docs/prd.md
+          - Option A: Use backlog-manager agent to shard: @po then ask to shard docs/prd.md
 
           - Option B: Manual: Drag shard-doc task + docs/prd.md into chat
 
           - Creates docs/prd/ and docs/architecture/ folders with sharded content
 
           '
-      - agent: scrum-master
+      - agent: story-writer
         action: create_story
         creates: story.md
         requires: sharded_docs
         repeats: for_each_epic
         notes: |
   Story creation cycle:
-  - scrum-master Agent (New Chat): @scrum-master \u2192 *create
+  - story-writer Agent (New Chat): @story-writer \u2192 *create
   - Creates next story from sharded docs
   - Story starts in "Draft" status
   
-      - agent: business-analyst/product-manager
+      - agent: market-researcher/feature-planner
         action: review_draft_story
         updates: story.md
         requires: story.md
@@ -911,7 +911,7 @@ workflows:
       - step: repeat_development_cycle
         action: continue_for_all_stories
         notes: |
-  Repeat story cycle (scrum-master \u2192 Dev \u2192 QA) for all epic stories
+  Repeat story cycle (story-writer \u2192 Dev \u2192 QA) for all epic stories
   Continue until all stories in PRD are complete
   
       - agent: po
@@ -941,16 +941,16 @@ workflows:
       flow_diagram: |
   ```mermaid
   graph TD
-      A[Start: Greenfield Project] --> B[business-analyst: project-brief.md]
-      B --> C[product-manager: prd.md]
-      C --> D[ux-expert: front-end-spec.md]
+      A[Start: Greenfield Project] --> B[market-researcher: project-brief.md]
+      B --> C[feature-planner: prd.md]
+      C --> D[ui-designer: front-end-spec.md]
       D --> D2{Generate v0 prompt?}
-      D2 -->|Yes| D3[ux-expert: create v0 prompt]
+      D2 -->|Yes| D3[ui-designer: create v0 prompt]
       D2 -->|No| E[architect: fullstack-architecture.md]
       D3 --> D4[User: generate UI in v0/Lovable]
       D4 --> E
       E --> F{Architecture suggests PRD changes?}
-      F -->|Yes| G[product-manager: update prd.md]
+      F -->|Yes| G[feature-planner: update prd.md]
       F -->|No| H[po: validate all artifacts]
       G --> H
       H --> I{PO finds issues?}
@@ -958,9 +958,9 @@ workflows:
       I -->|No| K[po: shard documents]
       J --> H
       
-      K --> L[scrum-master: create story]
+      K --> L[story-writer: create story]
       L --> M{Review draft story?}
-      M -->|Yes| N[business-analyst/product-manager: review & approve story]
+      M -->|Yes| N[market-researcher/feature-planner: review & approve story]
       M -->|No| O[dev: implement story]
       N --> O
       O --> P{QA review?}
@@ -1005,19 +1005,19 @@ workflows:
         - Long-term maintenance expected
         - Enterprise or customer-facing applications
       handoff_prompts:
-        business-analyst_to_product-manager: Project brief is complete. Save it as
+        market-researcher_to_feature-planner: Project brief is complete. Save it as
           docs/project-brief.md in your project, then create the PRD.
-        product-manager_to_ux-expert: PRD is ready. Save it as docs/prd.md in your
+        feature-planner_to_ui-designer: PRD is ready. Save it as docs/prd.md in your
           project, then create the UI/UX specification.
-        ux-expert_to_architect: UI/UX spec complete. Save it as docs/front-end-spec.md
+        ui-designer_to_architect: UI/UX spec complete. Save it as docs/front-end-spec.md
           in your project, then create the fullstack architecture.
         architect_review: Architecture complete. Save it as docs/fullstack-architecture.md.
           Do you suggest any changes to the PRD stories or need new stories added?
-        architect_to_product-manager: Please update the PRD with the suggested story
+        architect_to_feature-planner: Please update the PRD with the suggested story
           changes, then re-export the complete prd.md to docs/.
         updated_to_po: All documents ready in docs/ folder. Please validate all artifacts
           for consistency.
-        product-owner_issues: PO found issues with [document]. Please return to [agent]
+        backlog-manager_issues: PO found issues with [document]. Please return to [agent]
           to fix and re-save the updated document.
         complete: All planning artifacts validated and saved in docs/ folder. Move
           to IDE environment to begin development.
@@ -1037,7 +1037,7 @@ workflows:
       - api-prototype
       - simple-service
       sequence:
-      - agent: business-analyst
+      - agent: market-researcher
         creates: project-brief.md
         optional_steps:
         - brainstorming_session
@@ -1045,7 +1045,7 @@ workflows:
         notes: 'Can do brainstorming first, then optional deep research before creating
           project brief. SAVE OUTPUT: Copy final project-brief.md to your project''s
           docs/ folder.'
-      - agent: product-manager
+      - agent: feature-planner
         creates: prd.md
         requires: project-brief.md
         notes: 'Creates PRD from project brief using prd-template, focused on API/service
@@ -1058,13 +1058,13 @@ workflows:
         notes: 'Creates backend/service architecture using architecture-template. May
           suggest changes to PRD stories or new stories. SAVE OUTPUT: Copy final architecture.md
           to your project''s docs/ folder.'
-      - agent: product-manager
+      - agent: feature-planner
         updates: prd.md (if needed)
         requires: architecture.md
         condition: architecture_suggests_prd_changes
         notes: If architect suggests story changes, update PRD and re-export the complete
           unredacted prd.md to docs/ folder.
-      - agent: product-owner
+      - agent: backlog-manager
         validates: all_artifacts
         uses: po-master-checklist
         notes: Validates all documents for consistency and completeness. May require
@@ -1072,15 +1072,15 @@ workflows:
       - agent: various
         updates: any_flagged_documents
         condition: po_checklist_issues
-        notes: If product-owner finds issues, return to relevant agent to fix and
+        notes: If backlog-manager finds issues, return to relevant agent to fix and
           re-export updated documents to docs/ folder.
-      - agent: product-owner
+      - agent: backlog-manager
         action: shard_documents
         creates: sharded_docs
         requires: all_artifacts_in_project
         notes: 'Shard documents for IDE development:
 
-          - Option A: Use product-owner agent to shard: @product-owner then ask to
+          - Option A: Use backlog-manager agent to shard: @backlog-manager then ask to
           shard docs/prd.md
 
           - Option B: Manual: Drag shard-doc task + docs/prd.md into chat
@@ -1088,18 +1088,18 @@ workflows:
           - Creates docs/prd/ and docs/architecture/ folders with sharded content
 
           '
-      - agent: scrum-master
+      - agent: story-writer
         action: create_story
         creates: story.md
         requires: sharded_docs
         repeats: for_each_epic
         notes: |
   Story creation cycle:
-  - scrum-master Agent (New Chat): @scrum-master \u2192 *create
+  - story-writer Agent (New Chat): @story-writer \u2192 *create
   - Creates next story from sharded docs
   - Story starts in "Draft" status
   
-      - agent: business-analyst/product-manager
+      - agent: market-researcher/feature-planner
         action: review_draft_story
         updates: story.md
         requires: story.md
@@ -1150,10 +1150,10 @@ workflows:
       - step: repeat_development_cycle
         action: continue_for_all_stories
         notes: |
-  Repeat story cycle (scrum-master \u2192 Dev \u2192 QA) for all epic stories
+  Repeat story cycle (story-writer \u2192 Dev \u2192 QA) for all epic stories
   Continue until all stories in PRD are complete
   
-      - agent: product-owner
+      - agent: backlog-manager
         action: epic_retrospective
         creates: epic-retrospective.md
         condition: epic_complete
@@ -1180,21 +1180,21 @@ workflows:
       flow_diagram: |
   ```mermaid
   graph TD
-      A[Start: Service Development] --> B[business-analyst: project-brief.md]
-      B --> C[product-manager: prd.md]
+      A[Start: Service Development] --> B[market-researcher: project-brief.md]
+      B --> C[feature-planner: prd.md]
       C --> D[architect: architecture.md]
       D --> E{Architecture suggests PRD changes?}
-      E -->|Yes| F[product-manager: update prd.md]
-      E -->|No| G[product-owner: validate all artifacts]
+      E -->|Yes| F[feature-planner: update prd.md]
+      E -->|No| G[backlog-manager: validate all artifacts]
       F --> G
-      G --> H{product-owner finds issues?}
+      G --> H{backlog-manager finds issues?}
       H -->|Yes| I[Return to relevant agent for fixes]
-      H -->|No| J[product-owner: shard documents]
+      H -->|No| J[backlog-manager: shard documents]
       I --> G
       
-      J --> K[scrum-master: create story]
+      J --> K[story-writer: create story]
       K --> L{Review draft story?}
-      L -->|Yes| M[business-analyst/product-manager: review & approve story]
+      L -->|Yes| M[market-researcher/feature-planner: review & approve story]
       L -->|No| N[dev: implement story]
       M --> N
       N --> O{QA review?}
@@ -1206,7 +1206,7 @@ workflows:
       S --> P
       Q -->|Yes| K
       Q -->|No| T{Epic retrospective?}
-      T -->|Yes| U[product-owner: epic retrospective]
+      T -->|Yes| U[backlog-manager: epic retrospective]
       T -->|No| V[Project Complete]
       U --> V
   
@@ -1235,17 +1235,17 @@ workflows:
         - Long-term maintenance expected
         - Enterprise or external-facing APIs
       handoff_prompts:
-        business-analyst_to_product-manager: Project brief is complete. Save it as
+        market-researcher_to_feature-planner: Project brief is complete. Save it as
           docs/project-brief.md in your project, then create the PRD.
-        product-manager_to_architect: PRD is ready. Save it as docs/prd.md in your
+        feature-planner_to_architect: PRD is ready. Save it as docs/prd.md in your
           project, then create the service architecture.
         architect_review: Architecture complete. Save it as docs/architecture.md.
           Do you suggest any changes to the PRD stories or need new stories added?
-        architect_to_product-manager: Please update the PRD with the suggested story
+        architect_to_feature-planner: Please update the PRD with the suggested story
           changes, then re-export the complete prd.md to docs/.
-        updated_to_product-owner: All documents ready in docs/ folder. Please validate
+        updated_to_backlog-manager: All documents ready in docs/ folder. Please validate
           all artifacts for consistency.
-        product-owner_issues: product-owner found issues with [document]. Please return
+        backlog-manager_issues: backlog-manager found issues with [document]. Please return
           to [agent] to fix and re-save the updated document.
         complete: All planning artifacts validated and saved in docs/ folder. Move
           to IDE environment to begin development.
@@ -1265,7 +1265,7 @@ workflows:
       - ui-prototype
       - simple-interface
       sequence:
-      - agent: business-analyst
+      - agent: market-researcher
         creates: project-brief.md
         optional_steps:
         - brainstorming_session
@@ -1273,19 +1273,19 @@ workflows:
         notes: 'Can do brainstorming first, then optional deep research before creating
           project brief. SAVE OUTPUT: Copy final project-brief.md to your project''s
           docs/ folder.'
-      - agent: product-manager
+      - agent: feature-planner
         creates: prd.md
         requires: project-brief.md
         notes: 'Creates PRD from project brief using prd-template, focused on UI/frontend
           requirements. SAVE OUTPUT: Copy final prd.md to your project''s docs/ folder.'
-      - agent: ux-expert
+      - agent: ui-designer
         creates: front-end-spec.md
         requires: prd.md
         optional_steps:
         - user_research_prompt
         notes: 'Creates UI/UX specification using front-end-spec-tmpl. SAVE OUTPUT:
           Copy final front-end-spec.md to your project''s docs/ folder.'
-      - agent: ux-expert
+      - agent: ui-designer
         creates: v0_prompt (optional)
         requires: front-end-spec.md
         condition: user_wants_ai_generation
@@ -1302,13 +1302,13 @@ workflows:
           user generated UI with v0/Lovable, can incorporate the project structure
           into architecture. May suggest changes to PRD stories or new stories. SAVE
           OUTPUT: Copy final front-end-architecture.md to your project''s docs/ folder.'
-      - agent: product-manager
+      - agent: feature-planner
         updates: prd.md (if needed)
         requires: front-end-architecture.md
         condition: architecture_suggests_prd_changes
         notes: If architect suggests story changes, update PRD and re-export the complete
           unredacted prd.md to docs/ folder.
-      - agent: product-owner
+      - agent: backlog-manager
         validates: all_artifacts
         uses: po-master-checklist
         notes: Validates all documents for consistency and completeness. May require
@@ -1337,18 +1337,18 @@ workflows:
           - Creates docs/prd/ and docs/architecture/ folders with sharded content
 
           '
-      - agent: scrum-master
+      - agent: story-writer
         action: create_story
         creates: story.md
         requires: sharded_docs
         repeats: for_each_epic
         notes: |
   Story creation cycle:
-  - scrum-master Agent (New Chat): @scrum-master \u2192 *create
+  - story-writer Agent (New Chat): @story-writer \u2192 *create
   - Creates next story from sharded docs
   - Story starts in "Draft" status
   
-      - agent: business-analyst/product-manager
+      - agent: market-researcher/feature-planner
         action: review_draft_story
         updates: story.md
         requires: story.md
@@ -1399,7 +1399,7 @@ workflows:
       - step: repeat_development_cycle
         action: continue_for_all_stories
         notes: |
-  Repeat story cycle (scrum-master \u2192 Dev \u2192 QA) for all epic stories
+  Repeat story cycle (story-writer \u2192 Dev \u2192 QA) for all epic stories
   Continue until all stories in PRD are complete
   
       - agent: po
@@ -1429,16 +1429,16 @@ workflows:
       flow_diagram: |
   ```mermaid
   graph TD
-      A[Start: UI Development] --> B[business-analyst: project-brief.md]
-      B --> C[product-manager: prd.md]
-      C --> D[ux-expert: front-end-spec.md]
+      A[Start: UI Development] --> B[market-researcher: project-brief.md]
+      B --> C[feature-planner: prd.md]
+      C --> D[ui-designer: front-end-spec.md]
       D --> D2{Generate v0 prompt?}
-      D2 -->|Yes| D3[ux-expert: create v0 prompt]
+      D2 -->|Yes| D3[ui-designer: create v0 prompt]
       D2 -->|No| E[architect: front-end-architecture.md]
       D3 --> D4[User: generate UI in v0/Lovable]
       D4 --> E
       E --> F{Architecture suggests PRD changes?}
-      F -->|Yes| G[product-manager: update prd.md]
+      F -->|Yes| G[feature-planner: update prd.md]
       F -->|No| H[po: validate all artifacts]
       G --> H
       H --> I{PO finds issues?}
@@ -1446,9 +1446,9 @@ workflows:
       I -->|No| K[po: shard documents]
       J --> H
       
-      K --> L[scrum-master: create story]
+      K --> L[story-writer: create story]
       L --> M{Review draft story?}
-      M -->|Yes| N[business-analyst/product-manager: review & approve story]
+      M -->|Yes| N[market-researcher/feature-planner: review & approve story]
       M -->|No| O[dev: implement story]
       N --> O
       O --> P{QA review?}
@@ -1493,19 +1493,19 @@ workflows:
         - Long-term maintenance expected
         - Customer-facing applications
       handoff_prompts:
-        business-analyst_to_product-manager: Project brief is complete. Save it as
+        market-researcher_to_feature-planner: Project brief is complete. Save it as
           docs/project-brief.md in your project, then create the PRD.
-        product-manager_to_ux-expert: PRD is ready. Save it as docs/prd.md in your
+        feature-planner_to_ui-designer: PRD is ready. Save it as docs/prd.md in your
           project, then create the UI/UX specification.
-        ux-expert_to_architect: UI/UX spec complete. Save it as docs/front-end-spec.md
+        ui-designer_to_architect: UI/UX spec complete. Save it as docs/front-end-spec.md
           in your project, then create the frontend architecture.
         architect_review: Frontend architecture complete. Save it as docs/front-end-architecture.md.
           Do you suggest any changes to the PRD stories or need new stories added?
-        architect_to_product-manager: Please update the PRD with the suggested story
+        architect_to_feature-planner: Please update the PRD with the suggested story
           changes, then re-export the complete prd.md to docs/.
         updated_to_po: All documents ready in docs/ folder. Please validate all artifacts
           for consistency.
-        product-owner_issues: PO found issues with [document]. Please return to [agent]
+        backlog-manager_issues: PO found issues with [document]. Please return to [agent]
           to fix and re-save the updated document.
         complete: All planning artifacts validated and saved in docs/ folder. Move
           to IDE environment to begin development.

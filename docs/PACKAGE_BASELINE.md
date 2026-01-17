@@ -33,7 +33,7 @@ Defined in `packages/claude/variants.json`:
 
 | Variant | Agents | Skills | Use Case |
 |---------|--------|--------|----------|
-| **Lite** | 3 (master, orchestrator, scrum-master) | 0 | Minimal footprint, basic workflow |
+| **Lite** | 3 (master, orchestrator, story-writer) | 0 | Minimal footprint, basic workflow |
 | **Standard** | 13 (all) | 8 (core document/design) | Professional development |
 | **Pro** | 13 (all) | 22 (all) | Full-featured, power users |
 
@@ -57,7 +57,7 @@ All agents follow the Claude Code conversational AI pattern with markdown format
    - **Pattern:** Delegation and coordination across agent teams
    - **Key Features:** Team composition, workflow orchestration, progress tracking
 
-3. **scrum-master.md**
+3. **story-writer.md**
    - **Description:** Agile workflow facilitator and sprint management expert
    - **Purpose:** Manages sprints, daily standups, retrospectives, and agile ceremonies
    - **Pattern:** Agile methodology implementation
@@ -83,43 +83,43 @@ All agents follow the Claude Code conversational AI pattern with markdown format
    - **Pattern:** Sequential execution, test-first workflow, commit management
    - **Key Features:** One-task-at-a-time execution, test suite validation, git integration
 
-7. **business-analyst.md**
+7. **market-researcher.md**
    - **Description:** Business requirements analysis and documentation specialist
    - **Purpose:** Analyzes business needs, creates specifications
    - **Pattern:** Requirements gathering and documentation
    - **Key Features:** Stakeholder analysis, requirement prioritization
 
-8. **full-stack-dev.md**
+8. **code-developer.md**
    - **Description:** Full-stack development expert (frontend + backend + database)
    - **Purpose:** Implements complete features across entire stack
    - **Pattern:** Multi-layer development
    - **Key Features:** API development, UI implementation, database design
 
-9. **holistic-architect.md**
+9. **system-architect.md**
    - **Description:** System architecture and design specialist
    - **Purpose:** Creates architectural decisions, system design documents
    - **Pattern:** Architecture-first approach
    - **Key Features:** Design patterns, scalability planning, technology selection
 
-10. **product-manager.md**
+10. **feature-planner.md**
     - **Description:** Product strategy and roadmap management expert
     - **Purpose:** Defines product vision, prioritizes features
     - **Pattern:** Product-led thinking
     - **Key Features:** Roadmap planning, feature prioritization, market analysis
 
-11. **product-owner.md**
+11. **backlog-manager.md**
     - **Description:** Agile product ownership and backlog management
     - **Purpose:** Manages product backlog, defines user stories
     - **Pattern:** Agile product ownership
     - **Key Features:** User story creation, acceptance criteria, backlog refinement
 
-12. **qa-test-architect.md**
+12. **quality-assurance.md**
     - **Description:** Test strategy and quality assurance specialist
     - **Purpose:** Designs test plans, ensures quality standards
     - **Pattern:** Test-first approach
     - **Key Features:** Test coverage analysis, CI/CD integration, quality metrics
 
-13. **ux-expert.md**
+13. **ui-designer.md**
     - **Description:** User experience and interface design specialist
     - **Purpose:** Creates UX designs, wireframes, user flows
     - **Pattern:** User-centered design

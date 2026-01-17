@@ -9,7 +9,8 @@
       "2-generate-tasks",
       "3-process-task-list",
       "master",
-      "context-initializer"
+      "context-builder",
+      "docs-builder"
     ],
     "skills": [
       "docx",
@@ -34,11 +35,12 @@
       "3-process-task-list",
       "master",
       "orchestrator",
-      "qa-test-architect",
-      "full-stack-dev",
-      "business-analyst",
-      "ux-expert",
-      "context-initializer"
+      "quality-assurance",
+      "code-developer",
+      "market-researcher",
+      "ui-designer",
+      "context-builder",
+      "docs-builder"
     ],
     "skills": [
       "docx",

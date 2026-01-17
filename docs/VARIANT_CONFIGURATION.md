@@ -147,7 +147,7 @@ These advanced skills are available only in the **Pro variant**:
 **Purpose:** Minimal installation for evaluation and basic workflow management
 
 **Included:**
-- 3 agents: `master`, `orchestrator`, `scrum-master`
+- 3 agents: `master`, `orchestrator`, `story-writer`
 - 0 skills
 - All resources (agent-teams.yaml, checklists.md, etc.)
 - All hooks
@@ -385,7 +385,7 @@ Advanced users can create custom `variants.json` configurations:
     "description": "My custom variant",
     "useCase": "Specific to my workflow",
     "targetUsers": "Me",
-    "agents": ["master", "orchestrator", "full-stack-dev"],
+    "agents": ["master", "orchestrator", "code-developer"],
     "skills": ["pdf", "docx", "code-review", "webapp-testing"],
     "resources": "*",
     "hooks": "*"

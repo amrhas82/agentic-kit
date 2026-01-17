@@ -17,58 +17,58 @@
       "path": "agents/orchestrator.md"
     },
     {
-      "id": "product-manager",
+      "id": "feature-planner",
       "name": "Product Manager",
       "description": "Product strategy and vision",
-      "path": "agents/product-manager.md"
+      "path": "agents/feature-planner.md"
     },
     {
-      "id": "product-owner",
+      "id": "backlog-manager",
       "name": "Product Owner",
       "description": "Requirements and backlog management",
-      "path": "agents/product-owner.md"
+      "path": "agents/backlog-manager.md"
     },
     {
-      "id": "business-analyst",
+      "id": "market-researcher",
       "name": "Business Analyst",
       "description": "Business requirements analysis",
-      "path": "agents/business-analyst.md"
+      "path": "agents/market-researcher.md"
     },
     {
-      "id": "context-initializer",
+      "id": "context-builder",
       "name": "Context Initializer",
       "description": "Initialize Claude Code context through elicitation, organize docs, create CLAUDE.md and KNOWLEDGE_BASE.md",
-      "path": "agents/context-initializer.md"
+      "path": "agents/context-builder.md"
     },
     {
-      "id": "full-stack-dev",
+      "id": "code-developer",
       "name": "Full-Stack Developer",
       "description": "Full-stack development implementation",
-      "path": "agents/full-stack-dev.md"
+      "path": "agents/code-developer.md"
     },
     {
-      "id": "holistic-architect",
+      "id": "system-architect",
       "name": "Holistic Architect",
       "description": "System architecture and design",
-      "path": "agents/holistic-architect.md"
+      "path": "agents/system-architect.md"
     },
     {
-      "id": "ux-expert",
+      "id": "ui-designer",
       "name": "UX Expert",
       "description": "User experience and interface design",
-      "path": "agents/ux-expert.md"
+      "path": "agents/ui-designer.md"
     },
     {
-      "id": "qa-test-architect",
+      "id": "quality-assurance",
       "name": "QA Test Architect",
       "description": "Quality assurance and testing strategy",
-      "path": "agents/qa-test-architect.md"
+      "path": "agents/quality-assurance.md"
     },
     {
-      "id": "scrum-master",
+      "id": "story-writer",
       "name": "Scrum Master",
       "description": "Project management and team coordination",
-      "path": "agents/scrum-master.md"
+      "path": "agents/story-writer.md"
     },
     {
       "id": "1-create-prd",

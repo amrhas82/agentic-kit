@@ -25,9 +25,9 @@ Ampcode reads AGENT.md during initialization and uses it as part of its system p
 ## How To Use with Amp
 
 Activate agents by mentioning their ID in your prompts:
-- `"@qa-test-architect review this code"`
+- `"@quality-assurance review this code"`
 - Copy/paste `ampcode` subfolders in this project to ~/.config/amp and Ampcode will read and access agents from ~/.config/amp/agents and tasks from ~~/.config/amp/resources/tasks-brief.md,
-- You can access agents using "@ux-expert", or you can reference a role naturally, e.g., "As ux-expert, implement ..." or use commands defined in your tasks.
+- You can access agents using "@ui-designer", or you can reference a role naturally, e.g., "As ui-designer, implement ..." or use commands defined in your tasks.
 
 Note
 - Orchestrators/master run as mode: primary; other agents as mode: subagents.
@@ -42,17 +42,18 @@ Note
 | 1-Create PRD | 1-create-prd | Define scope with a Product Requirement Document (PRD) |
 | 2-Generate Tasks | 2-generate-tasks | Break down PRD into granular, actionable task list |
 | 3-Process Task List | 3-process-task-list | Guide AI to tackle tasks iteratively with review |
-| UX Expert | ux-expert | UI/UX design, wireframes, prototypes, front-end specs |
-| Scrum Master | scrum-master | Story creation, epic management, agile process guidance |
-| Test Architect & Quality Advisor | qa-test-architect | Test architecture review, quality gates, code improvement |
-| Product Owner | product-owner | Backlog management, story refinement, acceptance criteria |
-| Product Manager | product-manager | PRDs, product strategy, feature prioritization, roadmaps |
-| Full Stack Developer | full-stack-dev | Code implementation, debugging, refactoring |
+| UX Expert | ui-designer | UI/UX design, wireframes, prototypes, front-end specs |
+| Scrum Master | story-writer | Story creation, epic management, agile process guidance |
+| Test Architect & Quality Advisor | quality-assurance | Test architecture review, quality gates, code improvement |
+| Product Owner | backlog-manager | Backlog management, story refinement, acceptance criteria |
+| Product Manager | feature-planner | PRDs, product strategy, feature prioritization, roadmaps |
+| Full Stack Developer | code-developer | Code implementation, debugging, refactoring |
 | Master Orchestrator | orchestrator | Workflow coordination, multi-agent tasks, role switching |
 | Master Task Executor | master | Comprehensive expertise across all domains |
-| Architect | holistic-architect | System design, architecture docs, API design |
-| Business Analyst | business-analyst | Market research, competitive analysis, project briefs |
-| Context Initializer | context-initializer | Use to initialize Ampcode context for new/existing projects, discover and organize documentation, create AGENT.md and KNOWLEDGE_BASE.md for optimal token-efficient memory |
+| Architect | system-architect | System design, architecture docs, API design |
+| Business Analyst | market-researcher | Market research, competitive analysis, project briefs |
+| Context Initializer | context-builder | Use to initialize Ampcode context for new/existing projects, discover and organize documentation, create AGENT.md and KNOWLEDGE_BASE.md for optimal token-efficient memory |
+| Documentation Architect | docs-builder | Create comprehensive project documentation with structured /docs hierarchy (00-context, 01-product, 02-features, 03-logs, 04-process) |
 
 ## Common Workflow Patterns
 
@@ -63,7 +64,7 @@ The orchestrator uses these patterns to match user intent to multi-agent workflo
 **Workflow**:
 ```
 orchestrator analyzes → asks: "Research competitive approaches first?"
-  ├─ Yes → business-analyst (research) → ask: "Create formal PRD?"
+  ├─ Yes → market-researcher (research) → ask: "Create formal PRD?"
   │   ├─ Yes → 1-create-prd → ask: "Generate implementation tasks?"
   │   │   ├─ Yes → 2-generate-tasks → ask: "Start systematic implementation?"
   │   │   │   ├─ Yes → 3-process-task-list
@@ -78,9 +79,9 @@ orchestrator analyzes → asks: "Research competitive approaches first?"
 **Workflow**:
 ```
 orchestrator → ask: "Follow product definition workflow?"
-└─ Yes → product-manager (strategy, vision) → ask: "Define user stories?"
-    └─ Yes → product-owner (backlog, stories) → ask: "Technical feasibility assessment?"
-        └─ Yes → holistic-architect (platform decisions, technical design)
+└─ Yes → feature-planner (strategy, vision) → ask: "Define user stories?"
+    └─ Yes → backlog-manager (backlog, stories) → ask: "Technical feasibility assessment?"
+        └─ Yes → system-architect (platform decisions, technical design)
 ```
 
 ### 3. Story Implementation Flow
@@ -88,37 +89,37 @@ orchestrator → ask: "Follow product definition workflow?"
 **Workflow**:
 ```
 orchestrator → ask: "Validate story readiness first?"
-├─ Yes → product-owner (validate acceptance criteria) → full-stack-dev → qa-test-architect
-└─ No → full-stack-dev (implement) → qa-test-architect (quality gate)
+├─ Yes → backlog-manager (validate acceptance criteria) → code-developer → quality-assurance
+└─ No → code-developer (implement) → quality-assurance (quality gate)
 ```
 
 ### 4. Architecture Decision Flow
 **User Intent**: "Should we use [tech A] or [tech B]?", "How should we architect [system]?"
 **Workflow**:
 ```
-orchestrator → business-analyst (gather constraints, requirements)
-            → holistic-architect (options analysis, tradeoffs)
+orchestrator → market-researcher (gather constraints, requirements)
+            → system-architect (options analysis, tradeoffs)
             → ask: "Need product alignment?"
-            └─ Yes → product-manager (strategic alignment, decision rationale)
+            └─ Yes → feature-planner (strategic alignment, decision rationale)
 ```
 
 ### 5. UI Development Flow
 **User Intent**: "Build [UI component]", "Design and implement [interface]"
 **Workflow**:
 ```
-orchestrator → ux-expert (wireframes, design system)
+orchestrator → ui-designer (wireframes, design system)
             → ask: "Complex enough to need PRD?"
-            ├─ Yes → 1-create-prd → full-stack-dev → qa-test-architect
-            └─ No → full-stack-dev (implement) → qa-test-architect (validate)
+            ├─ Yes → 1-create-prd → code-developer → quality-assurance
+            └─ No → code-developer (implement) → quality-assurance (validate)
 ```
 
 ### 6. Bug Triage Flow
 **User Intent**: "Bug: [description]", "Fix [broken behavior]"
 **Workflow**:
 ```
-orchestrator → full-stack-dev (investigate root cause)
+orchestrator → code-developer (investigate root cause)
             → ask: "Severity level?"
-            ├─ Critical → full-stack-dev (immediate fix) → qa-test-architect (verify)
+            ├─ Critical → code-developer (immediate fix) → quality-assurance (verify)
             └─ Non-critical → 1-create-prd (bug story) → backlog (for sprint planning)
 ```
 
@@ -126,30 +127,30 @@ orchestrator → full-stack-dev (investigate root cause)
 **User Intent**: "Help me understand this codebase", "Document existing system"
 **Workflow**:
 ```
-orchestrator → context-initializer (build knowledge base, discover patterns)
-            → business-analyst (document current state, stakeholders)
+orchestrator → context-builder (build knowledge base, discover patterns)
+            → market-researcher (document current state, stakeholders)
             → ask: "Assess technical debt and modernization opportunities?"
-            └─ Yes → holistic-architect (technical assessment, recommendations)
+            └─ Yes → system-architect (technical assessment, recommendations)
 ```
 
 ### 8. Quality Validation Flow
 **User Intent**: "Review this PR", "Check code quality before merge"
 **Workflow**:
 ```
-orchestrator → qa-test-architect (comprehensive review)
+orchestrator → quality-assurance (comprehensive review)
             → [Decision gate]
             ├─ PASS → Done (ready to merge)
             ├─ CONCERNS → Present issues → user decides next step
-            └─ FAIL → full-stack-dev (apply fixes) → qa-test-architect (re-validate)
+            └─ FAIL → code-developer (apply fixes) → quality-assurance (re-validate)
 ```
 
 ### 9. Sprint Planning Flow
 **User Intent**: "Plan next sprint", "Prepare sprint backlog"
 **Workflow**:
 ```
-orchestrator → product-manager (prioritize features for sprint)
-            → scrum-master (break into user stories)
-            → product-owner (add acceptance criteria)
+orchestrator → feature-planner (prioritize features for sprint)
+            → story-writer (break into user stories)
+            → backlog-manager (add acceptance criteria)
             → 2-generate-tasks (create sprint backlog with tasks)
 ```
 
@@ -167,7 +168,7 @@ When orchestrator invokes specialists, it passes **minimal necessary context**:
 - Unrelated workflow step outputs
 - Tangential project context
 
-**Example**: When invoking `qa-test-architect`:
+**Example**: When invoking `quality-assurance`:
 - ✓ Include: code diff, test requirements, acceptance criteria
 - ✗ Exclude: PRD creation discussions, UI wireframes, database schema decisions
 
@@ -191,42 +192,42 @@ Source: [./agents/3-process-task-list.md](./agents/3-process-task-list.md)
 - When to use: Guide AI through iterative task implementation with review
 - How to activate: "process task list, ..." or "As 3-process-task-list, ..."
 
-### UX Expert (id: ux-expert)
-Source: [./agents/ux-expert.md](./agents/ux-expert.md)
+### UX Expert (id: ui-designer)
+Source: [./agents/ui-designer.md](./agents/ui-designer.md)
 
 - When to use: UI/UX design, wireframes, prototypes, user experience
-- How to activate: "As ux-expert, ..."
+- How to activate: "As ui-designer, ..."
 
-### Scrum Master (id: scrum-master)
-Source: [./agents/scrum-master.md](./agents/scrum-master.md)
+### Scrum Master (id: story-writer)
+Source: [./agents/story-writer.md](./agents/story-writer.md)
 
 - When to use: Story creation, epic management, agile guidance
-- How to activate: "As scrum-master, ..."
+- How to activate: "As story-writer, ..."
 
-### Test Architect & Quality Advisor (id: qa-test-architect)
-Source: [./agents/qa-test-architect.md](./agents/qa-test-architect.md)
+### Test Architect & Quality Advisor (id: quality-assurance)
+Source: [./agents/quality-assurance.md](./agents/quality-assurance.md)
 
 - When to use: Test architecture, quality gates, requirements traceability
-- How to activate: "As qa-test-architect, ..." or "As qa, ..."
+- How to activate: "As quality-assurance, ..." or "As qa, ..."
 
-### Product Owner (id: product-owner)
-Source: [./agents/product-owner.md](./agents/product-owner.md)
+### Product Owner (id: backlog-manager)
+Source: [./agents/backlog-manager.md](./agents/backlog-manager.md)
 
 - When to use: Backlog management, sprint planning, prioritization
-- How to activate: "As product-owner, ..."
+- How to activate: "As backlog-manager, ..."
 
-### Product Manager (id: product-manager)
-Source: [./agents/product-manager.md](./agents/product-manager.md)
+### Product Manager (id: feature-planner)
+Source: [./agents/feature-planner.md](./agents/feature-planner.md)
 
 - When to use: PRDs, product strategy, roadmap planning
-- How to activate: "As product-manager, ..."
+- How to activate: "As feature-planner, ..."
 
-### Full Stack Developer (id: full-stack-dev)
-Source: [./agents/full-stack-dev.md](./agents/full-stack-dev.md)
+### Full Stack Developer (id: code-developer)
+Source: [./agents/code-developer.md](./agents/code-developer.md)
 
 - When to use: Code implementation, debugging, refactoring
-- How to activate: "As full-stack-dev, ..."
-- Commands: *develop-story, *help, *explain, *review-qa-test-architect, *run-tests
+- How to activate: "As code-developer, ..."
+- Commands: *develop-story, *help, *explain, *review-quality-assurance, *run-tests
 
 ### Master Orchestrator (id: orchestrator)
 Source: [./agents/orchestrator.md](./agents/orchestrator.md)
@@ -240,24 +241,30 @@ Source: [./agents/master.md](./agents/master.md)
 - When to use: One-off tasks, comprehensive expertise across domains
 - How to activate: "As master, ..."
 
-### Architect (id: holistic-architect)
-Source: [./agents/holistic-architect.md](./agents/holistic-architect.md)
+### Architect (id: system-architect)
+Source: [./agents/system-architect.md](./agents/system-architect.md)
 
 - When to use: System design, technology selection, API design
-- How to activate: "As architect, ..." or "As holistic-architect, ..."
+- How to activate: "As architect, ..." or "As system-architect, ..."
 
-### Context Initializer (id: context-initializer)
-Source: [./agents/context-initializer.md](./agents/context-initializer.md)
+### Context Initializer (id: context-builder)
+Source: [./agents/context-builder.md](./agents/context-builder.md)
 
 - When to use: Use to initialize Ampcode context for new/existing projects, discover and organize documentation, create AGENT.md and KNOWLEDGE_BASE.md for optimal token-efficient memory
-- How to activate: Mention "@context-initializer" or "As context-initializer, ..." to get role-aligned behavior
+- How to activate: Mention "@context-builder" or "As context-builder, ..." to get role-aligned behavior
 - Full definition: open the source file above (content not embedded)
 
-### Business Analyst (id: business-analyst)
-Source: [./agents/business-analyst.md](./agents/business-analyst.md)
+### Business Analyst (id: market-researcher)
+Source: [./agents/market-researcher.md](./agents/market-researcher.md)
 
 - When to use: Market research, competitive analysis, project discovery
-- How to activate: "As analyst, ..." or "As business-analyst, ..."
+- How to activate: "As analyst, ..." or "As market-researcher, ..."
+
+### Documentation Architect (id: docs-builder)
+Source: [./agents/docs-builder.md](./agents/docs-builder.md)
+
+- When to use: Create comprehensive project documentation with structured /docs hierarchy (00-context, 01-product, 02-features, 03-logs, 04-process)
+- How to activate: "As docs-builder, ..." to get role-aligned behavior
 
 ## Tasks
 
@@ -293,7 +300,7 @@ Source: [./resources/task-briefs.md#review-story](./resources/task-briefs.md#rev
 - How to use: Reference the task in your prompt or execute via your configured commands.
 - Full brief: open the source file above (content not embedded)
 
-### Task: qa-test-architect-gate
+### Task: quality-assurance-gate
 Source: [./resources/task-briefs.md#qa-gate](./resources/task-briefs.md#qa-gate)
 - How to use: Reference the task in your prompt or execute via your configured commands.
 - Full brief: open the source file above (content not embedded)

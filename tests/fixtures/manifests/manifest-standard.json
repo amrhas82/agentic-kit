@@ -18,12 +18,12 @@
       "4-generate-tasks.md",
       "master.md",
       "orchestrator.md",
-      "product-manager.md",
-      "scrum-master.md",
-      "product-owner.md",
-      "business-analyst.md",
-      "full-stack-dev.md",
-      "holistic-architect.md"
+      "feature-planner.md",
+      "story-writer.md",
+      "backlog-manager.md",
+      "market-researcher.md",
+      "code-developer.md",
+      "system-architect.md"
     ],
     "skills": [
       "pdf",
@@ -38,10 +38,10 @@
     "resources": [
       "master.txt",
       "orchestrator.txt",
-      "product-manager.txt",
-      "scrum-master.txt",
-      "product-owner.txt",
-      "business-analyst.txt"
+      "feature-planner.txt",
+      "story-writer.txt",
+      "backlog-manager.txt",
+      "market-researcher.txt"
     ],
     "hooks": [
       "register-agents.js",

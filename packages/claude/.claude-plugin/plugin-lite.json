@@ -17,16 +17,16 @@
       "path": "agents/orchestrator.md"
     },
     {
-      "id": "scrum-master",
+      "id": "story-writer",
       "name": "Scrum Master",
       "description": "Project management and team coordination",
-      "path": "agents/scrum-master.md"
+      "path": "agents/story-writer.md"
     },
     {
-      "id": "context-initializer",
+      "id": "context-builder",
       "name": "Context Initializer",
       "description": "Initialize Claude Code context through elicitation, organize docs, create CLAUDE.md and KNOWLEDGE_BASE.md",
-      "path": "agents/context-initializer.md"
+      "path": "agents/context-builder.md"
     }
   ],
   "skills": [],

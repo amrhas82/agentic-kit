@@ -248,13 +248,13 @@ All variants tested and verified correct file counts:
 **Standard Variant:**
 - Expected: 9 agents, 11 skills, 6 resources, 2 hooks
 - Actual: ✅ 9 agents, ✅ 11 skills, ✅ 6 resources, ✅ 2 hooks
-- Added Agents (+5): business-analyst, full-stack-dev, orchestrator, qa-test-architect, ux-expert
+- Added Agents (+5): market-researcher, code-developer, orchestrator, quality-assurance, ui-designer
 - Added Skills (+4): skill-creator, verification-before-completion, webapp-testing, xlsx
 
 **Pro Variant:**
 - Expected: 13 agents, 22 skills, 6 resources, 2 hooks
 - Actual: ✅ 13 agents, ✅ 22 skills, ✅ 6 resources, ✅ 2 hooks
-- Added Agents (+4): holistic-architect, product-manager, product-owner, scrum-master
+- Added Agents (+4): system-architect, feature-planner, backlog-manager, story-writer
 - Added Skills (+11): algorithmic-art, artifacts-builder, brand-guidelines, canvas-design, condition-based-waiting, internal-comms, pptx, slack-gif-creator, test-driven-development, testing-anti-patterns, theme-factory
 
 ### **Backup Creation**

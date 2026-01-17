@@ -155,16 +155,16 @@ Choose a number (0-8) or 9 to proceed:
 ## Apply Qa Fixes {#apply-qa-fixes}
 
 
-# apply-qa-test-architect-fixes
+# apply-quality-assurance-fixes
 
-Implement fixes based on qa-test-architect results (gate and assessments) for a specific story. This task is for the full-stack-dev agent to systematically consume qa-test-architect outputs and apply code/test changes while only updating allowed sections in the story file.
+Implement fixes based on quality-assurance results (gate and assessments) for a specific story. This task is for the code-developer agent to systematically consume quality-assurance outputs and apply code/test changes while only updating allowed sections in the story file.
 
 ## Purpose
 
-- Read qa-test-architect outputs for a story (gate YAML + assessment markdowns)
+- Read quality-assurance outputs for a story (gate YAML + assessment markdowns)
 - Create a prioritized, deterministic fix plan
 - Apply code and test changes to close gaps and address issues
-- Update only the allowed story sections for the full-stack-dev agent
+- Update only the allowed story sections for the code-developer agent
 
 ## Inputs
 
@@ -204,7 +204,7 @@ optional:
 - Locate story file in `{story_root}/{epic}.{story}.*.md`
   - HALT if missing and ask for correct story id/path
 
-### 1) Collect qa-test-architect Findings
+### 1) Collect quality-assurance Findings
 
 - Parse the latest gate YAML:
   - `gate` (PASS|CONCERNS|FAIL|WAIVED)
@@ -246,10 +246,10 @@ Guidance:
 
 ### 5) Update Story (Allowed Sections ONLY)
 
-CRITICAL: full-stack-dev agent is ONLY authorized to update these sections of the story file. Do not modify any other sections (e.g., qa-test-architect Results, Story, Acceptance Criteria, full-stack-dev Notes, Testing):
+CRITICAL: code-developer agent is ONLY authorized to update these sections of the story file. Do not modify any other sections (e.g., quality-assurance Results, Story, Acceptance Criteria, code-developer Notes, Testing):
 
 - Tasks / Subtasks Checkboxes (mark any fix subtask you added as done)
-- full-stack-dev Agent Record →
+- code-developer Agent Record →
   - Agent Model Used (if changed)
   - Debug Log References (commands/results, e.g., lint/tests)
   - Completion Notes List (what changed, why, how)
@@ -260,17 +260,17 @@ CRITICAL: full-stack-dev agent is ONLY authorized to update these sections of th
 Status Rule:
 
 - If gate was PASS and all identified gaps are closed → set `Status: Ready for Done`
-- Otherwise → set `Status: Ready for Review` and notify qa-test-architect to re-run the review
+- Otherwise → set `Status: Ready for Review` and notify quality-assurance to re-run the review
 
 ### 6) Do NOT Edit Gate Files
 
-- full-stack-dev does not modify gate YAML. If fixes address issues, request qa-test-architect to re-run `review-story` to update the gate
+- code-developer does not modify gate YAML. If fixes address issues, request quality-assurance to re-run `review-story` to update the gate
 
 ## Blocking Conditions
 
 - Missing `.core-config.yaml`
 - Story file not found for `story_id`
-- No qa-test-architect artifacts found (neither gate nor assessments)
+- No quality-assurance artifacts found (neither gate nor assessments)
   - HALT and request QA to generate at least a gate file (or proceed only with clear developer-provided fix list)
 
 ## Completion Checklist
@@ -294,7 +294,7 @@ Fix plan:
 
 - Add a test ensuring the Toolkit Menu "Back" action returns to Main Menu
 - Add a static test verifying imports for service/view go through `deps.ts`
-- Re-run lint/tests and update full-stack-dev Agent Record + File List accordingly
+- Re-run lint/tests and update code-developer Agent Record + File List accordingly
 
 ## Key Principles
 
@@ -302,7 +302,7 @@ Fix plan:
 - Minimal, maintainable changes
 - Tests validate behavior and close gaps
 - Strict adherence to allowed story update areas
-- Gate ownership remains with QA; full-stack-dev signals readiness via Status
+- Gate ownership remains with QA; code-developer signals readiness via Status
 
 
 ---
@@ -668,7 +668,7 @@ The story creation is successful when:
 
 ### 3. Draft Proposed Changes (Iteratively or Batched)
 
-- Based on the completed checklist analysis (Sections 1-4) and the agreed "Recommended Path Forward" (excluding scenarios requiring fundamental replans that would necessitate immediate handoff to product-manager/holistic-architect):
+- Based on the completed checklist analysis (Sections 1-4) and the agreed "Recommended Path Forward" (excluding scenarios requiring fundamental replans that would necessitate immediate handoff to feature-planner/system-architect):
   - Identify the specific project artifacts that require updates (e.g., specific epics, user stories, PRD sections, architecture document components, diagrams).
   - **Draft the proposed changes directly and explicitly for each identified artifact.** Examples include:
     - Revising user story text, acceptance criteria, or priority.
@@ -692,8 +692,8 @@ The story creation is successful when:
 - Obtain explicit user approval for the "Sprint Change Proposal," including all the specific edits documented within it.
 - Provide the finalized "Sprint Change Proposal" document to the user.
 - **Based on the nature of the approved changes:**
-  - **If the approved edits sufficiently address the change and can be implemented directly or organized by a product-owner/scrum-master:** State that the "Correct Course Task" is complete regarding analysis and change proposal, and the user can now proceed with implementing or logging these changes (e.g., updating actual project documents, backlog items). Suggest handoff to a product-owner/scrum-master agent for backlog organization if appropriate.
-  - **If the analysis and proposed path (as per checklist Section 4 and potentially Section 6) indicate that the change requires a more fundamental replan (e.g., significant scope change, major architectural rework):** Clearly state this conclusion. Advise the user that the next step involves engaging the primary product-manager or Architect agents, using the "Sprint Change Proposal" as critical input and context for that deeper replanning effort.
+  - **If the approved edits sufficiently address the change and can be implemented directly or organized by a backlog-manager/story-writer:** State that the "Correct Course Task" is complete regarding analysis and change proposal, and the user can now proceed with implementing or logging these changes (e.g., updating actual project documents, backlog items). Suggest handoff to a backlog-manager/story-writer agent for backlog organization if appropriate.
+  - **If the analysis and proposed path (as per checklist Section 4 and potentially Section 6) indicate that the change requires a more fundamental replan (e.g., significant scope change, major architectural rework):** Clearly state this conclusion. Advise the user that the next step involves engaging the primary feature-planner or Architect agents, using the "Sprint Change Proposal" as critical input and context for that deeper replanning effort.
 
 ## Output Deliverables
 
@@ -712,7 +712,7 @@ The story creation is successful when:
 
 ## Purpose
 
-Create detailed, implementation-ready stories for brownfield projects where traditional sharded PRD/architecture documents may not exist. This task bridges the gap between various documentation formats (document-project output, brownfield PRDs, epics, or user documentation) and executable stories for the full-stack-dev agent.
+Create detailed, implementation-ready stories for brownfield projects where traditional sharded PRD/architecture documents may not exist. This task bridges the gap between various documentation formats (document-project output, brownfield PRDs, epics, or user documentation) and executable stories for the code-developer agent.
 
 ## When to Use This Task
 
@@ -847,10 +847,10 @@ Standard structure:
 
 Critical: This is where you'll need to be interactive with the user if information is missing
 
-Create full-stack-dev Technical Guidance section with available information:
+Create code-developer Technical Guidance section with available information:
 
 ````markdown
-## full-stack-dev Technical Guidance
+## code-developer Technical Guidance
 
 ### Existing System Context
 
@@ -866,7 +866,7 @@ Create full-stack-dev Technical Guidance section with available information:
 
 ### Missing Information
 
-Critical: List anything you couldn't find that full-stack-dev will need and ask for the missing information
+Critical: List anything you couldn't find that code-developer will need and ask for the missing information
 
 ### 4. Task Generation with Safety Checks
 
@@ -949,7 +949,7 @@ Before finalizing:
 
 3. **Information Gaps**:
    - [ ] All critical missing information gathered from user
-   - [ ] Remaining unknowns documented for full-stack-dev agent
+   - [ ] Remaining unknowns documented for code-developer agent
    - [ ] Exploration tasks added where needed
 
 ### 7. Story Output Format
@@ -997,14 +997,14 @@ Next Steps:
 1. Review story for accuracy
 2. Verify integration approach aligns with your system
 3. Approve story or request adjustments
-4. full-stack-dev agent can then implement with safety checks
+4. code-developer agent can then implement with safety checks
 ```
 
 ## Success Criteria
 
 The brownfield story creation is successful when:
 
-1. Story can be implemented without requiring full-stack-dev to search multiple documents
+1. Story can be implemented without requiring code-developer to search multiple documents
 2. Integration approach is clear and safe for existing system
 3. All available technical context has been extracted and organized
 4. Missing information has been identified and addressed
@@ -1393,7 +1393,7 @@ When processing sections with agent permission fields:
 **For sections with restricted access:**
 
 - Include a note in the generated document indicating the responsible agent
-- Example: "_(This section is owned by full-stack-dev-agent and can only be modified by full-stack-dev-agent)_"
+- Example: "_(This section is owned by code-developer-agent and can only be modified by code-developer-agent)_"
 
 ## YOLO Mode
 
@@ -1451,7 +1451,7 @@ To identify the next logical story based on project progress and epic definition
 ### 2. Gather Story Requirements and Previous Story Context
 
 - Extract story requirements from the identified epic file
-- If previous story exists, review full-stack-dev Agent Record sections for:
+- If previous story exists, review code-developer Agent Record sections for:
   - Completion Notes and Debug Log References
   - Implementation deviations and technical decisions
   - Challenges encountered and lessons learned
@@ -1499,7 +1499,7 @@ ALWAYS cite source documents: `[Source: architecture/{filename}.md#{section}]`
 
 - Create new story file: `{devStoryLocation}/{epicNum}.{storyNum}.story.md` using Story Template
 - Fill in basic story information: Title, Status (Draft), Story statement, Acceptance Criteria from Epic
-- **`full-stack-dev Notes` section (CRITICAL):**
+- **`code-developer Notes` section (CRITICAL):**
   - CRITICAL: This section MUST contain ONLY information extracted from architecture documents. NEVER invent or assume technical details.
   - Include ALL relevant technical details from Steps 2-3, organized by category:
     - **Previous Story Insights**: Key learnings from previous story
@@ -1784,7 +1784,7 @@ etc...
 - Unit Tests: 60% coverage (Jest)
 - Integration Tests: Minimal, in `tests/integration/`
 - E2E Tests: None
-- Manual Testing: Primary qa-test-architect method
+- Manual Testing: Primary quality-assurance method
 
 ### Running Tests
 
@@ -2007,7 +2007,7 @@ Ask 4 context questions (don't preview what happens next):
 After getting answers to Step 1, present 4 approach options (numbered):
 
 1. User selects specific techniques
-2. business-analyst recommends techniques based on context
+2. market-researcher recommends techniques based on context
 3. Random technique selection for creative variety
 4. Progressive technique flow (start broad, narrow down)
 
@@ -2936,7 +2936,7 @@ waiver:
 After creating gate file, append to story's QA Results section:
 
 ```markdown
-## qa-test-architect Results
+## quality-assurance Results
 
 ### Review Date: 2025-01-12
 
@@ -3046,8 +3046,8 @@ required:
 
 - Refactor code where safe and appropriate
 - Run tests to ensure changes don't break functionality
-- Document all changes in qa-test-architect Results section with clear WHY and HOW
-- Do NOT alter story content beyond qa-test-architect Results section
+- Document all changes in quality-assurance Results section with clear WHY and HOW
+- Do NOT alter story content beyond quality-assurance Results section
 - Do NOT change story Status or File List; recommend next status only
 
 ### 4. Standards Compliance Check
@@ -3069,20 +3069,20 @@ required:
 - Add comments for complex logic if missing
 - Ensure any API changes are documented
 
-## Output 1: Update Story File - qa-test-architect Results Section ONLY
+## Output 1: Update Story File - quality-assurance Results Section ONLY
 
-**CRITICAL**: You are ONLY authorized to update the "qa-test-architect Results" section of the story file. DO NOT modify any other sections.
+**CRITICAL**: You are ONLY authorized to update the "quality-assurance Results" section of the story file. DO NOT modify any other sections.
 
-**qa-test-architect Results Anchor Rule:**
+**quality-assurance Results Anchor Rule:**
 
-- If `## qa-test-architect Results` doesn't exist, append it at end of file
+- If `## quality-assurance Results` doesn't exist, append it at end of file
 - If it exists, append a new dated entry below existing entries
 - Never edit other sections
 
-After review and any refactoring, append your results to the story file in the qa-test-architect Results section:
+After review and any refactoring, append your results to the story file in the quality-assurance Results section:
 
 ```markdown
-## qa-test-architect Results
+## quality-assurance Results
 
 ### Review Date: [Date]
 
@@ -3110,7 +3110,7 @@ After review and any refactoring, append your results to the story file in the q
 
 ### Improvements Checklist
 
-[Check off items you handled yourself, leave unchecked for full-stack-dev to address]
+[Check off items you handled yourself, leave unchecked for code-developer to address]
 
 - [x] Refactored user service for better error handling (services/user.service.ts)
 - [x] Added missing edge case tests (services/user.service.test.ts)
@@ -3128,7 +3128,7 @@ After review and any refactoring, append your results to the story file in the q
 
 ### Files Modified During Review
 
-[If you modified files, list them here - ask full-stack-dev to update File List]
+[If you modified files, list them here - ask code-developer to update File List]
 
 ### Gate Status
 
@@ -3245,9 +3245,9 @@ If `technical-preferences.md` defines custom weights, use those instead.
 
 For each issue in `top_issues`, include a `suggested_owner`:
 
-- `full-stack-dev`: Code changes needed
-- `scrum-master`: Requirements clarification needed
-- `product-owner`: Business decision needed
+- `code-developer`: Code changes needed
+- `story-writer`: Requirements clarification needed
+- `backlog-manager`: Business decision needed
 
 ## Key Principles
 
@@ -3275,7 +3275,7 @@ After review:
 1. Update the QA Results section in the story file
 2. Create the gate file in directory from `qa.qaLocation/gates`
 3. Recommend status: "Ready for Done" or "Changes Required" (owner decides)
-4. If files were modified, list them in QA Results and ask full-stack-dev to update File List
+4. If files were modified, list them in QA Results and ask code-developer to update File List
 5. Always provide constructive feedback and actionable recommendations
 
 
@@ -3431,7 +3431,7 @@ mitigation:
     - 'Manual penetration testing of forms'
     - 'Unit tests for validation functions'
   residual_risk: 'Low - Some zero-day vulnerabilities may remain'
-  owner: 'full-stack-dev'
+  owner: 'code-developer'
   timeline: 'Before deployment'
 ```
 
@@ -4318,7 +4318,7 @@ To comprehensively validate a story draft before implementation begins, ensuring
 ### 2. File Structure and Source Tree Validation
 
 - **File paths clarity**: Are new/existing files to be created/modified clearly specified?
-- **Source tree relevance**: Is relevant project structure included in full-stack-dev Notes?
+- **Source tree relevance**: Is relevant project structure included in code-developer Notes?
 - **Directory structure**: Are new directories/components properly located according to project structure?
 - **File creation sequence**: Do tasks specify where files should be created in logical order?
 - **Path accuracy**: Are file paths consistent with project structure from architecture docs?
@@ -4366,16 +4366,16 @@ To comprehensively validate a story draft before implementation begins, ensuring
 ### 8. Anti-Hallucination Verification
 
 - **Source verification**: Every technical claim must be traceable to source documents
-- **Architecture alignment**: full-stack-dev Notes content matches architecture specifications
+- **Architecture alignment**: code-developer Notes content matches architecture specifications
 - **No invented details**: Flag any technical decisions not supported by source documents
 - **Reference accuracy**: Verify all source references are correct and accessible
 - **Fact checking**: Cross-reference claims against epic and architecture documents
 
-### 9. full-stack-dev Agent Implementation Readiness
+### 9. code-developer Agent Implementation Readiness
 
 - **Self-contained context**: Can the story be implemented without reading external docs?
 - **Clear instructions**: Are implementation steps unambiguous?
-- **Complete technical context**: Are all required technical details present in full-stack-dev Notes?
+- **Complete technical context**: Are all required technical details present in code-developer Notes?
 - **Missing information**: Identify any critical information gaps
 - **Actionability**: Are all tasks actionable by a development agent?
 

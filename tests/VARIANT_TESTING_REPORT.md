@@ -45,7 +45,7 @@ Comprehensive testing of all variants (Lite, Standard, Pro) across all 4 tools (
 - ✓ Verify component counts
 - ✓ Create manifest
 - ✓ Verify manifest correctness
-- ✓ Verify Lite agents (master, orchestrator, scrum-master)
+- ✓ Verify Lite agents (master, orchestrator, story-writer)
 - ✓ Cleanup
 
 #### Claude - Standard
@@ -79,7 +79,7 @@ Comprehensive testing of all variants (Lite, Standard, Pro) across all 4 tools (
 - ✓ Verify component counts
 - ✓ Create manifest
 - ✓ Verify manifest correctness
-- ✓ Verify Lite agents (master, orchestrator, scrum-master)
+- ✓ Verify Lite agents (master, orchestrator, story-writer)
 - ✓ Cleanup
 
 #### Opencode - Standard
@@ -113,7 +113,7 @@ Comprehensive testing of all variants (Lite, Standard, Pro) across all 4 tools (
 - ✓ Verify component counts
 - ✓ Create manifest
 - ✓ Verify manifest correctness
-- ✓ Verify Lite agents (master, orchestrator, scrum-master)
+- ✓ Verify Lite agents (master, orchestrator, story-writer)
 - ✓ Cleanup
 
 #### Ampcode - Standard
@@ -147,7 +147,7 @@ Comprehensive testing of all variants (Lite, Standard, Pro) across all 4 tools (
 - ✓ Verify component counts
 - ✓ Create manifest
 - ✓ Verify manifest correctness
-- ✓ Verify Lite agents (master, orchestrator, scrum-master)
+- ✓ Verify Lite agents (master, orchestrator, story-writer)
 - ✓ Cleanup
 
 #### Droid - Standard
@@ -240,7 +240,7 @@ All manifest.json files created and verified successfully:
 All tools verified to have exactly these 3 agents:
 - ✅ `master.md`
 - ✅ `orchestrator.md`
-- ✅ `scrum-master.md`
+- ✅ `story-writer.md`
 
 ### Standard Variant - Required Skills
 All tools verified to have exactly these 8 skills:

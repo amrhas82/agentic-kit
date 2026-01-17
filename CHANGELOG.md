@@ -245,7 +245,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - npm version badge in README
 
 ### Changed
-- Agent invocation syntax to lowercase with hyphens (`@product-manager:` not `@ProductManager:`)
+- Agent invocation syntax to lowercase with hyphens (`@feature-planner:` not `@ProductManager:`)
 - npx clarification - Clearly states it runs temporarily without installing
 - README structure - Now quick start focused, links to detailed docs in `docs/`
 

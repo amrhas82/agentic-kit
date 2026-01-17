@@ -156,8 +156,8 @@ Progress: ████████████████████ 100% (13/
   ✓ Copied 8-improve-system-prompt.md
   ✓ Copied 9-design-agent.md
   ✓ Copied 10-research-writer.md
-  ✓ Copied 11-product-manager.md
-  ✓ Copied 12-scrum-master.md
+  ✓ Copied 11-feature-planner.md
+  ✓ Copied 12-story-writer.md
 
 Copying skills...
 Progress: ████████████████████ 100% (8/8 directories)
@@ -217,8 +217,8 @@ Progress: ████████████████████ 100% (13/
   ✓ 8-improve-system-prompt.md - OK (11.6 KB)
   ✓ 9-design-agent.md - OK (17.2 KB)
   ✓ 10-research-writer.md - OK (14.5 KB)
-  ✓ 11-product-manager.md - OK (16.8 KB)
-  ✓ 12-scrum-master.md - OK (15.1 KB)
+  ✓ 11-feature-planner.md - OK (16.8 KB)
+  ✓ 12-story-writer.md - OK (15.1 KB)
 
 Checking skills...
 Progress: ████████████████████ 100% (8/8 skills)

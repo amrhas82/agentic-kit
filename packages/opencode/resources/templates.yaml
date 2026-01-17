@@ -5259,7 +5259,7 @@ Document the starter template
     - id: next-steps
       title: Next Steps
       sections:
-      - id: ux-expert-prompt
+      - id: ui-designer-prompt
         title: UX Expert Prompt
         instruction: This section will contain the prompt for the UX Expert, keep
           it short and to the point to initiate create architecture mode using this
@@ -5297,7 +5297,7 @@ Document the starter template
     sections:
     - id: introduction
       instruction: 'This template guides creation of a comprehensive Project Brief
-        that serves as the foundational input for product developroduct-managerent.
+        that serves as the foundational input for product develofeature-plannerent.
 
 
         Start by asking the user which mode they prefer:
@@ -5526,7 +5526,7 @@ Document the starter template
         title: Immediate Actions
         type: numbered-list
         template: '{{action_item}}'
-      - id: product-manager-handoff
+      - id: feature-planner-handoff
         title: PM Handoff
         content: 'This Project Brief provides the full context for {{project_name}}.
           Please start in ''PRD Generation Mode'', review the brief thoroughly to
@@ -5662,9 +5662,9 @@ Document the starter template
       - Review
       - Done
       instruction: Select the current status of the story
-      owner: scrum-master
+      owner: story-writer
       editors:
-      - scrum-master
+      - story-writer
       - dev-agent
     - id: story
       title: Story
@@ -5679,17 +5679,17 @@ Document the starter template
       instruction: Define the user story using the standard format with role, action,
         and benefit
       elicit: true
-      owner: scrum-master
+      owner: story-writer
       editors:
-      - scrum-master
+      - story-writer
     - id: acceptance-criteria
       title: Acceptance Criteria
       type: numbered-list
       instruction: Copy the acceptance criteria numbered list from the epic file
       elicit: true
-      owner: scrum-master
+      owner: story-writer
       editors:
-      - scrum-master
+      - story-writer
     - id: tasks-subtasks
       title: Tasks / Subtasks
       type: bullet-list
@@ -5708,9 +5708,9 @@ Document the starter template
     - [ ] Subtask 3.1...
   
       elicit: true
-      owner: scrum-master
+      owner: story-writer
       editors:
-      - scrum-master
+      - story-writer
       - dev-agent
     - id: dev-notes
       title: Dev Notes
@@ -5732,9 +5732,9 @@ Document the starter template
 
         '
       elicit: true
-      owner: scrum-master
+      owner: story-writer
       editors:
-      - scrum-master
+      - story-writer
       sections:
       - id: testing-standards
         title: Testing
@@ -5751,9 +5751,9 @@ Document the starter template
 
           '
         elicit: true
-        owner: scrum-master
+        owner: story-writer
         editors:
-        - scrum-master
+        - story-writer
     - id: change-log
       title: Change Log
       type: table
@@ -5763,9 +5763,9 @@ Document the starter template
       - Description
       - Author
       instruction: Track changes made to this story document
-      owner: scrum-master
+      owner: story-writer
       editors:
-      - scrum-master
+      - story-writer
       - dev-agent
       - qa-agent
     - id: dev-agent-record
