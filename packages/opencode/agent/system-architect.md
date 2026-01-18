@@ -1,6 +1,5 @@
 ---
-id: system-architect
-title: Architect
+name: system-architect
 description: Design systems, select tech, plan architecture
 when_to_use: Use for system design, architecture documents, technology selection, API design, and infrastructure planning
 mode: subagent

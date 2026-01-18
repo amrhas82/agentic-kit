@@ -1,6 +1,5 @@
 ---
-id: code-developer
-title: Full Stack Developer
+name: code-developer
 description: Implement code, debug, refactor
 when_to_use: Use for code implementation, debugging, refactoring, and development best practices
 mode: subagent

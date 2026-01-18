@@ -1,6 +1,5 @@
 ---
-id: orchestrator
-title: Master Orchestrator
+name: orchestrator
 description: Coordinate workflows, route to specialists
 when_to_use: Use for workflow coordination, multi-agent tasks, role switching guidance, and when unsure which specialist to consult
 mode: primary

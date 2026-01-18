@@ -1,6 +1,5 @@
 ---
-id: market-researcher
-title: Business Analyst
+name: market-researcher
 description: Research markets, analyze competitors, brainstorm
 when_to_use: Use for market research, brainstorming, competitive analysis, creating project briefs, initial project discovery, and documenting existing projects (brownfield)
 model: inherit

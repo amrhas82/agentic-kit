@@ -1,6 +1,5 @@
 ---
-id: feature-planner
-title: Product Manager
+name: feature-planner
 description: Create PRDs, plan features, prioritize roadmap
 when_to_use: Use for creating PRDs, product strategy, feature prioritization, roadmap planning, and stakeholder communication
 mode: subagent

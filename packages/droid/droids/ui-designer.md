@@ -1,6 +1,5 @@
 ---
-id: ui-designer
-title: UX Expert
+name: ui-designer
 description: Design UI/UX, wireframes, accessibility
 when_to_use: Use for UI/UX design, wireframes, prototypes, front-end specifications, and user experience optimization
 model: inherit
