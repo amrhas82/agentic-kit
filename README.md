@@ -160,26 +160,6 @@ agentic-kit
 
 ---
 
-## 🔧 Advanced Usage
-
-### Silent Installation (CI/CD)
-```bash
-agentic-kit --tool claude --yes
-```
-
-### Multiple Tools
-```bash
-agentic-kit
-# Enter: claude opencode
-```
-
-### Uninstall
-```bash
-agentic-kit --uninstall claude
-```
-
----
-
 ## 📊 Stats
 
 - **14** Specialized Agents
