@@ -1,30 +1,21 @@
 #!/usr/bin/env node
 
-const message = `
-==========================================
-  Agentic Kit Installation Complete
-==========================================
+const colors = {
+  bright: '\x1b[1m',
+  cyan: '\x1b[36m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  reset: '\x1b[0m'
+};
 
-Next step: Run the installer
-
-  $ agentic-kit
-
-Each tool includes 14 agents + 20 commands
-
-Available tools:
-  • claude    - Claude Code (AI development assistant)
-  • opencode  - OpenCode (CLI-optimized AI tool)
-  • ampcode   - Ampcode (Development accelerator)
-  • droid     - Droid (Android-focused assistant)
-
-Quick commands:
-  agentic-kit              # Install tools
-  agentic-kit --uninstall  # Remove tools
-
-Documentation:
-  https://github.com/amrhas82/agentic-kit
-
-==========================================
-`;
-
-console.log(message);
+console.log('');
+console.log(`${colors.green}==========================================`);
+console.log(`  Agentic Kit Installation Complete`);
+console.log(`==========================================${colors.reset}`);
+console.log('');
+console.log(`${colors.bright}${colors.yellow}Next step: Run the installer${colors.reset}`);
+console.log('');
+console.log(`  ${colors.cyan}$ agentic-kit${colors.reset}`);
+console.log('');
+console.log(`${colors.green}==========================================${colors.reset}`);
+console.log('');

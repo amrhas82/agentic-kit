@@ -1,6 +1,6 @@
 {
   "name": "@amrhas82/agentic-kit",
-  "version": "1.9.1",
+  "version": "1.10.0",
   "description": "AI development toolkit with 14 specialized agents and 20 commands. Simple one-question installer for Claude, Opencode, Ampcode, and Droid.",
   "main": "index.js",
   "bin": {

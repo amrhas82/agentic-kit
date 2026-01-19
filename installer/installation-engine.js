@@ -6,13 +6,11 @@
 
 const fs = require('fs');
 const path = require('path');
-const StateManager = require('./state-manager');
 
 class InstallationEngine {
-  constructor(pathManager, packageManager, stateManager = null) {
+  constructor(pathManager, packageManager) {
     this.pathManager = pathManager;
     this.packageManager = packageManager;
-    this.stateManager = stateManager || new StateManager();
     this.installationLog = [];
     this.backupLog = [];
     this.rollbackLog = [];
@@ -119,8 +117,6 @@ class InstallationEngine {
     const sourceDir = path.join(this.packageManager.packagesDir, toolId);
     const expandedTargetPath = this.pathManager.expandPath(targetPath);
 
-    console.log(`Installing ${toolId} ${variant} package to ${expandedTargetPath}`);
-
     // Initialize session log for this installation
     this.sessionLog = {
       installedFiles: [],
@@ -138,7 +134,6 @@ class InstallationEngine {
       // Check for existing installation
       const existing = await this.pathManager.checkExistingInstallation(targetPath);
       if (existing.exists) {
-        console.log(`Existing installation found, creating backup...`);
         await this.createBackup(expandedTargetPath);
       }
 
@@ -162,8 +157,6 @@ class InstallationEngine {
         target: expandedTargetPath,
         timestamp: new Date().toISOString()
       });
-
-      console.log(`✓ ${toolId} installed successfully`);
 
     } catch (error) {
       console.error(`✗ Failed to install ${toolId}: ${error.message}`);
@@ -335,18 +328,29 @@ class InstallationEngine {
    * (Legacy method - kept for backup/restore functionality)
    */
   async copyDirectory(source, target) {
+    await fs.promises.mkdir(target, { recursive: true });
     const items = await fs.promises.readdir(source);
 
     for (const item of items) {
       const sourcePath = path.join(source, item);
       const targetPath = path.join(target, item);
-      const stat = await fs.promises.stat(sourcePath);
 
-      if (stat.isDirectory()) {
-        await fs.promises.mkdir(targetPath, { recursive: true });
-        await this.copyDirectory(sourcePath, targetPath);
-      } else {
-        await fs.promises.copyFile(sourcePath, targetPath);
+      try {
+        const stat = await fs.promises.lstat(sourcePath); // Use lstat to detect symlinks
+
+        if (stat.isSymbolicLink()) {
+          // Skip symlinks during backup
+          continue;
+        }
+
+        if (stat.isDirectory()) {
+          await this.copyDirectory(sourcePath, targetPath);
+        } else if (stat.isFile()) {
+          await fs.promises.copyFile(sourcePath, targetPath);
+        }
+      } catch (error) {
+        // Skip files that can't be copied (permissions, special files, etc.)
+        continue;
       }
     }
   }
@@ -438,16 +442,14 @@ class InstallationEngine {
     
     try {
       await this.copyDirectory(targetPath, backupPath);
-      
+
       this.backupLog.push({
         original: targetPath,
         backup: backupPath,
         timestamp: new Date().toISOString()
       });
-      
-      console.log(`Backup created: ${backupPath}`);
     } catch (error) {
-      console.warn(`Warning: Could not create backup: ${error.message}`);
+      // Silently continue if backup fails (e.g., special files, symlinks)
     }
   }
   
@@ -852,35 +854,35 @@ class InstallationEngine {
   }
 
   /**
-   * Get state manager instance
-   * Allows external access to state management functionality
-   *
-   * @returns {StateManager} - State manager instance
+   * Get state manager (stub - state management removed)
+   * @returns {Object} - Stub state manager
    */
   getStateManager() {
-    return this.stateManager;
+    return {
+      initializeState: () => {},
+      saveState: async () => {},
+      getState: () => null,
+      completeCurrentTool: async () => {},
+      failCurrentTool: async () => {},
+      clearState: async () => {},
+      updateFileProgress: async () => {}
+    };
   }
 
   /**
-   * Check if there is an interrupted installation that can be resumed
-   *
-   * @returns {Promise<boolean>} - True if interrupted installation exists
+   * Check for interrupted installation (stub - always returns false)
+   * @returns {Promise<boolean>}
    */
   async hasInterruptedInstallation() {
-    return await this.stateManager.hasInterruptedInstallation();
+    return false;
   }
 
   /**
-   * Get resume summary for interrupted installation
-   *
-   * @returns {Promise<Object|null>} - Resume summary or null
+   * Get resume summary (stub - always returns null)
+   * @returns {Promise<null>}
    */
   async getResumeSummary() {
-    const hasInterrupted = await this.stateManager.hasInterruptedInstallation();
-    if (!hasInterrupted) {
-      return null;
-    }
-    return this.stateManager.getResumeSummary();
+    return null;
   }
 
   /**
@@ -1001,7 +1003,7 @@ class InstallationEngine {
         result.backupPath = backupPath;
         console.log(`Backup created: ${backupPath}`);
       } catch (error) {
-        result.warnings.push(`Warning: Could not create backup: ${error.message}`);
+        // Silently continue if backup fails
       }
 
       // Step 6: Remove files with progress tracking

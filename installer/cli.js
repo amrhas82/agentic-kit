@@ -34,13 +34,9 @@ class InteractiveInstaller {
     });
 
     this.selections = {
-      variant: null,
       tools: [],
       paths: {}
     };
-
-    // Command-line arguments
-    this.cliArgs = this.parseCommandLineArgs();
 
     // Initialize PackageManager for accessing package information
     const PackageManager = require('./package-manager');
@@ -51,240 +47,52 @@ class InteractiveInstaller {
         id: 'claude',
         name: 'Claude Code',
         path: '~/.claude',
-        description: 'AI-powered development assistant',
-        useCase: 'General software development with conversational AI',
-        targetUsers: 'All developers'
+        description: 'AI-powered development assistant'
       },
       {
         id: 'opencode',
         name: 'Opencode',
         path: '~/.config/opencode',
-        description: 'CLI-optimized AI codegen tool',
-        useCase: 'Terminal-based development and automation',
-        targetUsers: 'CLI power users, DevOps teams'
+        description: 'CLI-optimized AI codegen tool'
       },
       {
         id: 'ampcode',
         name: 'Ampcode',
         path: '~/.config/amp',
-        description: 'Amplified AI development accelerator',
-        useCase: 'Velocity-focused workflows and rapid prototyping',
-        targetUsers: 'Teams seeking development acceleration'
+        description: 'Amplified AI development accelerator'
       },
       {
         id: 'droid',
         name: 'Droid',
         path: '~/.factory',
-        description: 'Android-focused AI development companion',
-        useCase: 'Mobile app development with Android Studio',
-        targetUsers: 'Android developers, mobile teams'
+        description: 'Android-focused AI development companion'
       }
     ];
-    
-    this.variants = [
-      { id: 'lite', name: 'Lite', agents: 3, skills: 0, description: 'Minimal setup, CI/CD' },
-      { id: 'standard', name: 'Standard', agents: 14, skills: 8, description: 'Most users, general dev' },
-      { id: 'pro', name: 'Pro', agents: 14, skills: 20, description: 'Full installation, all features' }
-    ];
   }
 
-  /**
-   * Parse command-line arguments
-   * Supports various flags for non-interactive operation
-   *
-   * @returns {Object} - Parsed arguments object
-   */
-  parseCommandLineArgs() {
-    const args = process.argv.slice(2);
-    const parsed = {
-      help: false,
-      uninstall: null,
-      upgrade: null,
-      upgradeVariant: null,
-      variant: null,
-      tools: [],
-      paths: {},
-      silent: false,
-      nonInteractive: false,
-      config: null,
-      noTelemetry: false
-    };
+  async askInstallOrUninstall() {
+    console.log('\nWhat would you like to do?\n');
+    console.log('  1. Install tools');
+    console.log('  2. Uninstall tools\n');
 
-    for (let i = 0; i < args.length; i++) {
-      const arg = args[i];
-
-      if (arg === '--help' || arg === '-h') {
-        parsed.help = true;
-      } else if (arg === '--uninstall') {
-        parsed.uninstall = args[++i];
-      } else if (arg === '--upgrade') {
-        parsed.upgrade = args[++i];
-        parsed.upgradeVariant = args[++i];
-      } else if (arg === '--variant') {
-        parsed.variant = args[++i];
-      } else if (arg === '--tools') {
-        parsed.tools = args[++i].split(',').map(t => t.trim());
-      } else if (arg === '--path') {
-        const pathArg = args[++i];
-        const [tool, pathValue] = pathArg.split('=');
-        parsed.paths[tool] = pathValue;
-      } else if (arg === '--silent' || arg === '--non-interactive' || arg === '--yes' || arg === '-y') {
-        parsed.silent = true;
-        parsed.nonInteractive = true;
-      } else if (arg === '--config') {
-        parsed.config = args[++i];
-      } else if (arg === '--no-telemetry') {
-        parsed.noTelemetry = true;
-      }
-    }
-
-    return parsed;
+    const choice = await this.askQuestion('Enter choice (1 or 2): ', '1');
+    return choice === '2' ? 'uninstall' : 'install';
   }
 
-  /**
-   * Display help information
-   * Shows usage, options, and examples
-   */
-  showHelp() {
-    console.log(`
-${colors.bright}${colors.cyan}Agentic Kit Installer${colors.reset}
-
-${colors.bright}USAGE:${colors.reset}
-  node installer/cli.js [OPTIONS]
-
-${colors.bright}OPTIONS:${colors.reset}
-  ${colors.green}--help, -h${colors.reset}
-      Display this help message
-
-  ${colors.green}--uninstall <tool>${colors.reset}
-      Uninstall a specific tool
-      Example: node installer/cli.js --uninstall claude
-
-  ${colors.green}--upgrade <tool> <variant>${colors.reset}
-      Upgrade or downgrade a tool to a different variant
-      Example: node installer/cli.js --upgrade claude pro
-      Example: node installer/cli.js --upgrade claude lite
-
-  ${colors.green}--variant <lite|standard|pro>${colors.reset}
-      Select package variant (non-interactive mode)
-      Example: node installer/cli.js --variant standard --tools claude
-
-  ${colors.green}--tools <tool1,tool2,...>${colors.reset}
-      Select tools to install (comma-separated, non-interactive mode)
-      Example: node installer/cli.js --variant standard --tools claude,opencode
-
-  ${colors.green}--path <tool>=<path>${colors.reset}
-      Specify custom installation path for a tool
-      Example: node installer/cli.js --variant standard --tools claude --path claude=/custom/path
-
-  ${colors.green}--silent, --non-interactive, --yes, -y${colors.reset}
-      Run in silent mode (no prompts, auto-confirm all)
-      Example: node installer/cli.js --variant standard --tools claude --silent
-
-  ${colors.green}--config <file>${colors.reset}
-      Load configuration from JSON file
-      Example: node installer/cli.js --config install-config.json
-
-  ${colors.green}--no-telemetry${colors.reset}
-      Disable anonymous usage statistics collection
-      Example: node installer/cli.js --no-telemetry
-      See docs/PRIVACY.md for details
-
-${colors.bright}TOOLS:${colors.reset}
-  ${colors.cyan}claude${colors.reset}     - Claude Code (AI-powered development assistant)
-  ${colors.cyan}opencode${colors.reset}   - Opencode (CLI-optimized AI codegen tool)
-  ${colors.cyan}ampcode${colors.reset}    - Ampcode (Amplified AI development accelerator)
-  ${colors.cyan}droid${colors.reset}      - Droid (Android-focused AI development companion)
-
-${colors.bright}VARIANTS:${colors.reset}
-  ${colors.cyan}lite${colors.reset}       - Minimal setup (3 agents, 0 skills) - For CI/CD
-  ${colors.cyan}standard${colors.reset}   - Standard setup (14 agents, 8 skills) - For most users
-  ${colors.cyan}pro${colors.reset}        - Full setup (14 agents, 20 commands) - Default for everyone
-
-${colors.bright}EXAMPLES:${colors.reset}
-  # Interactive installation (default)
-  node installer/cli.js
-
-  # Install Claude with Standard variant (non-interactive)
-  node installer/cli.js --variant standard --tools claude
-
-  # Install multiple tools with custom paths
-  node installer/cli.js --variant pro --tools claude,opencode --path claude=~/.claude-custom
-
-  # Uninstall a tool
-  node installer/cli.js --uninstall claude
-
-  # Silent installation for CI/CD
-  node installer/cli.js --variant lite --tools claude --silent
-
-${colors.bright}For more information, visit:${colors.reset}
-  https://github.com/amrhas82/agentic-kit
-`);
-  }
 
   async run() {
     try {
-      // Handle --help flag
-      if (this.cliArgs.help) {
-        this.showHelp();
-        process.exit(0);
-      }
-
-      // Handle --uninstall flag
-      if (this.cliArgs.uninstall) {
-        await this.runUninstall(this.cliArgs.uninstall);
-        process.exit(0);
-      }
-
-      // Handle --upgrade flag
-      if (this.cliArgs.upgrade) {
-        await this.runUpgrade(this.cliArgs.upgrade, this.cliArgs.upgradeVariant);
-        process.exit(0);
-      }
-
-      // Handle --config flag
-      if (this.cliArgs.config) {
-        await this.loadConfig(this.cliArgs.config);
-      }
-
-      // Handle non-interactive mode
-      if (this.cliArgs.variant && this.cliArgs.tools.length > 0) {
-        await this.runNonInteractive();
-        process.exit(0);
-      }
-
-      // Interactive mode
       this.showWelcome();
 
-      // Hardcode to Pro variant - everyone gets all features
-      this.selections.variant = 'pro';
+      const action = await this.askInstallOrUninstall();
 
-      // Check for interrupted installation
-      const InstallationEngine = require('./installation-engine');
-      const PathManager = require('./path-manager');
-      const pathManager = new PathManager();
-      const installationEngine = new InstallationEngine(pathManager, this.packageManager);
-
-      const hasInterrupted = await installationEngine.hasInterruptedInstallation();
-
-      if (hasInterrupted) {
-        const shouldResume = await this.promptResume(installationEngine);
-
-        if (shouldResume) {
-          await this.resumeInstallation(installationEngine);
-          return; // Exit after resume
-        } else {
-          // Clear state and start fresh
-          await installationEngine.getStateManager().clearState();
-          console.log(`${colors.yellow}Starting fresh installation...${colors.reset}\n`);
-        }
+      if (action === 'uninstall') {
+        await this.runUninstall();
+      } else {
+        await this.selectTools();
+        this.setDefaultPaths();
+        await this.install();
       }
-
-      // Simplified installation flow
-      await this.selectTools();
-      await this.setDefaultPaths();
-      await this.showSummary();
-      await this.install();
     } catch (error) {
       await this.handleFatalError(error);
     } finally {
@@ -292,137 +100,175 @@ ${colors.bright}For more information, visit:${colors.reset}
     }
   }
 
-  /**
-   * Run uninstall command for a specific tool
-   * Detects installation, prompts for confirmation, and executes uninstall
-   *
-   * @param {string} toolId - Tool to uninstall (claude, opencode, ampcode, droid)
-   */
-  async runUninstall(toolId) {
-    console.log(`\n${colors.bright}${colors.cyan}Agentic Kit Uninstaller${colors.reset}\n`);
+  async runUninstall() {
+    console.log('\nDetecting installed tools...\n');
 
-    // Validate tool ID
-    const tool = this.tools.find(t => t.id === toolId);
-    if (!tool) {
-      console.log(`${colors.red}Error: Unknown tool '${toolId}'${colors.reset}`);
-      console.log(`${colors.yellow}Available tools: ${this.tools.map(t => t.id).join(', ')}${colors.reset}\n`);
-      process.exit(1);
-    }
-
-    // Detect installation at default path
     const os = require('os');
-    const defaultPath = tool.path.startsWith('~')
-      ? path.join(os.homedir(), tool.path.slice(1))
-      : path.resolve(tool.path);
 
-    // Check if manifest exists at default path
-    const manifestPath = path.join(defaultPath, 'manifest.json');
-    let targetPath = defaultPath;
+    // Detect installed tools by checking if paths exist
+    const installedTools = [];
+    for (const tool of this.tools) {
+      const targetPath = tool.path.startsWith('~')
+        ? path.join(os.homedir(), tool.path.slice(1))
+        : path.resolve(tool.path);
 
-    if (!fs.existsSync(manifestPath)) {
-      console.log(`${colors.yellow}No installation found at default path: ${defaultPath}${colors.reset}\n`);
-
-      // If not in silent mode, ask for custom path
-      if (!this.cliArgs.silent) {
-        const customPath = await this.askQuestion(
-          `${colors.cyan}Enter installation path (or press Enter to cancel):${colors.reset} `,
-          ''
-        );
-
-        if (!customPath) {
-          console.log(`${colors.yellow}Uninstall cancelled${colors.reset}\n`);
-          return;
-        }
-
-        targetPath = customPath.startsWith('~')
-          ? path.join(os.homedir(), customPath.slice(1))
-          : path.resolve(customPath);
-
-        const customManifestPath = path.join(targetPath, 'manifest.json');
-        if (!fs.existsSync(customManifestPath)) {
-          console.log(`${colors.red}Error: No installation found at ${targetPath}${colors.reset}\n`);
-          process.exit(1);
-        }
-      } else {
-        console.log(`${colors.red}Error: No installation found at default path${colors.reset}\n`);
-        process.exit(1);
+      if (fs.existsSync(targetPath)) {
+        // Check for backups
+        const backups = this.findBackups(targetPath);
+        installedTools.push({
+          ...tool,
+          expandedPath: targetPath,
+          hasBackup: backups.length > 0,
+          latestBackup: backups.sort().reverse()[0]
+        });
       }
     }
 
-    console.log(`${colors.bright}Tool:${colors.reset} ${tool.name}`);
-    console.log(`${colors.bright}Path:${colors.reset} ${targetPath}\n`);
+    if (installedTools.length === 0) {
+      console.log('No tools are currently installed.\n');
+      return;
+    }
 
-    // Initialize InstallationEngine
-    const PathManager = require('./path-manager');
-    const InstallationEngine = require('./installation-engine');
-    const pathManager = new PathManager();
-    const installationEngine = new InstallationEngine(pathManager, this.packageManager);
+    // Show installed tools
+    console.log('Installed tools:\n');
+    installedTools.forEach((tool, index) => {
+      const backupStatus = tool.hasBackup ? '(has backup)' : '(no backup)';
+      console.log(`  ${index + 1}. ${tool.name} - ${tool.path} ${backupStatus}`);
+    });
+
+    // Select tools to uninstall
+    console.log('\nSelect tools to uninstall:');
+    const selectedIndices = await this.selectToolsCheckbox(installedTools);
+
+    if (selectedIndices.length === 0) {
+      console.log('No tools selected. Cancelled.\n');
+      return;
+    }
+
+    // Uninstall each selected tool
+    for (const index of selectedIndices) {
+      const tool = installedTools[index];
+      console.log(`\nUninstalling ${tool.name}...`);
+
+      try {
+        if (tool.hasBackup) {
+          // Backup current, then restore from previous backup
+          const currentBackup = `${tool.expandedPath}.uninstall-backup.${new Date().toISOString().replace(/[:.]/g, '-')}`;
+          fs.renameSync(tool.expandedPath, currentBackup);
+          console.log(`Current installation backed up: ${tool.path}.uninstall-backup.${new Date().toISOString().replace(/[:.]/g, '-')}`);
+
+          // Restore from latest backup
+          fs.renameSync(tool.latestBackup, tool.expandedPath);
+          console.log(`✓ Restored previous installation from: ${path.basename(tool.latestBackup)}`);
+        } else {
+          // No backup, just delete
+          const rimraf = (dir) => {
+            if (fs.existsSync(dir)) {
+              fs.readdirSync(dir).forEach((file) => {
+                const curPath = path.join(dir, file);
+                if (fs.lstatSync(curPath).isDirectory()) {
+                  rimraf(curPath);
+                } else {
+                  fs.unlinkSync(curPath);
+                }
+              });
+              fs.rmdirSync(dir);
+            }
+          };
+          rimraf(tool.expandedPath);
+          console.log(`✓ Deleted installation from: ${tool.path}`);
+        }
+      } catch (error) {
+        console.log(`✗ Failed to uninstall ${tool.name}: ${error.message}`);
+      }
+    }
+
+    console.log('\nDone!');
+  }
+
+  findBackups(targetPath) {
+    const dir = path.dirname(targetPath);
+    const base = path.basename(targetPath);
+    const pattern = `${base}.backup.`;
 
     try {
-      // Read manifest to get file count
-      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-      const fileCount = manifest.installedFiles
-        ? Object.values(manifest.installedFiles).reduce((sum, arr) => sum + arr.length, 0)
-        : 0;
-
-      // Confirmation prompt (unless in silent mode)
-      if (!this.cliArgs.silent) {
-        console.log(`${colors.yellow}This will remove ${fileCount} file(s) and create a backup.${colors.reset}\n`);
-
-        const confirm = await this.askQuestion(
-          `${colors.bright}Proceed with uninstallation? (y/N):${colors.reset} `,
-          'n'
-        );
-
-        if (confirm.toLowerCase() !== 'y') {
-          console.log(`${colors.yellow}Uninstall cancelled${colors.reset}\n`);
-          return;
-        }
-      }
-
-      console.log(`\n${colors.bright}Uninstalling ${tool.name}...${colors.reset}\n`);
-
-      // Uninstall with progress callback
-      const result = await installationEngine.uninstall(
-        toolId,
-        targetPath,
-        null, // confirmCallback (already confirmed above)
-        (progress) => {
-          // Display progress
-          const percentage = Math.round((progress.filesRemoved / progress.totalFiles) * 100);
-          process.stdout.write(`\r${colors.cyan}Progress:${colors.reset} ${percentage}% (${progress.filesRemoved}/${progress.totalFiles} files removed)`);
-        }
-      );
-
-      // Clear progress line
-      process.stdout.write('\r' + ' '.repeat(80) + '\r');
-
-      // Display results
-      console.log(`${colors.green}✓ ${tool.name} uninstalled successfully${colors.reset}`);
-      console.log(`${colors.cyan}Files removed:${colors.reset} ${result.filesRemoved}`);
-      console.log(`${colors.cyan}Directories removed:${colors.reset} ${result.directoriesRemoved}`);
-      console.log(`${colors.cyan}Backup created:${colors.reset} ${result.backupPath}\n`);
-
-      if (result.warnings.length > 0) {
-        console.log(`${colors.yellow}Warnings:${colors.reset}`);
-        result.warnings.forEach(warning => {
-          console.log(`  ${colors.yellow}⚠${colors.reset} ${warning.message}`);
-        });
-        console.log('');
-      }
-
-      if (result.errors.length > 0) {
-        console.log(`${colors.red}Errors:${colors.reset}`);
-        result.errors.forEach(error => {
-          console.log(`  ${colors.red}✗${colors.reset} ${error.message}`);
-        });
-        console.log('');
-      }
-
+      return fs.readdirSync(dir)
+        .filter(f => f.startsWith(pattern))
+        .map(f => path.join(dir, f));
     } catch (error) {
-      console.error(`\n${colors.red}✗ Uninstall failed: ${error.message}${colors.reset}\n`);
-      process.exit(1);
+      return [];
     }
+  }
+
+  async selectToolsCheckbox(tools) {
+    const selected = new Set();
+    let currentIndex = 0;
+
+    const renderList = () => {
+      // Move cursor up and clear each line individually
+      for (let i = 0; i <= tools.length; i++) {
+        process.stdout.write('\x1b[1A'); // Move up one line
+        process.stdout.write('\r'); // Carriage return to start of line
+        process.stdout.write('\x1b[2K'); // Clear entire line
+      }
+
+      tools.forEach((tool, index) => {
+        const isSelected = selected.has(index);
+        const isCurrent = index === currentIndex;
+        const checkbox = isSelected ? '[x]' : '[ ]';
+        const pointer = isCurrent ? '»' : ' ';
+        const paddedName = tool.name.padEnd(20);
+
+        console.log(`${pointer} ${checkbox} ${paddedName} - ${tool.description || ''}`);
+      });
+      console.log(''); // Empty line at bottom
+    };
+
+    // Initial render
+    tools.forEach((tool, index) => {
+      const isSelected = selected.has(index);
+      const isCurrent = index === currentIndex;
+      const checkbox = isSelected ? '[x]' : '[ ]';
+      const pointer = isCurrent ? '»' : ' ';
+      const paddedName = tool.name.padEnd(20);
+
+      console.log(`${pointer} ${checkbox} ${paddedName} - ${tool.description || ''}`);
+    });
+    console.log('');
+
+    return new Promise((resolve) => {
+      const stdin = process.stdin;
+      stdin.setRawMode(true);
+      stdin.resume();
+      stdin.setEncoding('utf8');
+
+      const onKeypress = (key) => {
+        if (key === '\u0003' || key === '\u001b') { // Ctrl+C or ESC
+          stdin.setRawMode(false);
+          stdin.pause();
+          process.exit(0);
+        } else if (key === '\r' || key === '\n') { // Enter
+          stdin.setRawMode(false);
+          stdin.removeListener('data', onKeypress);
+          resolve(Array.from(selected));
+        } else if (key === ' ') { // Space - toggle
+          if (selected.has(currentIndex)) {
+            selected.delete(currentIndex);
+          } else {
+            selected.add(currentIndex);
+          }
+          renderList();
+        } else if (key === '\u001b[A') { // Up arrow
+          currentIndex = currentIndex > 0 ? currentIndex - 1 : tools.length - 1;
+          renderList();
+        } else if (key === '\u001b[B') { // Down arrow
+          currentIndex = currentIndex < tools.length - 1 ? currentIndex + 1 : 0;
+          renderList();
+        }
+      };
+
+      stdin.on('data', onKeypress);
+    });
   }
 
   /**
@@ -432,276 +278,16 @@ ${colors.bright}For more information, visit:${colors.reset}
    * @param {string} toolId - Tool to upgrade (claude, opencode, ampcode, droid)
    * @param {string} newVariant - Target variant (lite, standard, pro)
    */
-  async runUpgrade(toolId, newVariant) {
-    console.log(`\n${colors.bright}${colors.cyan}Agentic Kit Variant Upgrade${colors.reset}\n`);
-
-    // Validate tool ID
-    const tool = this.tools.find(t => t.id === toolId);
-    if (!tool) {
-      console.log(`${colors.red}Error: Unknown tool '${toolId}'${colors.reset}`);
-      console.log(`${colors.yellow}Available tools: ${this.tools.map(t => t.id).join(', ')}${colors.reset}\n`);
-      process.exit(1);
-    }
-
-    // Validate variant
-    const validVariants = ['lite', 'standard', 'pro'];
-    if (!validVariants.includes(newVariant)) {
-      console.log(`${colors.red}Error: Invalid variant '${newVariant}'${colors.reset}`);
-      console.log(`${colors.yellow}Valid variants: ${validVariants.join(', ')}${colors.reset}\n`);
-      process.exit(1);
-    }
-
-    // Detect installation at default path
-    const os = require('os');
-    const defaultPath = tool.path.startsWith('~')
-      ? path.join(os.homedir(), tool.path.slice(1))
-      : path.resolve(tool.path);
-
-    // Check if manifest exists at default path
-    const manifestPath = path.join(defaultPath, 'manifest.json');
-    let targetPath = defaultPath;
-
-    if (!fs.existsSync(manifestPath)) {
-      console.log(`${colors.yellow}No installation found at default path: ${defaultPath}${colors.reset}\n`);
-
-      // If not in silent mode, ask for custom path
-      if (!this.cliArgs.silent) {
-        const customPath = await this.askQuestion(
-          `${colors.cyan}Enter installation path (or press Enter to cancel):${colors.reset} `,
-          ''
-        );
-
-        if (!customPath) {
-          console.log(`${colors.yellow}Upgrade cancelled${colors.reset}\n`);
-          return;
-        }
-
-        targetPath = customPath.startsWith('~')
-          ? path.join(os.homedir(), customPath.slice(1))
-          : path.resolve(customPath);
-
-        const customManifestPath = path.join(targetPath, 'manifest.json');
-        if (!fs.existsSync(customManifestPath)) {
-          console.log(`${colors.red}Error: No installation found at ${targetPath}${colors.reset}\n`);
-          process.exit(1);
-        }
-      } else {
-        console.log(`${colors.red}Error: No installation found at default path${colors.reset}\n`);
-        process.exit(1);
-      }
-    }
-
-    // Read current variant
-    const manifest = JSON.parse(fs.readFileSync(path.join(targetPath, 'manifest.json'), 'utf8'));
-    const currentVariant = manifest.variant;
-
-    console.log(`${colors.bright}Tool:${colors.reset} ${tool.name}`);
-    console.log(`${colors.bright}Current variant:${colors.reset} ${currentVariant}`);
-    console.log(`${colors.bright}Target variant:${colors.reset} ${newVariant}`);
-    console.log(`${colors.bright}Path:${colors.reset} ${targetPath}\n`);
-
-    // Check if same variant
-    if (currentVariant === newVariant) {
-      console.log(`${colors.yellow}Already using variant: ${newVariant}${colors.reset}\n`);
-      return;
-    }
-
-    // Initialize InstallationEngine
-    const PathManager = require('./path-manager');
-    const InstallationEngine = require('./installation-engine');
-    const pathManager = new PathManager();
-    const installationEngine = new InstallationEngine(pathManager, this.packageManager);
-
-    try {
-      // Confirmation callback (unless in silent mode)
-      const confirmCallback = this.cliArgs.silent ? null : (data) => {
-        return new Promise(async (resolve) => {
-          const action = data.filesAdded > data.filesRemoved ? 'Upgrade' : 'Downgrade';
-          console.log(`${colors.yellow}${action} Summary:${colors.reset}`);
-          console.log(`  ${colors.green}+${data.filesAdded} file(s) to add${colors.reset}`);
-          console.log(`  ${colors.red}-${data.filesRemoved} file(s) to remove${colors.reset}\n`);
-
-          const confirm = await this.askQuestion(
-            `${colors.bright}Proceed with ${action.toLowerCase()}? (y/N):${colors.reset} `,
-            'n'
-          );
-
-          resolve(confirm.toLowerCase() === 'y');
-        });
-      };
-
-      // Progress callback
-      let lastStage = '';
-      const progressCallback = (progress) => {
-        if (progress.stage !== lastStage) {
-          if (lastStage) {
-            process.stdout.write('\n');
-          }
-          lastStage = progress.stage;
-
-          const stageMessages = {
-            reading_manifest: 'Reading current installation...',
-            comparing_variants: 'Comparing variants...',
-            creating_backup: 'Creating backup...',
-            removing_files: `Removing ${progress.count || 0} file(s)...`,
-            adding_files: `Adding ${progress.count || 0} file(s)...`,
-            updating_manifest: 'Updating manifest...',
-            verifying: 'Verifying installation...',
-            complete: 'Complete!'
-          };
-
-          const message = stageMessages[progress.stage] || progress.stage;
-          process.stdout.write(`${colors.cyan}${message}${colors.reset}`);
-        }
-      };
-
-      console.log(`${colors.bright}Upgrading ${tool.name}...${colors.reset}\n`);
-
-      // Execute upgrade
-      const result = await installationEngine.upgradeVariant(
-        toolId,
-        newVariant,
-        targetPath,
-        confirmCallback,
-        progressCallback
-      );
-
-      // Clear progress line
-      process.stdout.write('\n\n');
-
-      // Display results
-      if (!result.success) {
-        console.log(`${colors.red}✗ Upgrade failed: ${result.error}${colors.reset}\n`);
-        process.exit(1);
-      }
-
-      const action = result.filesAdded > result.filesRemoved ? 'Upgrade' : 'Downgrade';
-      console.log(`${colors.green}✓ ${tool.name} ${action.toLowerCase()}d successfully${colors.reset}`);
-      console.log(`${colors.cyan}From variant:${colors.reset} ${result.fromVariant}`);
-      console.log(`${colors.cyan}To variant:${colors.reset} ${result.toVariant}`);
-      console.log(`${colors.cyan}Files added:${colors.reset} ${result.filesAdded}`);
-      console.log(`${colors.cyan}Files removed:${colors.reset} ${result.filesRemoved}`);
-      console.log(`${colors.cyan}Backup created:${colors.reset} ${result.backupPath}\n`);
-
-      if (result.verification && !result.verification.valid) {
-        console.log(`${colors.yellow}Warnings:${colors.reset}`);
-        result.verification.issues.forEach(issue => {
-          console.log(`  ${colors.yellow}⚠${colors.reset} ${issue.message}`);
-        });
-        console.log('');
-      }
-
-    } catch (error) {
-      console.error(`\n${colors.red}✗ Upgrade failed: ${error.message}${colors.reset}\n`);
-      process.exit(1);
-    }
-  }
-
   /**
    * Load configuration from JSON file
    * Used with --config flag
    *
    * @param {string} configPath - Path to configuration file
    */
-  async loadConfig(configPath) {
-    try {
-      const configContent = await fs.promises.readFile(configPath, 'utf8');
-      const config = JSON.parse(configContent);
-
-      // Validate and apply configuration
-      if (config.variant) {
-        this.cliArgs.variant = config.variant;
-      }
-
-      if (config.tools && Array.isArray(config.tools)) {
-        this.cliArgs.tools = config.tools;
-      }
-
-      if (config.paths && typeof config.paths === 'object') {
-        this.cliArgs.paths = { ...this.cliArgs.paths, ...config.paths };
-      }
-
-      if (config.silent !== undefined) {
-        this.cliArgs.silent = config.silent;
-        this.cliArgs.nonInteractive = config.silent;
-      }
-
-      console.log(`${colors.green}✓ Configuration loaded from ${configPath}${colors.reset}\n`);
-
-    } catch (error) {
-      console.error(`${colors.red}Error loading configuration: ${error.message}${colors.reset}\n`);
-      process.exit(1);
-    }
-  }
-
   /**
    * Run non-interactive installation
    * Uses command-line arguments instead of prompts
    */
-  async runNonInteractive() {
-    console.log(`\n${colors.bright}${colors.cyan}Agentic Kit Installer (Non-Interactive Mode)${colors.reset}\n`);
-
-    // Validate variant
-    const variant = this.cliArgs.variant;
-    if (!['lite', 'standard', 'pro'].includes(variant)) {
-      console.log(`${colors.red}Error: Invalid variant '${variant}'${colors.reset}`);
-      console.log(`${colors.yellow}Valid variants: lite, standard, pro${colors.reset}\n`);
-      process.exit(1);
-    }
-
-    // Validate tools
-    const validTools = this.tools.map(t => t.id);
-    const invalidTools = this.cliArgs.tools.filter(t => !validTools.includes(t));
-    if (invalidTools.length > 0) {
-      console.log(`${colors.red}Error: Invalid tool(s): ${invalidTools.join(', ')}${colors.reset}`);
-      console.log(`${colors.yellow}Valid tools: ${validTools.join(', ')}${colors.reset}\n`);
-      process.exit(1);
-    }
-
-    if (this.cliArgs.tools.length === 0) {
-      console.log(`${colors.red}Error: At least one tool must be specified${colors.reset}\n`);
-      process.exit(1);
-    }
-
-    // Set selections
-    this.selections.variant = variant;
-    this.selections.tools = this.cliArgs.tools;
-
-    // Set paths (use custom paths or defaults)
-    const os = require('os');
-    for (const toolId of this.selections.tools) {
-      const tool = this.tools.find(t => t.id === toolId);
-
-      if (this.cliArgs.paths[toolId]) {
-        this.selections.paths[toolId] = this.cliArgs.paths[toolId];
-      } else {
-        this.selections.paths[toolId] = tool.path;
-      }
-    }
-
-    // Display summary
-    console.log(`${colors.bright}Installation Summary:${colors.reset}`);
-    console.log(`${colors.cyan}Installing:${colors.reset} ${this.selections.tools.join(', ')}`);
-    console.log(`${colors.cyan}Each tool includes:${colors.reset} 14 agents + 20 commands`);
-    console.log('');
-
-    for (const toolId of this.selections.tools) {
-      const tool = this.tools.find(t => t.id === toolId);
-      const isCustom = this.selections.paths[toolId] !== tool.path;
-      console.log(`${colors.bright}${tool.name}${colors.reset}`);
-      console.log(`  Path: ${this.selections.paths[toolId]}${isCustom ? ' (custom)' : ''}`);
-    }
-    console.log('');
-
-    // Run installation
-    try {
-      await this.install();
-    } catch (error) {
-      console.error(`${colors.red}✗ Installation failed: ${error.message}${colors.reset}\n`);
-      process.exit(1);
-    }
-  }
-
   /**
    * Handle fatal errors with detailed error messages and actionable advice
    * Categorizes errors and provides specific guidance for each type
@@ -714,24 +300,13 @@ ${colors.bright}For more information, visit:${colors.reset}
     // Categorize the error and provide appropriate guidance
     const errorInfo = this.categorizeError(error);
 
-    console.log(`${colors.red}${colors.bright}✗ Installation Failed${colors.reset}`);
-    console.log(`${colors.red}${'─'.repeat(60)}${colors.reset}\n`);
+    console.log(`${colors.red}Error: ${error.message}${colors.reset}`);
 
-    console.log(`${colors.bright}Error Type:${colors.reset} ${errorInfo.type}`);
-    console.log(`${colors.bright}Message:${colors.reset} ${error.message}\n`);
-
-    if (errorInfo.advice.length > 0) {
-      console.log(`${colors.yellow}${colors.bright}Suggested Actions:${colors.reset}`);
-      errorInfo.advice.forEach((advice, index) => {
-        console.log(`  ${index + 1}. ${advice}`);
+    if (errorInfo.advice.length > 0 && errorInfo.advice.length <= 3) {
+      errorInfo.advice.forEach(advice => {
+        console.log(`  - ${advice}`);
       });
       console.log('');
-    }
-
-    // Display additional technical details if available
-    if (errorInfo.technicalDetails) {
-      console.log(`${colors.cyan}Technical Details:${colors.reset}`);
-      console.log(`  ${errorInfo.technicalDetails}\n`);
     }
 
     // Exit with error code
@@ -753,9 +328,8 @@ ${colors.bright}For more information, visit:${colors.reset}
       return {
         type: 'Permission Error',
         advice: [
-          'Try running the installer with elevated permissions: sudo node installer/cli.js',
-          'Or choose a different installation directory where you have write access',
-          'Check directory permissions: ls -la on the parent directory'
+          'Try: sudo node installer/cli.js',
+          'Or choose a different installation directory'
         ],
         technicalDetails: `Error code: ${code || 'EACCES'}`
       };
@@ -766,10 +340,8 @@ ${colors.bright}For more information, visit:${colors.reset}
       return {
         type: 'Disk Space Error',
         advice: [
-          'Free up disk space by removing unnecessary files',
-          'Check available space: df -h',
-          'Consider installing to a different location with more space',
-          'The installer requires at least 50MB of free space'
+          'Free up disk space',
+          'Check: df -h'
         ],
         technicalDetails: 'Installation requires approximately 10MB per tool'
       };
@@ -780,10 +352,8 @@ ${colors.bright}For more information, visit:${colors.reset}
       return {
         type: 'Network Error',
         advice: [
-          'Check your internet connection',
-          'Verify proxy settings if behind a corporate firewall',
-          'Try again in a few moments',
-          'Use offline installation mode if available'
+          'Check internet connection',
+          'Try again later'
         ],
         technicalDetails: `Network error code: ${code || 'UNKNOWN'}`
       };
@@ -794,10 +364,8 @@ ${colors.bright}For more information, visit:${colors.reset}
       return {
         type: 'Missing Package Error',
         advice: [
-          'Ensure agentic-kit is properly installed: npm install -g @amrhas82/agentic-kit',
-          'Verify the packages directory exists and contains required files',
-          'Try reinstalling agentic-kit: npm uninstall -g @amrhas82/agentic-kit && npm install -g @amrhas82/agentic-kit',
-          'Check that you are running the installer from the correct directory'
+          'Run: npm install -g @amrhas82/agentic-kit',
+          'Check: packages directory exists'
         ],
         technicalDetails: `Missing file or package validation failed`
       };
@@ -808,10 +376,8 @@ ${colors.bright}For more information, visit:${colors.reset}
       return {
         type: 'Path Validation Error',
         advice: [
-          'Ensure the path is absolute (starts with / or ~)',
-          'Verify the parent directory exists',
-          'Check that you have write permissions for the specified path',
-          'Use default paths if custom paths are causing issues'
+          'Path must be absolute (starts with / or ~)',
+          'Check parent directory exists'
         ],
         technicalDetails: 'Paths must be absolute and writable'
       };
@@ -822,10 +388,8 @@ ${colors.bright}For more information, visit:${colors.reset}
       return {
         type: 'Invalid Input Error',
         advice: [
-          'Review your selections and ensure all required options are provided',
-          'At least one tool must be selected',
-          'Paths must be absolute (start with / or ~)',
-          'Restart the installer and try again'
+          'Check your selections',
+          'Restart installer and try again'
         ],
         technicalDetails: error.message
       };
@@ -836,11 +400,9 @@ ${colors.bright}For more information, visit:${colors.reset}
       return {
         type: 'Installation Error',
         advice: [
-          'Check available disk space: df -h',
-          'Verify write permissions on the target directory',
-          'Ensure no other process is using the installation directory',
-          'Try installing to a different location',
-          'Review the installation log at ~/.agentic-kit-install.log for details'
+          'Check disk space: df -h',
+          'Verify write permissions',
+          'Try different location'
         ],
         technicalDetails: 'Installation process encountered an error during file operations'
       };
@@ -850,10 +412,8 @@ ${colors.bright}For more information, visit:${colors.reset}
     return {
       type: 'Unknown Error',
       advice: [
-        'Try running the installer again',
-        'Check system logs for more details',
-        'Report this issue at: https://github.com/amrhas82/agentic-kit/issues',
-        'Include the error message and your system information (OS, Node version)'
+        'Try running installer again',
+        'Report at: https://github.com/amrhas82/agentic-kit/issues'
       ],
       technicalDetails: error.stack ? error.stack.split('\n')[1] : 'No additional details'
     };
@@ -868,50 +428,6 @@ ${colors.bright}For more information, visit:${colors.reset}
    * @param {number} totalTools - Total number of tools
    * @returns {Promise<boolean>} True to continue, false to cancel
    */
-  async offerRecoveryOptions(failedTool, currentIndex, totalTools) {
-    const remainingTools = totalTools - currentIndex;
-
-    console.log(`${colors.yellow}┌─────────────────────────────────────────────────────────────┐${colors.reset}`);
-    console.log(`${colors.yellow}│ Installation Failure - Recovery Options                    │${colors.reset}`);
-    console.log(`${colors.yellow}└─────────────────────────────────────────────────────────────┘${colors.reset}\n`);
-
-    console.log(`${colors.bright}Status:${colors.reset} ${failedTool} installation failed`);
-    console.log(`${colors.bright}Remaining:${colors.reset} ${remainingTools} tool${remainingTools > 1 ? 's' : ''} to install\n`);
-
-    // In silent mode, auto-continue with remaining tools
-    if (this.cliArgs.silent) {
-      console.log(`${colors.yellow}Silent mode: auto-continuing with remaining tools${colors.reset}\n`);
-      console.log(`${colors.yellow}Note:${colors.reset} The failed installation has been rolled back automatically.`);
-      console.log(`${colors.yellow}No partial files remain for ${failedTool}.${colors.reset}\n`);
-      return true;
-    }
-
-    console.log(`${colors.cyan}Options:${colors.reset}`);
-    console.log(`  ${colors.green}C${colors.reset} - Continue with remaining tools (recommended)`);
-    console.log(`  ${colors.red}Q${colors.reset} - Quit installation (successful installations will be kept)\n`);
-
-    console.log(`${colors.yellow}Note:${colors.reset} The failed installation has been rolled back automatically.`);
-    console.log(`${colors.yellow}No partial files remain for ${failedTool}.${colors.reset}\n`);
-
-    const answer = await this.askQuestion(
-      `${colors.bright}Choose an option (C/Q):${colors.reset} `,
-      'C'
-    );
-
-    const choice = answer.toUpperCase();
-
-    if (choice === 'C' || choice === '') {
-      console.log(`${colors.green}Continuing with remaining tools...${colors.reset}\n`);
-      return true;
-    } else if (choice === 'Q') {
-      return false;
-    } else {
-      // Invalid choice, ask again
-      console.log(`${colors.red}Invalid choice. Please enter C or Q.${colors.reset}\n`);
-      return this.offerRecoveryOptions(failedTool, currentIndex, totalTools);
-    }
-  }
-
   /**
    * Prompt user to resume interrupted installation
    * Shows summary of previous installation progress
@@ -919,192 +435,26 @@ ${colors.bright}For more information, visit:${colors.reset}
    * @param {InstallationEngine} installationEngine - Installation engine instance
    * @returns {Promise<boolean>} - True if user wants to resume, false otherwise
    */
-  async promptResume(installationEngine) {
-    const summary = await installationEngine.getResumeSummary();
-
-    if (!summary) {
-      return false;
-    }
-
-    console.clear();
-    console.log(`\n${colors.yellow}${colors.bright}Previous Installation Detected${colors.reset}`);
-    console.log(`${colors.yellow}${'─'.repeat(60)}${colors.reset}\n`);
-
-    // Format timestamp
-    const startedAt = new Date(summary.startedAt);
-    const lastUpdated = new Date(summary.lastUpdated);
-    const timeDiff = Math.floor((lastUpdated - startedAt) / 1000 / 60);
-
-    console.log(`${colors.cyan}Session ID:${colors.reset} ${summary.sessionId}`);
-    console.log(`${colors.cyan}Started:${colors.reset} ${startedAt.toLocaleString()}`);
-    console.log(`${colors.cyan}Last Updated:${colors.reset} ${lastUpdated.toLocaleString()} (${timeDiff} min ago)`);
-    console.log(`${colors.cyan}Variant:${colors.reset} ${summary.variant}`);
-    console.log('');
-
-    // Show progress
-    console.log(`${colors.bright}Progress:${colors.reset}`);
-    console.log(`  Tools: ${summary.completedTools}/${summary.totalTools} completed`);
-
-    if (summary.completedToolsList.length > 0) {
-      console.log(`\n${colors.green}Completed:${colors.reset}`);
-      summary.completedToolsList.forEach(toolId => {
-        console.log(`  ${colors.green}✓${colors.reset} ${toolId}`);
-      });
-    }
-
-    if (summary.failedToolsList.length > 0) {
-      console.log(`\n${colors.red}Failed:${colors.reset}`);
-      summary.failedToolsList.forEach(toolId => {
-        console.log(`  ${colors.red}✗${colors.reset} ${toolId}`);
-      });
-    }
-
-    if (summary.currentTool) {
-      console.log(`\n${colors.yellow}Current Tool:${colors.reset} ${summary.currentTool}`);
-      const progress = summary.currentToolProgress;
-      if (progress.totalFiles > 0) {
-        console.log(`  Progress: ${progress.filesCompleted}/${progress.totalFiles} files (${progress.percentComplete}%)`);
-      }
-    }
-
-    console.log('');
-    console.log(`${colors.bright}Would you like to resume this installation?${colors.reset}`);
-    console.log(`  ${colors.green}Y${colors.reset} - Resume from where it left off`);
-    console.log(`  ${colors.yellow}N${colors.reset} - Start fresh (previous state will be cleared)\n`);
-
-    const answer = await this.askQuestion(
-      `${colors.bright}Resume installation? (Y/n):${colors.reset} `,
-      'Y'
-    );
-
-    return answer.toLowerCase() !== 'n';
-  }
-
   /**
    * Resume interrupted installation
    * Uses saved state to continue from where it left off
    *
    * @param {InstallationEngine} installationEngine - Installation engine instance with loaded state
    */
-  async resumeInstallation(installationEngine) {
-    const state = installationEngine.getStateManager().getState();
-
-    if (!state) {
-      console.log(`${colors.red}Error: Could not load installation state${colors.reset}`);
-      return;
-    }
-
-    console.log(`\n${colors.bright}${colors.green}Resuming installation...${colors.reset}\n`);
-
-    // Restore selections from state
-    this.selections.variant = state.variant;
-    this.selections.tools = state.tools;
-    this.selections.paths = state.paths;
-
-    // Use installMultipleTools with resume flag
-    try {
-      const results = await installationEngine.installMultipleTools(
-        state.variant,
-        state.tools,
-        state.paths,
-        (progress) => {
-          // Progress callback (same as normal installation)
-          this.drawProgressBar(
-            progress.filesCompleted,
-            progress.totalFiles,
-            progress.percentage,
-            progress.currentFile,
-            this.formatBytes(progress.bytesTransferred),
-            this.formatBytes(progress.totalBytes),
-            this.formatBytes(progress.bytesTransferred / ((Date.now() - Date.now()) / 1000 || 1)) + '/s',
-            '0:00',
-            '0:00'
-          );
-        },
-        true // resume = true
-      );
-
-      // Display results
-      console.log(`\n${colors.bright}Installation Complete${colors.reset}\n`);
-
-      if (results.successful.length > 0) {
-        console.log(`${colors.green}Successfully installed:${colors.reset}`);
-        results.successful.forEach(toolId => {
-          console.log(`  ${colors.green}✓${colors.reset} ${toolId}`);
-        });
-      }
-
-      if (results.skipped.length > 0) {
-        console.log(`\n${colors.yellow}Skipped (already completed):${colors.reset}`);
-        results.skipped.forEach(toolId => {
-          console.log(`  ${colors.yellow}○${colors.reset} ${toolId}`);
-        });
-      }
-
-      if (results.failed.length > 0) {
-        console.log(`\n${colors.red}Failed:${colors.reset}`);
-        results.failed.forEach(failure => {
-          console.log(`  ${colors.red}✗${colors.reset} ${failure.toolId}: ${failure.error}`);
-        });
-      }
-
-    } catch (error) {
-      console.error(`${colors.red}Resume failed: ${error.message}${colors.reset}`);
-      throw error;
-    }
-  }
-
   showWelcome() {
     console.clear();
     console.log(`
-${colors.bright}${colors.cyan}┌─────────────────────────────────────────────────────────────┐${colors.reset}
-${colors.bright}${colors.cyan}│              Agentic Kit Installer v1.2.0                    │${colors.reset}
-${colors.bright}${colors.cyan}│           14 Agents + 20 Commands Per Tool                    │${colors.reset}
-${colors.bright}${colors.cyan}└─────────────────────────────────────────────────────────────┘${colors.reset}
+${colors.bright}${colors.cyan} █████╗  ██████╗ ███████╗███╗   ██╗████████╗██╗ ██████╗    ██╗  ██╗██╗████████╗${colors.reset}
+${colors.bright}${colors.cyan}██╔══██╗██╔════╝ ██╔════╝████╗  ██║╚══██╔══╝██║██╔════╝    ██║ ██╔╝██║╚══██╔══╝${colors.reset}
+${colors.bright}${colors.cyan}███████║██║  ███╗█████╗  ██╔██╗ ██║   ██║   ██║██║         █████╔╝ ██║   ██║${colors.reset}
+${colors.bright}${colors.cyan}██╔══██║██║   ██║██╔══╝  ██║╚██╗██║   ██║   ██║██║         ██╔═██╗ ██║   ██║${colors.reset}
+${colors.bright}${colors.cyan}██║  ██║╚██████╔╝███████╗██║ ╚████║   ██║   ██║╚██████╗    ██║  ██╗██║   ██║${colors.reset}
+${colors.bright}${colors.cyan}╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝ ╚═════╝    ╚═╝  ╚═╝╚═╝   ╚═╝${colors.reset}
 
-${colors.bright}Available tools:${colors.reset}
-• ${colors.cyan}claude${colors.reset}    - Claude Code (AI development assistant)
-• ${colors.cyan}opencode${colors.reset}  - OpenCode (CLI-optimized AI tool)
-• ${colors.cyan}ampcode${colors.reset}   - Ampcode (Development accelerator)
-• ${colors.cyan}droid${colors.reset}     - Droid (Android-focused assistant)
-
-${colors.yellow}Press Enter to begin or Ctrl+C to exit${colors.reset}
+${colors.bright}v1.10.0 | 14 agents + 20 commands per tool${colors.reset}
     `);
+  }
 
-    return new Promise(resolve => {
-      this.rl.question('', resolve);
-    });
-  }
-  
-  async selectVariant() {
-    console.log(`\n${colors.bright}Step 1/4 — Choose Package Variant${colors.reset}\n`);
-    
-    console.log('┌─────────────┬─────────┬─────────┬─────────────────────────────┐');
-    console.log('│ Variant     │ Agents  │ Skills  │ Description                 │');
-    console.log('├─────────────┼─────────┼─────────┼─────────────────────────────┤');
-    
-    this.variants.forEach((variant, index) => {
-      const selected = index === 1 ? '●' : '○';
-      const color = index === 1 ? colors.blue : colors.reset;
-      console.log(`│ ${selected} ${color}${variant.name.padEnd(10)}${colors.reset} │ ${variant.agents.toString().padEnd(7)} │ ${variant.skills.toString().padEnd(7)} │ ${variant.description.padEnd(27)} │`);
-    });
-    
-    console.log('└─────────────┴─────────┴─────────┴─────────────────────────────┘');
-    console.log('\nUse arrow keys to navigate, Enter to select');
-    
-    // Default to Standard
-    this.selections.variant = 'standard';
-    
-    return new Promise(resolve => {
-      this.rl.question('\nPress Enter to continue (default: Standard)', (answer) => {
-        if (answer && ['lite', 'standard', 'pro'].includes(answer.toLowerCase())) {
-          this.selections.variant = answer.toLowerCase();
-        }
-        resolve();
-      });
-    });
-  }
-  
   async selectTools() {
     console.log(`\n${colors.bright}Select tools to install${colors.reset}\n`);
     console.log(`${colors.cyan}(↑↓ navigate, space=toggle, a=all, enter=confirm)${colors.reset}\n`);
@@ -1114,18 +464,21 @@ ${colors.yellow}Press Enter to begin or Ctrl+C to exit${colors.reset}
     let currentIndex = 0;
 
     const renderList = () => {
-      // Clear previous list
-      process.stdout.write('\x1b[' + (this.tools.length + 1) + 'A'); // Move up
-      process.stdout.write('\x1b[0J'); // Clear from cursor down
+      // Move cursor up and clear each line individually
+      for (let i = 0; i <= this.tools.length; i++) {
+        process.stdout.write('\x1b[1A'); // Move up one line
+        process.stdout.write('\r'); // Carriage return to start of line
+        process.stdout.write('\x1b[2K'); // Clear entire line
+      }
 
       this.tools.forEach((tool, index) => {
         const isSelected = selected.has(tool.id);
         const isCurrent = index === currentIndex;
-        const checkbox = isSelected ? '●' : '○';
+        const checkbox = isSelected ? '[x]' : '[ ]';
         const pointer = isCurrent ? '»' : ' ';
-        const color = isCurrent ? colors.cyan : colors.reset;
+        const paddedName = tool.name.padEnd(20);
 
-        console.log(`${pointer} ${color}${checkbox}   ${tool.name.padEnd(20)}${colors.reset} - ${tool.description}`);
+        console.log(`${pointer} ${checkbox} ${paddedName} - ${tool.description}`);
       });
       console.log(''); // Empty line at bottom
     };
@@ -1134,11 +487,11 @@ ${colors.yellow}Press Enter to begin or Ctrl+C to exit${colors.reset}
     this.tools.forEach((tool, index) => {
       const isSelected = selected.has(tool.id);
       const isCurrent = index === currentIndex;
-      const checkbox = isSelected ? '●' : '○';
+      const checkbox = isSelected ? '[x]' : '[ ]';
       const pointer = isCurrent ? '»' : ' ';
-      const color = isCurrent ? colors.cyan : colors.reset;
+      const paddedName = tool.name.padEnd(20);
 
-      console.log(`${pointer} ${color}${checkbox}   ${tool.name.padEnd(20)}${colors.reset} - ${tool.description}`);
+      console.log(`${pointer} ${checkbox} ${paddedName} - ${tool.description}`);
     });
     console.log('');
 
@@ -1160,12 +513,7 @@ ${colors.yellow}Press Enter to begin or Ctrl+C to exit${colors.reset}
           this.selections.tools = Array.from(selected);
 
           // Show selection summary
-          console.log(`${colors.green}Installing ${this.selections.tools.length} tool(s):${colors.reset}`);
-          this.selections.tools.forEach(id => {
-            const tool = this.tools.find(t => t.id === id);
-            console.log(`  ${colors.green}✓${colors.reset} ${tool.name} ${colors.cyan}(14 agents + 20 commands)${colors.reset}`);
-          });
-          console.log('');
+          console.log(`${colors.green}Installing ${this.selections.tools.length} tool(s)${colors.reset}\n`);
 
           resolve();
         } else if (key === ' ') { // Space - toggle
@@ -1200,270 +548,6 @@ ${colors.yellow}Press Enter to begin or Ctrl+C to exit${colors.reset}
     }
   }
   
-  async configurePaths() {
-    console.log(`\n${colors.bright}Step 3/4 — Path Configuration${colors.reset}\n`);
-
-    console.log('Default installation paths for selected tools:\n');
-
-    for (const toolId of this.selections.tools) {
-      const tool = this.tools.find(t => t.id === toolId);
-      console.log(`${colors.bright}${tool.name}${colors.reset}`);
-      console.log(`${colors.cyan}Default path:${colors.reset} ${tool.path}`);
-
-      const customPath = await this.askQuestion(
-        `Enter path (or press Enter for default): `,
-        tool.path
-      );
-
-      // Detect custom path
-      if (customPath !== tool.path) {
-        // Show custom path confirmation dialog
-        const confirmed = await this.showCustomPathConfirmation(tool, customPath);
-
-        if (confirmed) {
-          this.selections.paths[toolId] = customPath;
-          console.log(`${colors.green}✓ Using custom path: ${customPath}${colors.reset}\n`);
-        } else {
-          this.selections.paths[toolId] = tool.path;
-          console.log(`${colors.blue}Using default path: ${tool.path}${colors.reset}\n`);
-        }
-      } else {
-        this.selections.paths[toolId] = tool.path;
-        console.log(`${colors.green}✓ Using default path${colors.reset}\n`);
-      }
-    }
-  }
-
-  async showCustomPathConfirmation(tool, customPath) {
-    console.log(`\n${colors.yellow}┌─────────────────────────────────────────────────────────────┐${colors.reset}`);
-    console.log(`${colors.yellow}│ Custom Path Confirmation                                    │${colors.reset}`);
-    console.log(`${colors.yellow}└─────────────────────────────────────────────────────────────┘${colors.reset}\n`);
-
-    console.log(`${colors.bright}Tool:${colors.reset} ${tool.name}`);
-    console.log(`${colors.bright}Proposed custom path:${colors.reset} ${customPath}`);
-    console.log(`${colors.bright}Default path:${colors.reset} ${tool.path}\n`);
-
-    // Validate the custom path
-    const validation = this.validatePath(customPath);
-
-    // Display validation results
-    console.log(`${colors.cyan}Validation Results:${colors.reset}`);
-
-    if (validation.valid) {
-      console.log(`${colors.green}✓ Path is valid${colors.reset}`);
-      if (validation.parentExists) {
-        console.log(`${colors.green}✓ Parent directory exists${colors.reset}`);
-      }
-      if (validation.hasPermission) {
-        console.log(`${colors.green}✓ Write permission available${colors.reset}`);
-      }
-      if (validation.hasDiskSpace) {
-        console.log(`${colors.green}✓ Sufficient disk space${colors.reset}`);
-      }
-    } else {
-      // Show validation warnings/errors
-      validation.issues.forEach(issue => {
-        const icon = issue.severity === 'error' ? '✗' : '⚠';
-        const color = issue.severity === 'error' ? colors.red : colors.yellow;
-        console.log(`${color}${icon} ${issue.message}${colors.reset}`);
-      });
-    }
-
-    console.log('');
-
-    // Require explicit confirmation
-    if (!validation.valid && validation.issues.some(i => i.severity === 'error')) {
-      console.log(`${colors.red}Cannot use this path due to validation errors${colors.reset}`);
-      console.log(`${colors.yellow}Press Enter to use default path instead${colors.reset}`);
-      await this.askQuestion('');
-      return false;
-    }
-
-    // Ask for confirmation
-    const answer = await this.askQuestion(
-      `${colors.bright}Confirm custom path? (y/N):${colors.reset} `,
-      'n'
-    );
-
-    return answer.toLowerCase() === 'y';
-  }
-
-  validatePath(customPath) {
-    const result = {
-      valid: true,
-      issues: [],
-      parentExists: false,
-      hasPermission: false,
-      hasDiskSpace: false
-    };
-
-    // Expand tilde to home directory
-    const expandedPath = customPath.startsWith('~')
-      ? path.join(require('os').homedir(), customPath.slice(1))
-      : path.resolve(customPath);
-
-    try {
-      // Check if path is absolute or can be resolved
-      if (!path.isAbsolute(expandedPath)) {
-        result.issues.push({
-          severity: 'error',
-          message: 'Path must be absolute'
-        });
-        result.valid = false;
-      }
-
-      // Check parent directory exists
-      const parentDir = path.dirname(expandedPath);
-      if (fs.existsSync(parentDir)) {
-        result.parentExists = true;
-
-        // Check write permission on parent directory
-        try {
-          fs.accessSync(parentDir, fs.constants.W_OK);
-          result.hasPermission = true;
-        } catch (err) {
-          result.issues.push({
-            severity: 'error',
-            message: 'No write permission for parent directory'
-          });
-          result.valid = false;
-        }
-
-        // Check disk space (require at least 50MB free)
-        try {
-          const stats = fs.statfsSync ? fs.statfsSync(parentDir) : null;
-          if (stats) {
-            const availableSpace = stats.bavail * stats.bsize;
-            const requiredSpace = 50 * 1024 * 1024; // 50MB
-
-            if (availableSpace >= requiredSpace) {
-              result.hasDiskSpace = true;
-            } else {
-              result.issues.push({
-                severity: 'warning',
-                message: `Low disk space (${Math.round(availableSpace / 1024 / 1024)}MB available, 50MB recommended)`
-              });
-            }
-          } else {
-            // Cannot check disk space on this platform
-            result.hasDiskSpace = true; // Assume OK
-          }
-        } catch (err) {
-          // Disk space check failed, but don't block installation
-          result.hasDiskSpace = true; // Assume OK
-        }
-      } else {
-        result.issues.push({
-          severity: 'warning',
-          message: 'Parent directory does not exist (will be created)'
-        });
-        // Still allow installation if parent can be created
-        result.parentExists = false;
-        result.hasPermission = true; // Assume OK if we can check grandparent
-        result.hasDiskSpace = true; // Assume OK
-      }
-
-      // Check if path already exists
-      if (fs.existsSync(expandedPath)) {
-        result.issues.push({
-          severity: 'warning',
-          message: 'Path already exists (files may be overwritten)'
-        });
-      }
-
-    } catch (err) {
-      result.issues.push({
-        severity: 'error',
-        message: `Path validation error: ${err.message}`
-      });
-      result.valid = false;
-    }
-
-    return result;
-  }
-  
-  async showSummary() {
-    console.log(`\n${colors.bright}Step 4/4 — Installation Summary${colors.reset}\n`);
-
-    console.log(`Installing: ${this.selections.tools.map(id =>
-      this.tools.find(t => t.id === id).name
-    ).join(', ')}`);
-    console.log(`Each tool includes: 14 agents + 20 commands\n`);
-
-    console.log('Installation Details:');
-    console.log('┌─────────────┬──────────────────┬──────────┬─────────────┐');
-    console.log('│ Tool        │ Path             │ Files    │ Size        │');
-    console.log('├─────────────┼──────────────────┼──────────┼─────────────┤');
-
-    // Collect actual file counts and sizes for each tool
-    let totalFiles = 0;
-    let totalBytes = 0;
-    const toolData = [];
-
-    for (const toolId of this.selections.tools) {
-      const tool = this.tools.find(t => t.id === toolId);
-      const installPath = this.selections.paths[toolId];
-      const isCustom = installPath !== tool.path;
-
-      try {
-        // Get actual package contents and size from PackageManager
-        const contents = await this.packageManager.getPackageContents(toolId, this.selections.variant);
-        const sizeInfo = await this.packageManager.getPackageSize(toolId, this.selections.variant);
-
-        toolData.push({
-          tool,
-          path: installPath,
-          isCustom,
-          fileCount: contents.totalFiles,
-          size: sizeInfo.formattedSize
-        });
-
-        totalFiles += contents.totalFiles;
-        totalBytes += sizeInfo.size;
-      } catch (error) {
-        // If package data not available, show placeholder
-        toolData.push({
-          tool,
-          path: installPath,
-          isCustom,
-          fileCount: 'N/A',
-          size: 'N/A'
-        });
-      }
-    }
-
-    // Display tool rows with actual data
-    for (const data of toolData) {
-      const pathDisplay = data.isCustom ? `${data.path} *` : data.path;
-
-      // Format file count and size for display
-      const fileCountStr = typeof data.fileCount === 'number' ? `${data.fileCount}` : data.fileCount;
-      const sizeStr = data.size;
-
-      console.log(`│ ${data.tool.name.padEnd(11)} │ ${pathDisplay.padEnd(16)} │ ${fileCountStr.padEnd(8)} │ ${sizeStr.padEnd(11)} │`);
-    }
-
-    console.log('└─────────────┴──────────────────┴──────────┴─────────────┘');
-
-    // Show custom path footnote if applicable
-    if (toolData.some(d => d.isCustom)) {
-      console.log('\n* Custom path specified');
-    }
-
-    // Show totals if we have data
-    if (totalFiles > 0) {
-      // Format total size
-      const totalSizeFormatted = this.formatBytes(totalBytes);
-      console.log(`\n${colors.cyan}Total:${colors.reset} ${totalFiles} files, ${totalSizeFormatted}`);
-    }
-
-    console.log('\nPress Enter to install or Esc to cancel');
-
-    return new Promise(resolve => {
-      this.rl.question('', resolve);
-    });
-  }
-
   /**
    * Format bytes to human-readable size (helper method for summary display)
    * @param {number} bytes - Size in bytes
@@ -1493,211 +577,14 @@ ${colors.yellow}Press Enter to begin or Ctrl+C to exit${colors.reset}
    *
    * @returns {Promise<object>} Object with success flag, errors array, and warnings array
    */
-  async performPreInstallationChecks() {
-    const errors = [];
-    const warnings = [];
-    const os = require('os');
-
-    // Check Node.js version (require 14+)
-    const nodeVersion = process.version;
-    const majorVersion = parseInt(nodeVersion.slice(1).split('.')[0]);
-    if (majorVersion < 14) {
-      errors.push(`Node.js version ${nodeVersion} is too old. Please upgrade to Node.js 14 or higher.`);
-    }
-
-    // Validate each selected tool's package
-    for (const toolId of this.selections.tools) {
-      try {
-        const validation = await this.packageManager.validatePackage(toolId, this.selections.variant);
-        if (!validation.valid) {
-          errors.push(`Package validation failed for ${toolId}: ${validation.error}`);
-        }
-      } catch (error) {
-        errors.push(`Cannot validate package for ${toolId}: ${error.message}`);
-      }
-    }
-
-    // Validate all installation paths
-    for (const toolId of this.selections.tools) {
-      const targetPath = this.selections.paths[toolId];
-      const expandedPath = targetPath.startsWith('~')
-        ? path.join(os.homedir(), targetPath.slice(1))
-        : path.resolve(targetPath);
-
-      // Check parent directory write permissions
-      const parentDir = path.dirname(expandedPath);
-      try {
-        if (fs.existsSync(parentDir)) {
-          fs.accessSync(parentDir, fs.constants.W_OK);
-        } else {
-          // Check if we can create parent directory
-          const grandParentDir = path.dirname(parentDir);
-          if (fs.existsSync(grandParentDir)) {
-            fs.accessSync(grandParentDir, fs.constants.W_OK);
-          } else {
-            errors.push(`Cannot create installation path for ${toolId}: parent directories do not exist`);
-          }
-        }
-      } catch (error) {
-        errors.push(`No write permission for ${toolId} installation path: ${targetPath}`);
-      }
-
-      // Check if path already exists and has content
-      if (fs.existsSync(expandedPath)) {
-        try {
-          const files = fs.readdirSync(expandedPath);
-          if (files.length > 0) {
-            warnings.push(`${toolId} installation path already exists and contains ${files.length} file(s). Existing installation will be backed up.`);
-          }
-        } catch (error) {
-          warnings.push(`Cannot read existing installation directory for ${toolId}`);
-        }
-      }
-    }
-
-    // Check available disk space
-    try {
-      // Calculate total required space for all selected tools
-      let totalRequiredSpace = 0;
-      for (const toolId of this.selections.tools) {
-        try {
-          const sizeInfo = await this.packageManager.getPackageSize(toolId, this.selections.variant);
-          totalRequiredSpace += sizeInfo.size;
-        } catch (error) {
-          // Skip if we can't determine size
-        }
-      }
-
-      // Check disk space on home directory
-      const homeDir = os.homedir();
-      if (fs.statfsSync) {
-        const stats = fs.statfsSync(homeDir);
-        const availableSpace = stats.bavail * stats.bsize;
-        const requiredSpace = totalRequiredSpace * 1.5; // 50% buffer for safety
-
-        if (availableSpace < requiredSpace) {
-          const availableMB = Math.round(availableSpace / 1024 / 1024);
-          const requiredMB = Math.round(requiredSpace / 1024 / 1024);
-          errors.push(`Insufficient disk space: ${availableMB}MB available, ${requiredMB}MB required`);
-        } else if (availableSpace < totalRequiredSpace * 2) {
-          const availableMB = Math.round(availableSpace / 1024 / 1024);
-          warnings.push(`Low disk space: ${availableMB}MB available. Consider freeing up space.`);
-        }
-      }
-    } catch (error) {
-      // Disk space check not available on this platform
-      warnings.push('Could not check disk space (platform limitation)');
-    }
-
-    // Check for conflicting installations
-    for (const toolId of this.selections.tools) {
-      const targetPath = this.selections.paths[toolId];
-      const expandedPath = targetPath.startsWith('~')
-        ? path.join(os.homedir(), targetPath.slice(1))
-        : path.resolve(targetPath);
-
-      const manifestPath = path.join(expandedPath, 'manifest.json');
-      if (fs.existsSync(manifestPath)) {
-        try {
-          const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-          if (manifest.tool !== toolId) {
-            warnings.push(`Path ${targetPath} contains a different tool (${manifest.tool}). This may cause conflicts.`);
-          }
-        } catch (error) {
-          warnings.push(`Cannot read existing manifest at ${targetPath}`);
-        }
-      }
-    }
-
-    return {
-      success: errors.length === 0,
-      errors,
-      warnings
-    };
-  }
-
   async install() {
-    console.log(`\n${colors.bright}Installing ${this.selections.variant} package...${colors.reset}\n`);
-
-    // Perform pre-installation checks
-    console.log(`${colors.cyan}Performing pre-installation checks...${colors.reset}`);
-    const preCheckResult = await this.performPreInstallationChecks();
-
-    if (!preCheckResult.success) {
-      console.log(`\n${colors.red}Pre-installation checks failed:${colors.reset}`);
-      preCheckResult.errors.forEach(error => {
-        console.log(`  ${colors.red}✗${colors.reset} ${error}`);
-      });
-
-      if (preCheckResult.warnings.length > 0) {
-        console.log(`\n${colors.yellow}Warnings:${colors.reset}`);
-        preCheckResult.warnings.forEach(warning => {
-          console.log(`  ${colors.yellow}⚠${colors.reset} ${warning}`);
-        });
-      }
-
-      throw new Error('Pre-installation checks failed. Please resolve the issues above and try again.');
-    }
-
-    if (preCheckResult.warnings.length > 0) {
-      console.log(`${colors.yellow}Warnings detected:${colors.reset}`);
-      preCheckResult.warnings.forEach(warning => {
-        console.log(`  ${colors.yellow}⚠${colors.reset} ${warning}`);
-      });
-
-      // In silent mode, auto-proceed with warnings
-      if (!this.cliArgs.silent) {
-        const proceed = await this.askQuestion(
-          `\n${colors.bright}Continue despite warnings? (Y/n):${colors.reset} `,
-          'Y'
-        );
-
-        if (proceed.toLowerCase() === 'n') {
-          throw new Error('Installation cancelled by user due to warnings');
-        }
-      } else {
-        console.log(`${colors.yellow}Silent mode: auto-proceeding despite warnings${colors.reset}`);
-      }
-    }
-
-    console.log(`${colors.green}✓ Pre-installation checks passed${colors.reset}\n`);
-
     // Initialize InstallationEngine
     const PathManager = require('./path-manager');
     const InstallationEngine = require('./installation-engine');
+    const os = require('os');
 
     const pathManager = new PathManager();
     const installationEngine = new InstallationEngine(pathManager, this.packageManager);
-
-    // Initialize state management for resume capability
-    installationEngine.getStateManager().initializeState(
-      this.selections.variant,
-      this.selections.tools,
-      this.selections.paths
-    );
-    await installationEngine.getStateManager().saveState({ stage: 'initializing' });
-
-    // Track overall progress
-    let overallFilesCompleted = 0;
-    let overallTotalFiles = 0;
-    let successfulInstalls = [];
-    let failedInstalls = [];
-    let verificationResults = [];
-
-    // Calculate total files across all tools (only for valid tools)
-    const toolFileCount = {};
-    for (const toolId of this.selections.tools) {
-      try {
-        const contents = await this.packageManager.getPackageContents(toolId, this.selections.variant);
-        toolFileCount[toolId] = contents.totalFiles;
-        overallTotalFiles += contents.totalFiles;
-      } catch (error) {
-        // Skip tools that don't have valid packages
-        toolFileCount[toolId] = 0;
-      }
-    }
-
-    const startTime = Date.now();
 
     // Install each selected tool
     for (let i = 0; i < this.selections.tools.length; i++) {
@@ -1705,280 +592,118 @@ ${colors.yellow}Press Enter to begin or Ctrl+C to exit${colors.reset}
       const tool = this.tools.find(t => t.id === toolId);
       const targetPath = this.selections.paths[toolId];
 
-      console.log(`\n${colors.bright}[${i + 1}/${this.selections.tools.length}] Installing ${tool.name}...${colors.reset}`);
-      console.log(`${colors.cyan}Target:${colors.reset} ${targetPath}\n`);
-
-      // Track files completed for this tool
-      let toolFilesCompleted = 0;
-      let toolStartTime = Date.now();
+      console.log(`\n${colors.bright}${colors.cyan}Installing ${tool.name}...${colors.reset}`);
 
       try {
-        // Install with progress callback
+        const expandedPath = targetPath.startsWith('~')
+          ? path.join(os.homedir(), targetPath.slice(1))
+          : path.resolve(targetPath);
+
+        // Start spinner
+        const spinnerFrames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+        let spinnerIndex = 0;
+        const spinner = setInterval(() => {
+          process.stdout.write(`\r  ${colors.cyan}${spinnerFrames[spinnerIndex]}${colors.reset} Installing...`);
+          spinnerIndex = (spinnerIndex + 1) % spinnerFrames.length;
+        }, 80);
+
+        // Install
         await installationEngine.installPackage(
           toolId,
-          this.selections.variant,
+          'pro', // Always pro variant
           targetPath,
-          (progress) => {
-            // Update tool files completed (only count new files)
-            if (progress.filesCompleted > toolFilesCompleted) {
-              const newFiles = progress.filesCompleted - toolFilesCompleted;
-              overallFilesCompleted += newFiles;
-              toolFilesCompleted = progress.filesCompleted;
-            }
-
-            // Calculate elapsed time and speed
-            const elapsedMs = Date.now() - toolStartTime;
-            const elapsedSec = Math.floor(elapsedMs / 1000);
-            const elapsedMin = Math.floor(elapsedSec / 60);
-            const elapsedSecRemainder = elapsedSec % 60;
-            const elapsedFormatted = `${elapsedMin}:${elapsedSecRemainder.toString().padStart(2, '0')}`;
-
-            // Calculate transfer speed (bytes per second)
-            const speed = elapsedMs > 0 ? progress.bytesTransferred / (elapsedMs / 1000) : 0;
-            const speedFormatted = this.formatBytes(speed);
-
-            // Calculate ETA
-            const remainingBytes = progress.totalBytes - progress.bytesTransferred;
-            const etaSec = speed > 0 ? Math.floor(remainingBytes / speed) : 0;
-            const etaMin = Math.floor(etaSec / 60);
-            const etaSecRemainder = etaSec % 60;
-            const etaFormatted = `${etaMin}:${etaSecRemainder.toString().padStart(2, '0')}`;
-
-            // Draw progress bar for current tool
-            this.drawProgressBar(
-              progress.filesCompleted,
-              progress.totalFiles,
-              progress.percentage,
-              progress.currentFile,
-              this.formatBytes(progress.bytesTransferred),
-              this.formatBytes(progress.totalBytes),
-              speedFormatted,
-              elapsedFormatted,
-              etaFormatted
-            );
-
-            // Draw overall progress
-            // Cap overall percentage at 100% to handle file count mismatches
-            const overallPercentage = overallTotalFiles > 0
-              ? Math.min(100, Math.round((overallFilesCompleted / overallTotalFiles) * 100))
-              : 0;
-
-            this.drawOverallProgress(
-              overallFilesCompleted,
-              overallTotalFiles,
-              overallPercentage,
-              i + 1,
-              this.selections.tools.length
-            );
-          }
+          null // No progress callback
         );
 
-        // Clear progress lines after completion
-        process.stdout.write('\x1b[2K\r'); // Clear current line
-        process.stdout.write('\x1b[1A\x1b[2K\r'); // Clear previous line
+        // Stop spinner
+        clearInterval(spinner);
+        process.stdout.write('\r\x1b[2K'); // Clear spinner line
 
-        console.log(`${colors.green}✓ ${tool.name} installed successfully${colors.reset}`);
-        console.log(`  ${colors.cyan}Location:${colors.reset} ${targetPath}`);
-        console.log(`  ${colors.cyan}Files:${colors.reset} ${toolFilesCompleted} files`);
+        // Get backup info from installation engine
+        const lastBackup = installationEngine.backupLog.length > 0
+          ? installationEngine.backupLog[installationEngine.backupLog.length - 1]
+          : null;
 
-        // Verify installation
-        console.log(`  ${colors.cyan}Verifying installation...${colors.reset}`);
-        const verification = await installationEngine.verifyInstallation(toolId, targetPath);
+        // Count actual installed components by checking directories
+        const countItems = (dir) => {
+          try {
+            if (fs.existsSync(dir)) {
+              return fs.readdirSync(dir).filter(f => !f.startsWith('.')).length;
+            }
+          } catch (e) {}
+          return 0;
+        };
 
-        if (verification.valid) {
-          console.log(`  ${colors.green}✓ Verification passed${colors.reset}`);
-        } else {
-          console.log(`  ${colors.yellow}⚠ Verification completed with issues${colors.reset}`);
+        // Count only .md files in a directory
+        const countMdFiles = (dir) => {
+          try {
+            if (fs.existsSync(dir)) {
+              return fs.readdirSync(dir).filter(f => f.endsWith('.md')).length;
+            }
+          } catch (e) {}
+          return 0;
+        };
+
+        // Check for agents (agents, agent, or droids)
+        let agentsCount = countItems(path.join(expandedPath, 'agents')) ||
+                         countItems(path.join(expandedPath, 'agent')) ||
+                         countItems(path.join(expandedPath, 'droids'));
+        let agentDir = 'agents';
+        if (fs.existsSync(path.join(expandedPath, 'agents'))) {
+          agentDir = 'agents';
+        } else if (fs.existsSync(path.join(expandedPath, 'agent'))) {
+          agentDir = 'agent';
+        } else if (fs.existsSync(path.join(expandedPath, 'droids'))) {
+          agentDir = 'droids';
         }
 
-        successfulInstalls.push({
-          toolId,
-          name: tool.name,
-          path: targetPath,
-          fileCount: toolFilesCompleted
-        });
+        // Check for skills (count directories)
+        const skillsCount = countItems(path.join(expandedPath, 'skills'));
 
-        verificationResults.push(verification);
+        // Check for commands (count only .md files, both singular and plural)
+        const commandsCount = countMdFiles(path.join(expandedPath, 'commands')) ||
+                             countMdFiles(path.join(expandedPath, 'command'));
+        const cmdDir = fs.existsSync(path.join(expandedPath, 'commands')) ? 'commands' : 'command';
 
-        // Mark tool as completed in state
-        await installationEngine.getStateManager().completeCurrentTool();
+        // Show backup info if it was created
+        if (lastBackup && lastBackup.original === expandedPath) {
+          const backupShortPath = lastBackup.backup.replace(os.homedir(), '~');
+          console.log(`  ${colors.yellow}Backup:${colors.reset} ${backupShortPath}`);
+        }
+
+        // Show components with color
+        if (agentsCount > 0) {
+          console.log(`  ${colors.green}✓${colors.reset} ${agentsCount} agents   → ${targetPath}/${agentDir}`);
+        }
+        if (skillsCount > 0) {
+          console.log(`  ${colors.green}✓${colors.reset} ${skillsCount} skills   → ${targetPath}/skills`);
+        }
+        if (commandsCount > 0) {
+          console.log(`  ${colors.green}✓${colors.reset} ${commandsCount} commands → ${targetPath}/${cmdDir}`);
+        }
 
       } catch (error) {
-        // Clear progress lines on error
-        process.stdout.write('\x1b[2K\r');
-        process.stdout.write('\x1b[1A\x1b[2K\r');
-
-        // Categorize the error for better user guidance
-        const errorInfo = this.categorizeError(error);
-
-        console.error(`${colors.red}✗ Failed to install ${tool.name}${colors.reset}`);
-        console.error(`  ${colors.red}Error Type:${colors.reset} ${errorInfo.type}`);
-        console.error(`  ${colors.red}Message:${colors.reset} ${error.message}\n`);
-
-        // Display actionable advice
-        if (errorInfo.advice.length > 0) {
-          console.error(`  ${colors.yellow}Suggested Actions:${colors.reset}`);
-          errorInfo.advice.slice(0, 3).forEach((advice, index) => {
-            console.error(`    ${index + 1}. ${advice}`);
-          });
-          console.error('');
-        }
-
-        failedInstalls.push({
-          toolId,
-          name: tool.name,
-          path: targetPath,
-          error: error.message,
-          errorType: errorInfo.type
-        });
-
-        // Mark tool as failed in state
-        await installationEngine.getStateManager().failCurrentTool(error);
-
-        // Offer recovery options if there are more tools to install
-        if (i < this.selections.tools.length - 1) {
-          const shouldContinue = await this.offerRecoveryOptions(tool.name, i + 1, this.selections.tools.length);
-
-          if (!shouldContinue) {
-            console.log(`\n${colors.yellow}Installation cancelled by user${colors.reset}`);
-            break; // Stop installing remaining tools
-          }
-        }
+        // On ANY error, show it and exit immediately
+        throw error; // Will be caught by run() and handled by handleFatalError()
       }
     }
 
-    // Calculate total elapsed time
-    const totalElapsedMs = Date.now() - startTime;
-    const totalElapsedSec = Math.floor(totalElapsedMs / 1000);
-    const totalElapsedMin = Math.floor(totalElapsedSec / 60);
-    const totalElapsedSecRemainder = totalElapsedSec % 60;
-    const totalElapsedFormatted = `${totalElapsedMin}:${totalElapsedSecRemainder.toString().padStart(2, '0')}`;
-
-    // Display final summary
-    console.log(`\n${colors.bright}Installation Complete${colors.reset}`);
-    console.log(`${colors.cyan}Total time:${colors.reset} ${totalElapsedFormatted}`);
-    console.log(`${colors.cyan}Total files:${colors.reset} ${overallFilesCompleted} files\n`);
-
-    if (successfulInstalls.length > 0) {
-      console.log(`${colors.green}Successfully installed:${colors.reset}`);
-      for (const install of successfulInstalls) {
-        console.log(`  ${colors.green}✓${colors.reset} ${install.name} (${install.fileCount} files)`);
-      }
-    }
-
-    if (failedInstalls.length > 0) {
-      console.log(`\n${colors.red}Failed installations:${colors.reset}`);
-      for (const install of failedInstalls) {
-        console.log(`  ${colors.red}✗${colors.reset} ${install.name} (${install.errorType}): ${install.error}`);
-      }
-      console.log(`\n${colors.yellow}Note: Failed installations have been automatically rolled back${colors.reset}`);
-      console.log(`${colors.yellow}No partial installations remain on your system${colors.reset}`);
-
-      // Offer retry options for failed installations
-      if (failedInstalls.length > 0 && successfulInstalls.length > 0) {
-        console.log(`\n${colors.cyan}You can retry failed installations by running the installer again${colors.reset}`);
-      }
-    }
-
-    // Display detailed verification reports for successful installations
-    if (successfulInstalls.length > 0 && verificationResults.length > 0) {
-      console.log(`\n${colors.bright}${'='.repeat(60)}${colors.reset}`);
-      for (let i = 0; i < successfulInstalls.length; i++) {
-        const install = successfulInstalls[i];
-        const verification = verificationResults[i];
-        this.displayVerificationReport(verification, install.name);
-      }
-      console.log(`${colors.bright}${'='.repeat(60)}${colors.reset}\n`);
-    }
-
-    // Generate and save installation report
-    if (successfulInstalls.length > 0 || failedInstalls.length > 0) {
-      await this.generateInstallationReport(
-        successfulInstalls,
-        failedInstalls,
-        verificationResults,
-        totalElapsedMs
-      );
-    }
-
-    // Clear installation state if all tools completed successfully
-    if (failedInstalls.length === 0) {
-      await installationEngine.getStateManager().clearState();
-      console.log(`${colors.green}✓ Installation state cleared${colors.reset}`);
-    } else {
-      console.log(`\n${colors.yellow}Installation state preserved for resume capability${colors.reset}`);
-      console.log(`${colors.yellow}Run the installer again to retry failed tools${colors.reset}`);
-    }
-
-    // Collect telemetry data (if user has consented)
-    await this.collectInstallationTelemetry(
-      failedInstalls.length === 0,
-      this.selections.tools.length,
-      failedInstalls.length,
-      0, // warnings are tracked in verification
-      totalElapsedMs
-    );
+    console.log(`\n${colors.bright}${colors.green}Done!${colors.reset}`);
   }
 
   /**
    * Draw progress bar for current tool installation
    * Updates in place without scrolling using ANSI escape codes
    */
-  drawProgressBar(filesCompleted, totalFiles, percentage, currentFile, bytesTransferred, totalBytes, speed, elapsed, eta) {
-    // Move cursor to beginning of line and clear it
-    process.stdout.write('\x1b[2K\r');
-
-    // Calculate progress bar width (40 characters)
+  drawProgressBar(filesCompleted, totalFiles, percentage, currentFile) {
     const barWidth = 40;
     const filledWidth = Math.round((percentage / 100) * barWidth);
-    const emptyWidth = barWidth - filledWidth;
+    const bar = '#'.repeat(filledWidth) + '-'.repeat(barWidth - filledWidth);
 
-    // Build progress bar
-    const bar = '█'.repeat(filledWidth) + '░'.repeat(emptyWidth);
-
-    // Truncate current file name if too long
-    const maxFileNameLength = 50;
-    let displayFileName = currentFile;
-    if (displayFileName.length > maxFileNameLength) {
-      displayFileName = '...' + displayFileName.slice(-(maxFileNameLength - 3));
-    }
-
-    // Display progress bar
-    process.stdout.write(
-      `[${colors.cyan}${bar}${colors.reset}] ${percentage}% (${filesCompleted}/${totalFiles} files)\n`
-    );
-
-    // Display current file and stats
-    process.stdout.write(
-      `${colors.yellow}Copying:${colors.reset} ${displayFileName} | ` +
-      `${bytesTransferred}/${totalBytes} | ` +
-      `${speed}/s | ` +
-      `Elapsed: ${elapsed} | ` +
-      `ETA: ${eta}`
-    );
-
-    // Move cursor up one line to overwrite on next update
-    process.stdout.write('\x1b[1A');
+    // Single line, update in place
+    process.stdout.write(`\r[${bar}] ${percentage}% (${filesCompleted}/${totalFiles} files)`);
   }
 
-  /**
-   * Draw overall progress across all tools
-   */
-  drawOverallProgress(filesCompleted, totalFiles, percentage, currentTool, totalTools) {
-    // This is called after the tool progress, so cursor is already up one line
-    // Move down to write overall progress below the tool progress
-    process.stdout.write('\x1b[2B'); // Move down 2 lines
-    process.stdout.write('\x1b[2K\r'); // Clear line
-
-    // Display overall progress
-    process.stdout.write(
-      `${colors.bright}Overall:${colors.reset} Tool ${currentTool}/${totalTools} | ` +
-      `${filesCompleted}/${totalFiles} files (${percentage}%)`
-    );
-
-    // Move cursor back up
-    process.stdout.write('\x1b[1A'); // Move up 1 line to be ready for next tool progress update
-  }
   
   askQuestion(prompt, defaultValue = '') {
     return new Promise(resolve => {
@@ -1995,79 +720,6 @@ ${colors.yellow}Press Enter to begin or Ctrl+C to exit${colors.reset}
    * @param {object} verification - Verification result from InstallationEngine
    * @param {string} toolName - Display name of the tool
    */
-  displayVerificationReport(verification, toolName) {
-    console.log(`\n${colors.bright}Verification Report: ${toolName}${colors.reset}`);
-    console.log('─'.repeat(60));
-
-    if (verification.valid) {
-      console.log(`${colors.green}✓ Installation verified successfully${colors.reset}`);
-    } else {
-      console.log(`${colors.red}✗ Verification failed${colors.reset}`);
-    }
-
-    // Display manifest location
-    const manifestPath = path.join(verification.targetPath, 'manifest.json');
-    console.log(`\n${colors.cyan}Manifest:${colors.reset} ${manifestPath}`);
-
-    // Display variant and version info
-    if (verification.variant) {
-      console.log(`${colors.cyan}Variant:${colors.reset} ${verification.variant}`);
-    }
-    if (verification.version) {
-      console.log(`${colors.cyan}Version:${colors.reset} ${verification.version}`);
-    }
-
-    // Display component counts
-    console.log(`\n${colors.cyan}Components:${colors.reset}`);
-    const components = verification.components;
-    const agentCount = components.agents.found;
-    const skillCount = components.skills.found;
-    const resourceCount = components.resources.found;
-    const hookCount = components.hooks.found;
-
-    const componentSummary = [];
-    if (agentCount > 0) componentSummary.push(`${agentCount} agent${agentCount !== 1 ? 's' : ''}`);
-    if (skillCount > 0) componentSummary.push(`${skillCount} skill${skillCount !== 1 ? 's' : ''}`);
-    if (resourceCount > 0) componentSummary.push(`${resourceCount} resource${resourceCount !== 1 ? 's' : ''}`);
-    if (hookCount > 0) componentSummary.push(`${hookCount} hook${hookCount !== 1 ? 's' : ''}`);
-
-    console.log(`  ${componentSummary.join(', ')}`);
-
-    // Display issues if any
-    if (verification.issues.length > 0) {
-      console.log(`\n${colors.red}Issues:${colors.reset}`);
-      for (const issue of verification.issues) {
-        console.log(`  ${colors.red}✗${colors.reset} ${issue.message}`);
-      }
-    }
-
-    // Display warnings if any
-    if (verification.warnings.length > 0) {
-      console.log(`\n${colors.yellow}Warnings:${colors.reset}`);
-      for (const warning of verification.warnings) {
-        console.log(`  ${colors.yellow}⚠${colors.reset} ${warning.message}`);
-      }
-    }
-
-    // Display next steps for successful installations
-    if (verification.valid) {
-      console.log(`\n${colors.bright}Next Steps:${colors.reset}`);
-      console.log(`  To use ${toolName}, navigate to: ${verification.targetPath}`);
-
-      // Provide tool-specific usage hints
-      const toolId = verification.toolId;
-      if (toolId === 'claude') {
-        console.log(`  ${colors.cyan}Quick start:${colors.reset} Run 'claude' to start using Claude Code`);
-      } else if (toolId === 'opencode') {
-        console.log(`  ${colors.cyan}Quick start:${colors.reset} Run 'opencode' to start using Opencode`);
-      } else if (toolId === 'ampcode') {
-        console.log(`  ${colors.cyan}Quick start:${colors.reset} Run 'ampcode' to start using Ampcode`);
-      } else if (toolId === 'droid') {
-        console.log(`  ${colors.cyan}Quick start:${colors.reset} Run 'droid' to start using Droid`);
-      }
-    }
-  }
-
   /**
    * Generate and save installation report to ~/.agentic-kit-install.log
    * Creates a detailed log of the installation session
@@ -2077,153 +729,12 @@ ${colors.yellow}Press Enter to begin or Ctrl+C to exit${colors.reset}
    * @param {array} verificationResults - Array of verification result objects
    * @param {number} totalElapsedMs - Total elapsed time in milliseconds
    */
-  async generateInstallationReport(successfulInstalls, failedInstalls, verificationResults, totalElapsedMs) {
-    const ReportTemplate = require('./report-template');
-    const reportTemplate = new ReportTemplate();
-
-    // Prepare installation data for the report template
-    const startTime = Date.now() - totalElapsedMs;
-    const endTime = Date.now();
-
-    // Build tools array with complete information
-    const tools = [];
-    const allErrors = [];
-    const allWarnings = [];
-
-    // Process successful installations
-    for (let i = 0; i < successfulInstalls.length; i++) {
-      const install = successfulInstalls[i];
-      const verification = verificationResults[i];
-
-      // Get package size information
-      let sizeBytes = 0;
-      try {
-        const sizeInfo = await this.packageManager.getPackageSize(install.toolId, this.selections.variant);
-        sizeBytes = sizeInfo.bytes || 0;
-      } catch (error) {
-        // If we can't get size, estimate based on file count (rough estimate: 15KB per file)
-        sizeBytes = install.fileCount * 15 * 1024;
-      }
-
-      // Get manifest path
-      const manifestPath = path.join(install.path, 'manifest.json');
-
-      tools.push({
-        toolId: install.toolId,
-        path: install.path,
-        filesInstalled: install.fileCount,
-        sizeBytes: sizeBytes,
-        components: verification && verification.components ? {
-          agents: verification.components.agents.found,
-          skills: verification.components.skills.found,
-          resources: verification.components.resources.found,
-          hooks: verification.components.hooks.found
-        } : {},
-        verified: verification ? verification.valid : false,
-        verificationStatus: verification && verification.valid ? 'All components verified successfully' : 'Verification completed with issues',
-        manifestPath: manifestPath
-      });
-
-      // Collect warnings from verification
-      if (verification && verification.warnings && verification.warnings.length > 0) {
-        verification.warnings.forEach(warning => {
-          allWarnings.push(`[${install.toolId}] ${warning.message}`);
-        });
-      }
-
-      // Collect issues from verification as errors
-      if (verification && verification.issues && verification.issues.length > 0) {
-        verification.issues.forEach(issue => {
-          allErrors.push(`[${install.toolId}] ${issue.message}`);
-        });
-      }
-    }
-
-    // Process failed installations
-    for (const install of failedInstalls) {
-      allErrors.push(`[${install.toolId}] Installation failed: ${install.error}`);
-    }
-
-    // Build installation data object
-    const installationData = {
-      variant: this.selections.variant,
-      tools: tools,
-      startTime: startTime,
-      endTime: endTime,
-      success: failedInstalls.length === 0,
-      errors: allErrors,
-      warnings: allWarnings
-    };
-
-    // Generate and save report using ReportTemplate
-    try {
-      const reportPath = await reportTemplate.createAndSaveReport(installationData);
-      console.log(`\n${colors.cyan}Installation report saved to:${colors.reset} ${reportPath}`);
-    } catch (error) {
-      console.warn(`${colors.yellow}Warning: Could not save installation report: ${error.message}${colors.reset}`);
-    }
-  }
-
   /**
    * Prompt user for telemetry consent
    * Only prompts if consent hasn't been set before and --no-telemetry flag not present
    *
    * @returns {Promise<void>}
    */
-  async promptTelemetryConsent() {
-    // Skip if --no-telemetry flag is present
-    if (this.cliArgs.noTelemetry) {
-      return;
-    }
-
-    // Skip if in silent mode
-    if (this.cliArgs.silent) {
-      return;
-    }
-
-    const Telemetry = require('./telemetry');
-    const telemetry = new Telemetry();
-
-    // Check if user has already made a decision
-    const hasConsent = await telemetry.hasConsent();
-    const hasOptedOut = await telemetry.hasOptedOut();
-
-    // Only prompt if user hasn't decided yet
-    if (!hasConsent && !hasOptedOut) {
-      console.log(`\n${colors.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${colors.reset}`);
-      console.log(`${colors.bright}Help Improve Agentic Kit${colors.reset}\n`);
-      console.log('Would you like to share anonymous usage statistics to help improve agentic-kit?');
-      console.log('\nData collected:');
-      console.log('  • Package variant selected (lite/standard/pro)');
-      console.log('  • Number of tools installed');
-      console.log('  • Installation time and success status');
-      console.log('  • Operating system type');
-      console.log('  • Node.js version');
-      console.log('\nData NOT collected:');
-      console.log('  • File paths or directory locations');
-      console.log('  • Personal information');
-      console.log('  • Specific tool names');
-      console.log('  • Any identifying information');
-      console.log('\nYou can change this setting later or opt-out anytime.');
-      console.log(`For details, see: ${colors.cyan}docs/PRIVACY.md${colors.reset}`);
-      console.log(`${colors.cyan}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${colors.reset}\n`);
-
-      const answer = await this.askQuestion(
-        `${colors.bright}Share anonymous usage data? (y/N):${colors.reset} `,
-        'N'
-      );
-
-      const consent = answer.toLowerCase() === 'y';
-      await telemetry.setConsent(consent);
-
-      if (consent) {
-        console.log(`${colors.green}✓ Thank you! Anonymous usage statistics enabled${colors.reset}\n`);
-      } else {
-        console.log(`${colors.yellow}Usage statistics disabled${colors.reset}\n`);
-      }
-    }
-  }
-
   /**
    * Collect and send telemetry data for installation
    *
@@ -2234,28 +745,6 @@ ${colors.yellow}Press Enter to begin or Ctrl+C to exit${colors.reset}
    * @param {number} installationTime - Installation time in milliseconds
    * @returns {Promise<void>}
    */
-  async collectInstallationTelemetry(success, toolCount, errorCount, warningCount, installationTime) {
-    // Skip if --no-telemetry flag is present
-    if (this.cliArgs.noTelemetry) {
-      return;
-    }
-
-    const Telemetry = require('./telemetry');
-    const telemetry = new Telemetry();
-
-    try {
-      await telemetry.collectInstallationStats({
-        variant: this.selections.variant,
-        toolCount: toolCount,
-        installationTime: installationTime,
-        success: success,
-        errorCount: errorCount,
-        warningCount: warningCount
-      });
-    } catch (error) {
-      // Silently fail - don't interrupt user experience for telemetry issues
-    }
-  }
 }
 
 // Run installer if called directly
