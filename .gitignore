@@ -47,3 +47,6 @@ test-installation-*/
 *-test-ampcode/
 *-test-droid/
 /tasks/
+
+# Aurora runtime data
+.aurora/
