@@ -1060,7 +1060,7 @@ ${colors.bright}For more information, visit:${colors.reset}
     console.log(`
 ${colors.bright}${colors.cyan}┌─────────────────────────────────────────────────────────────┐${colors.reset}
 ${colors.bright}${colors.cyan}│              Agentic Kit Installer v1.2.0                    │${colors.reset}
-${colors.bright}${colors.cyan}│         Pro Edition - 13 Agents + 22 Skills                   │${colors.reset}
+${colors.bright}${colors.cyan}│           14 Agents + 20 Commands Per Tool                    │${colors.reset}
 ${colors.bright}${colors.cyan}└─────────────────────────────────────────────────────────────┘${colors.reset}
 
 ${colors.bright}Available tools:${colors.reset}
@@ -1144,7 +1144,7 @@ ${colors.yellow}Press Enter to begin or Ctrl+C to exit${colors.reset}
         console.log(`\n${colors.green}Installing:${colors.reset}`);
         this.selections.tools.forEach(id => {
           const tool = this.tools.find(t => t.id === id);
-          console.log(`  ${colors.green}✓${colors.reset} ${tool.name} ${colors.cyan}(Pro - 13 agents + 22 skills)${colors.reset}`);
+          console.log(`  ${colors.green}✓${colors.reset} ${tool.name} ${colors.cyan}(14 agents + 20 commands)${colors.reset}`);
         });
 
         resolve();

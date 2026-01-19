@@ -1,7 +1,7 @@
 {
   "name": "@amrhas82/agentic-kit",
-  "version": "1.8.0",
-  "description": "Pro edition AI development toolkit with 13 specialized agents and 22 powerful skills. Simple one-question installer for Claude, Opencode, Ampcode, and Droid. Everyone gets the full Pro experience.",
+  "version": "1.8.1",
+  "description": "AI development toolkit with 14 specialized agents and 20 commands. Simple one-question installer for Claude, Opencode, Ampcode, and Droid.",
   "main": "index.js",
   "bin": {
     "agentic-kit": "./installer/cli.js",
@@ -73,7 +73,6 @@
     "postinstall.js",
     "README.md",
     "QUICK-START.md",
-    "VARIANTS.md",
     "TROUBLESHOOTING.md",
     "CHANGELOG.md",
     "LICENSE"

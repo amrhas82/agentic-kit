@@ -9,7 +9,7 @@ Next step: Run the installer
 
   $ agentic-kit
 
-You'll get the Pro version (13 agents + 22 skills)
+Each tool includes 14 agents + 20 commands
 
 Available tools:
   • claude    - Claude Code (AI development assistant)
