@@ -1,7 +1,7 @@
 {
   "name": "@amrhas82/agentic-kit",
-  "version": "1.10.0",
-  "description": "AI development toolkit with 14 specialized agents and 20 commands. Simple one-question installer for Claude, Opencode, Ampcode, and Droid.",
+  "version": "1.11.0",
+  "description": "AI development toolkit with 14 specialized agents and 21 commands. Simple one-question installer for Claude, Opencode, Ampcode, and Droid.",
   "main": "index.js",
   "bin": {
     "agentic-kit": "./installer/cli.js",
@@ -14,7 +14,7 @@
     "uninstall-tool": "node installer/cli.js --uninstall",
     "clean": "rm -rf tests/tmp/ && echo 'Cleaned test artifacts'",
     "clean:git": "git clean -fdx tests/tmp/",
-    "validate": "node ./validate-package.js",
+    "validate": "node ./scripts/validate-package.js",
     "validate-packages": "node scripts/validate-all-packages.js",
     "prepublishOnly": "npm run clean && npm run validate",
     "publish:npm": "npm publish --registry https://registry.npmjs.org --access public",

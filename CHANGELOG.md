@@ -17,6 +17,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.11.0] - 2026-01-20
+
+### Added
+- `/stash` command for saving session context for compaction recovery or handoffs (added to all packages: claude, opencode, ampcode, droid)
+
+### Changed
+- Updated command count from 20 to 21 across all documentation
+- README.md: Updated command counts and added stash to command list
+- installer/cli.js: Updated welcome banner to reflect 21 commands
+- package.json: Updated description to reflect 21 commands
+
+### Fixed
+- package.json: Fixed validate script path to point to scripts/validate-package.js
+
+---
+
 ## [1.2.1] - 2025-11-05
 
 ### Changed
@@ -288,6 +304,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Upgrade Guide
 
+### From 1.2.1 to 1.11.0
+
+**No breaking changes.** Added new `/stash` command for session context management.
+
+**New:**
+- `/stash` command for saving session context
+- Updated command count from 20 to 21
+
+**Action Required:**
+- None for existing installations - upgrade is seamless
+
+**To Upgrade:**
+```bash
+# Via npm
+npm install -g @amrhas82/agentic-kit@latest
+
+# Run installer
+agentic-kit
+```
+
+---
+
 ### From 1.1.0 to 1.2.0
 
 **No breaking changes.** Major new feature: Interactive Multi-Tool Installer.
@@ -359,7 +397,9 @@ npx @amrhas82/agentic-kit
 
 | Version | Date | Key Features |
 |---------|------|--------------|
-| **1.2.0** | 2025-11-04 | Interactive multi-tool installer, 22 skills, 4 tools support, 254 tests |
+| **1.11.0** | 2026-01-20 | Added /stash command (21 total commands) |
+| **1.2.1** | 2025-11-05 | Package optimization, repository cleanup |
+| **1.2.0** | 2025-11-05 | Interactive multi-tool installer, 22 skills, 4 tools support, 254 tests |
 | **1.1.0** | 2025-11-02 | Session persistence, docs consolidation, marketplace catalog |
 | **1.0.0** | 2025-11-02 | Initial release: 13 agents, 14 skills, 3 variants |
 

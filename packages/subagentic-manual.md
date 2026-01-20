@@ -31,10 +31,10 @@ Install for your platform:
 
 | Platform | Installation | What's Included |
 |----------|--------------|-----------------|
-| **Claude Code** | `cp -r claude/* ~/.claude/` | 14 subagents + 11 skills + 9 commands |
-| **Droid** | `cp -r droid/* ~/.factory/` | 20 commands (subagent references) |
-| **Ampcode** | `cp -r ampcode/* ~/.config/amp/` | 20 commands (subagent references) |
-| **OpenCode** | `cp -r opencode/* ~/.config/opencode/` | 20 commands (subagent references) |
+| **Claude Code** | `cp -r claude/* ~/.claude/` | 14 subagents + 11 skills + 10 commands |
+| **Droid** | `cp -r droid/* ~/.factory/` | 21 commands (subagent references) |
+| **Ampcode** | `cp -r ampcode/* ~/.config/amp/` | 21 commands (subagent references) |
+| **OpenCode** | `cp -r opencode/* ~/.config/opencode/` | 21 commands (subagent references) |
 
 **Key Difference**:
 - **Claude Code** implements full subagent system with orchestrator
@@ -54,8 +54,8 @@ Install for your platform:
 - test-driven-development, testing-anti-patterns, verification-before-completion (auto-trigger)
 - brainstorming, code-review, systematic-debugging, docs-builder, etc.
 
-**9 Commands** - Simple workflow helpers
-- debug, explain, git-commit, optimize, refactor, review, security, ship, test-generate
+**10 Commands** - Simple workflow helpers
+- debug, explain, git-commit, optimize, refactor, review, security, ship, stash, test-generate
 
 **Orchestration System**
 - Automatic intent matching to 9 workflow patterns
@@ -64,7 +64,7 @@ Install for your platform:
 
 ### Droid/Ampcode/OpenCode (Commands Only)
 
-**20 Commands** - All workflow capabilities in command form
+**21 Commands** - All workflow capabilities in command form
 - Combines Claude's skills + commands into unified command set
 - Same functionality, different invocation model (no auto-triggering)
 - Includes reference documentation for Claude's subagents
@@ -105,7 +105,7 @@ Install for your platform:
 
 ## 🛠 Commands Reference
 
-### Claude Code: 20 Total (11 Skills + 9 Commands)
+### Claude Code: 21 Total (11 Skills + 10 Commands)
 
 **Auto-Triggering Skills (4)**
 - `test-driven-development` - Write test first, watch fail, minimal passing code
@@ -122,7 +122,7 @@ Install for your platform:
 - `skill-creator` - Guide for creating new skills
 - `systematic-debugging` - Four-phase debugging framework
 
-**Simple Commands (9)**
+**Simple Commands (10)**
 - `debug` - Systematic investigation techniques
 - `explain` - Explain code for newcomers
 - `git-commit` - Intelligent commit creation
@@ -131,9 +131,10 @@ Install for your platform:
 - `review` - Comprehensive code review
 - `security` - Vulnerability scanning
 - `ship` - Pre-deployment checklist
+- `stash` - Save session context for compaction recovery or handoffs
 - `test-generate` - Test suite generation
 
-### Droid/Ampcode/OpenCode: 20 Commands
+### Droid/Ampcode/OpenCode: 21 Commands
 
 Same functionality as Claude's skills+commands, but:
 - All invoked as commands (no auto-triggering)
@@ -143,7 +144,7 @@ Same functionality as Claude's skills+commands, but:
 **Command Categories**:
 - **Development & Testing (10)**: test-driven-development, testing-anti-patterns, test-generate, code-review, systematic-debugging, root-cause-tracing, debug, condition-based-waiting, verification-before-completion, subagent-spawning
 - **Code Operations (6)**: refactor, optimize, explain, review, security, ship
-- **Strategy & Planning (4)**: brainstorming, skill-creator, docs-builder, git-commit
+- **Session & Planning (5)**: brainstorming, skill-creator, docs-builder, git-commit, stash
 
 ---
 
@@ -242,7 +243,7 @@ Subagent workflows require manual coordination.
 ├── CLAUDE.md           # Registry + orchestrator workflows
 ├── agents/             # 14 subagent implementations (*.md)
 ├── skills/             # 11 skills (subdirectories with SKILL.md)
-└── commands/           # 9 commands (*.md)
+└── commands/           # 10 commands (*.md)
 ```
 
 **Features**:
@@ -255,7 +256,7 @@ Subagent workflows require manual coordination.
 ```
 ~/.factory/
 ├── AGENTS.md           # Reference doc (subagents + commands)
-└── commands/           # 20 commands (*.md)
+└── commands/           # 21 commands (*.md)
 ```
 
 **Features**:
@@ -267,7 +268,7 @@ Subagent workflows require manual coordination.
 ```
 ~/.config/amp/
 ├── AGENT.md            # Reference doc (subagents + commands)
-└── commands/           # 20 commands (*.md)
+└── commands/           # 21 commands (*.md)
 ```
 
 **Features**:
@@ -279,7 +280,7 @@ Subagent workflows require manual coordination.
 ```
 ~/.config/opencode/
 ├── AGENTS.md           # Reference doc (subagents + commands)
-└── command/            # 20 commands (*.md)
+└── command/            # 21 commands (*.md)
 ```
 
 **Features**:

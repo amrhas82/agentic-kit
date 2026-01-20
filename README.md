@@ -9,7 +9,7 @@
          ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝ ╚═════╝    ╚═╝  ╚═╝╚═╝   ╚═╝
 ```
 
-**AI development toolkit with 14 specialized agents and 20 commands per tool**
+**AI development toolkit with 14 specialized agents and 21 commands per tool**
 
 </div>
 
@@ -36,15 +36,15 @@ npm install -g @amrhas82/agentic-kit
 agentic-kit
 
 # Choose tool(s): claude, opencode, ampcode, or droid
-# Each tool gets 14 agents + 20 commands
+# Each tool gets 14 agents + 21 commands
 ```
 
 ### Supported Tools
 
-- **Claude Code** - 14 subagents + 11 skills + 9 commands
-- **Opencode** - 14 agent references + 20 commands
-- **Ampcode** - 14 agent references + 20 commands
-- **Droid** - 14 agent references + 20 commands
+- **Claude Code** - 14 subagents + 11 skills + 10 commands
+- **Opencode** - 14 agent references + 21 commands
+- **Ampcode** - 14 agent references + 21 commands
+- **Droid** - 14 agent references + 21 commands
 
 **Key Difference:**
 - **Claude Code**: Full subagent system with orchestrator + skills (auto-triggering)
@@ -93,7 +93,7 @@ agentic-kit
 - **system-architect** - System design and architecture
 - **ui-designer** - UI/UX design and wireframes
 
-### 20 Commands/Skills
+### 21 Commands/Skills
 
 **Auto-Triggering Skills (4)** - Claude Code only:
 - **test-driven-development** - Write test first, watch fail, minimal passing code
@@ -101,7 +101,7 @@ agentic-kit
 - **verification-before-completion** - Verify before claiming done
 - **subagent-spawning** - TDD-aware templates for fresh subagents
 
-**Manual Skills/Commands (16):**
+**Manual Skills/Commands (17):**
 - **brainstorming** - Structured brainstorming sessions
 - **code-review** - Implementation review against requirements
 - **condition-based-waiting** - Replace timeouts with condition polling
@@ -117,6 +117,7 @@ agentic-kit
 - **review** - Comprehensive code review
 - **security** - Vulnerability scanning
 - **ship** - Pre-deployment checklist
+- **stash** - Save session context for compaction recovery or handoffs
 - **test-generate** - Generate test suites
 
 ---
@@ -163,7 +164,7 @@ agentic-kit
 ## 📊 Stats
 
 - **14** Specialized Agents
-- **20** Workflow Commands & Skills
+- **21** Workflow Commands & Skills
 - **4** Supported Tools (Claude, Opencode, Ampcode, Droid)
 - **MIT** License
 

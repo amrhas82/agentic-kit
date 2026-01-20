@@ -41,7 +41,7 @@ These subagents are available when using Claude Code CLI. Droid can reference th
 | testing-anti-patterns | Prevents testing mock behavior and production pollution with test-only methods | /testing-anti-patterns <testing-scenario> | true |
 | verification-before-completion | Requires running verification commands before making any success claims | /verification-before-completion <work-to-verify> | true |
 
-### Commands (9 total)
+### Commands (10 total)
 
 | ID | Description | Usage |
 |---|---|---|
@@ -53,6 +53,7 @@ These subagents are available when using Claude Code CLI. Droid can reference th
 | review | Comprehensive code review including quality, tests, and architecture | /review |
 | security | Security vulnerability scan and analysis | /security |
 | ship | Pre-deployment verification checklist | /ship |
+| stash | Save session context for compaction recovery or handoffs | /stash ["optional-name"] |
 | test-generate | Generate comprehensive test suites for existing code | /test-generate <code-section> |
 
 All resources are auto-discovered from frontmatter in their respective directories:
