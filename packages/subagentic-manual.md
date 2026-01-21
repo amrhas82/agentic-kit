@@ -19,7 +19,7 @@ Production-ready AI agent framework providing specialized subagents, workflow co
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 Clone the toolkit:
 ```bash
@@ -31,24 +31,24 @@ Install for your platform:
 
 | Platform | Installation | What's Included |
 |----------|--------------|-----------------|
-| **Claude Code** | `cp -r claude/* ~/.claude/` | 14 subagents + 11 skills + 10 commands |
+| **Claude Code** | `cp -r claude/* ~/.claude/` | 11 subagents + 11 skills + 10 commands |
 | **Droid** | `cp -r droid/* ~/.factory/` | 21 commands (subagent references) |
-| **Ampcode** | `cp -r ampcode/* ~/.config/amp/` | 21 commands (subagent references) |
+| **Ampcode** | `cp -r ampcode/* ~/.config/amp/` | 11 subagents + 11 skills + 10 commands |
 | **OpenCode** | `cp -r opencode/* ~/.config/opencode/` | 21 commands (subagent references) |
 
 **Key Difference**:
-- **Claude Code** implements full subagent system with orchestrator
-- **Droid/Ampcode/OpenCode** provide commands only + reference documentation for Claude's subagents
+- **Claude Code / Ampcode** implement full subagent system with orchestrator
+- **Droid/OpenCode** provide commands only + reference documentation for subagents
 
 ---
 
-## 📦 What's Included
+## What's Included
 
-### Claude Code (Full System)
+### Claude Code / Ampcode (Full System)
 
-**14 Subagents** - Expert personas with specialized knowledge
+**11 Subagents** - Expert personas with specialized knowledge
 - 3 Workflow Agents (PRD, Tasks, Implementation)
-- 11 Specialist Agents (UX, QA, Architecture, Product, Development, etc.)
+- 8 Specialist Agents (UX, QA, Architecture, Product, Development, etc.)
 
 **11 Skills** - Auto-triggering workflow components
 - test-driven-development, testing-anti-patterns, verification-before-completion (auto-trigger)
@@ -62,18 +62,18 @@ Install for your platform:
 - Conditional decision points with user approval gates
 - Selective context injection
 
-### Droid/Ampcode/OpenCode (Commands Only)
+### Droid/OpenCode (Commands Only)
 
 **21 Commands** - All workflow capabilities in command form
-- Combines Claude's skills + commands into unified command set
+- Combines skills + commands into unified command set
 - Same functionality, different invocation model (no auto-triggering)
-- Includes reference documentation for Claude's subagents
+- Includes reference documentation for subagents
 
 **No Orchestrator** - Direct command invocation only
 
 ---
 
-## 🤖 Subagents (Claude Code Only)
+## Subagents
 
 ### Workflow Agents (3)
 
@@ -85,27 +85,24 @@ Install for your platform:
 
 **Pattern**: PRD → Tasks → Iterative Implementation → Review → Complete
 
-### Specialist Agents (11)
+### Specialist Agents (8)
 
 | Agent | Purpose |
 |-------|---------|
 | **orchestrator** | Analyze intent, coordinate workflows, route to optimal agent sequences |
-| **master** | General-purpose executor with comprehensive expertise across domains |
 | **ui-designer** | UI/UX design, wireframes, prototypes, accessibility, design systems |
 | **code-developer** | Implementation, debugging, refactoring, code best practices |
 | **quality-assurance** | Test architecture, quality gates, requirements traceability, risk assessment |
 | **system-architect** | System design, technology selection, API design, scalability planning |
-| **feature-planner** | Product strategy, PRDs, feature prioritization, roadmap planning |
-| **backlog-manager** | Backlog refinement, story writing, acceptance criteria, sprint planning |
-| **story-writer** | User stories, epic management, agile ceremonies, retrospectives |
-| **market-researcher** | Market analysis, competitive research, project discovery, stakeholder mapping |
+| **feature-planner** | Epics, user stories, prioritization, backlog management, retrospectives |
+| **market-researcher** | Market analysis, competitive research, project discovery, brainstorming |
 | **context-builder** | Initialize project context, discover documentation, create knowledge bases |
 
 ---
 
-## 🛠 Commands Reference
+## Commands Reference
 
-### Claude Code: 21 Total (11 Skills + 10 Commands)
+### Claude Code / Ampcode: 21 Total (11 Skills + 10 Commands)
 
 **Auto-Triggering Skills (4)**
 - `test-driven-development` - Write test first, watch fail, minimal passing code
@@ -134,9 +131,9 @@ Install for your platform:
 - `stash` - Save session context for compaction recovery or handoffs
 - `test-generate` - Test suite generation
 
-### Droid/Ampcode/OpenCode: 21 Commands
+### Droid/OpenCode: 21 Commands
 
-Same functionality as Claude's skills+commands, but:
+Same functionality as skills+commands, but:
 - All invoked as commands (no auto-triggering)
 - Unified command set
 - No orchestrator integration
@@ -148,9 +145,9 @@ Same functionality as Claude's skills+commands, but:
 
 ---
 
-## 🎯 Usage Patterns
+## Usage Patterns
 
-### Claude Code: Orchestrator-First (Recommended)
+### Claude Code / Ampcode: Orchestrator-First (Recommended)
 
 The orchestrator analyzes your request and routes to optimal workflows automatically.
 
@@ -186,12 +183,10 @@ Orchestrator: "Start systematic implementation?" [Yes/No]
 - Role syntax: `As system-architect, design the API layer`
 - Skills: `/test-driven-development login-feature`
 
-### 9 Pre-Defined Workflow Patterns (Claude Only)
-
-Available in `claude/CLAUDE.md`:
+### 9 Pre-Defined Workflow Patterns
 
 1. **Feature Discovery Flow** - Research → PRD → Tasks → Implementation
-2. **Product Definition Flow** - Strategy → Stories → Technical Assessment
+2. **Product Definition Flow** - Strategy → Epics/Stories → Technical Assessment
 3. **Story Implementation Flow** - Validate → Implement → QA Gate
 4. **Architecture Decision Flow** - Constraints → Analysis → Alignment
 5. **UI Development Flow** - Design → PRD (optional) → Implement → Validate
@@ -202,7 +197,7 @@ Available in `claude/CLAUDE.md`:
 
 Each pattern includes conditional decision points requiring user approval.
 
-### Droid/Ampcode/OpenCode: Direct Command Invocation
+### Droid/OpenCode: Direct Command Invocation
 
 No orchestrator - invoke commands directly:
 - `/debug <issue>`
@@ -213,10 +208,10 @@ Subagent workflows require manual coordination.
 
 ---
 
-## 📊 Value Proposition
+## Value Proposition
 
 ### For Individual Developers
-- **Instant Expertise** - Access 14 specialist agents without hiring
+- **Instant Expertise** - Access 11 specialist agents without hiring
 - **Consistent Quality** - Best practices built into every agent
 - **Faster Iteration** - Systematic workflows reduce trial-and-error
 - **Learning Tool** - Observe expert patterns and decision-making
@@ -235,13 +230,13 @@ Subagent workflows require manual coordination.
 
 ---
 
-## 🔧 Platform Architecture
+## Platform Architecture
 
 ### Claude Code
 ```
 ~/.claude/
 ├── CLAUDE.md           # Registry + orchestrator workflows
-├── agents/             # 14 subagent implementations (*.md)
+├── agents/             # 11 subagent implementations (*.md)
 ├── skills/             # 11 skills (subdirectories with SKILL.md)
 └── commands/           # 10 commands (*.md)
 ```
@@ -252,6 +247,20 @@ Subagent workflows require manual coordination.
 - Workflow pattern matching
 - Progressive agent loading
 
+### Ampcode
+```
+~/.config/amp/
+├── AGENT.md            # Reference doc (subagents + commands)
+├── agents/             # 11 subagent implementations (*.md)
+├── skills/             # 11 skills (subdirectories with SKILL.md)
+└── commands/           # 10 commands (*.md)
+```
+
+**Features**:
+- Full subagent system with orchestrator
+- Auto-triggering skills
+- Workflow pattern matching
+
 ### Droid
 ```
 ~/.factory/
@@ -261,19 +270,7 @@ Subagent workflows require manual coordination.
 
 **Features**:
 - Commands only (no subagent implementations)
-- Reference table for Claude's subagents
-- Direct command invocation
-
-### Ampcode
-```
-~/.config/amp/
-├── AGENT.md            # Reference doc (subagents + commands)
-└── commands/           # 21 commands (*.md)
-```
-
-**Features**:
-- Commands only (no subagent implementations)
-- Reference table for Claude's subagents
+- Reference table for subagents
 - Direct command invocation
 
 ### OpenCode
@@ -285,12 +282,12 @@ Subagent workflows require manual coordination.
 
 **Features**:
 - Commands only (no subagent implementations)
-- Reference table for Claude's subagents
+- Reference table for subagents
 - Direct command invocation
 
 ---
 
-## 📋 Frontmatter Architecture
+## Frontmatter Architecture
 
 All resources are self-describing via YAML frontmatter for auto-discovery:
 
@@ -336,7 +333,7 @@ This enables:
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions welcome for:
 - New specialist agents for additional domains

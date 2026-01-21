@@ -9,7 +9,7 @@
          ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝ ╚═════╝    ╚═╝  ╚═╝╚═╝   ╚═╝
 ```
 
-**AI development toolkit with 14 specialized agents and 21 commands per tool**
+**AI development toolkit with 11 specialized agents and 21 commands per tool**
 
 </div>
 
@@ -36,25 +36,25 @@ npm install -g @amrhas82/agentic-kit
 agentic-kit
 
 # Choose tool(s): claude, opencode, ampcode, or droid
-# Each tool gets 14 agents + 21 commands
+# Each tool gets 11 agents + 21 commands
 ```
 
 ### Supported Tools
 
-- **Claude Code** - 14 subagents + 11 skills + 10 commands
-- **Opencode** - 14 agent references + 21 commands
-- **Ampcode** - 14 agent references + 21 commands
-- **Droid** - 14 agent references + 21 commands
+- **Claude Code** - 11 subagents + 11 skills + 10 commands
+- **Opencode** - 11 agent references + 21 commands
+- **Ampcode** - 11 subagents + 11 skills + 10 commands
+- **Droid** - 11 agent references + 21 commands
 
 **Key Difference:**
-- **Claude Code**: Full subagent system with orchestrator + skills (auto-triggering)
-- **Other tools**: Commands only + agent reference documentation
+- **Claude Code / Ampcode**: Full subagent system with orchestrator + skills (auto-triggering)
+- **Opencode / Droid**: Commands only + agent reference documentation
 
 ### Start Using
 
 ```bash
 # Claude Code examples
-@master help
+@orchestrator help
 @1-create-prd Create a PRD for a task management app
 /brainstorming Explore authentication approaches
 /test-driven-development Implement user login
@@ -69,29 +69,22 @@ agentic-kit
 
 ## 🤖 What's Included
 
-### 14 Agents
+### 11 Agents
 
 **Workflow Agents (3):**
-- **1-create-prd** - Product requirements documents
-- **2-generate-tasks** - Break down features into tasks
-- **3-process-task-list** - Execute task lists systematically
+- **1-create-prd** - Define scope with structured Product Requirement Documents
+- **2-generate-tasks** - Break PRDs into granular, actionable task lists
+- **3-process-task-list** - Execute tasks iteratively with progress tracking and review checkpoints
 
-**Core Team (5):**
-- **master** - General task executor with comprehensive expertise
-- **orchestrator** - Workflow coordination and intent matching
-- **code-developer** - Implementation, debugging, refactoring
-- **quality-assurance** - Test architecture and quality gates
-- **context-builder** - Project initialization and documentation
-
-**Product & Planning (3):**
-- **feature-planner** - Product strategy, PRDs, roadmaps
-- **backlog-manager** - Backlog management and sprint planning
-- **story-writer** - User stories and agile workflows
-- **market-researcher** - Market research and competitive analysis
-
-**Architecture & Design (2):**
-- **system-architect** - System design and architecture
-- **ui-designer** - UI/UX design and wireframes
+**Specialist Agents (8):**
+- **orchestrator** - Analyze intent, coordinate workflows, route to optimal agent sequences
+- **code-developer** - Implementation, debugging, refactoring, code best practices
+- **quality-assurance** - Test architecture, quality gates, requirements traceability, risk assessment
+- **context-builder** - Initialize project context, discover documentation, create knowledge bases
+- **feature-planner** - Epics, user stories, prioritization, backlog management, retrospectives
+- **market-researcher** - Market analysis, competitive research, project discovery, brainstorming
+- **system-architect** - System design, technology selection, API design, scalability planning
+- **ui-designer** - UI/UX design, wireframes, prototypes, accessibility, design systems
 
 ### 21 Commands/Skills
 
@@ -163,7 +156,7 @@ agentic-kit
 
 ## 📊 Stats
 
-- **14** Specialized Agents
+- **11** Specialized Agents
 - **21** Workflow Commands & Skills
 - **4** Supported Tools (Claude, Opencode, Ampcode, Droid)
 - **MIT** License

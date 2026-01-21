@@ -9,7 +9,7 @@
         "edit": true,
         "bash": true
       },
-      "description": "Create PRDs through structured discovery"
+      "description": "Define scope with structured Product Requirement Documents"
     },
         "2-generate-tasks": {
       "prompt": "{file:./agent/2-generate-tasks.md}",
@@ -19,7 +19,7 @@
         "edit": true,
         "bash": true
       },
-      "description": "Convert PRDs into development task lists"
+      "description": "Break PRDs into granular, actionable task lists"
     },
         "3-process-task-list": {
       "prompt": "{file:./agent/3-process-task-list.md}",
@@ -29,7 +29,7 @@
         "edit": true,
         "bash": true
       },
-      "description": "Execute task lists with sequential commits"
+      "description": "Execute tasks iteratively with progress tracking and review checkpoints"
     },
     "ui-designer": {
       "prompt": "{file:./agent/ui-designer.md}",
@@ -39,17 +39,7 @@
         "edit": true,
         "bash": true
       },
-      "description": "Design UI/UX, wireframes, accessibility"
-    },
-    "story-writer": {
-      "prompt": "{file:./agent/story-writer.md}",
-      "mode": "subagent",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      },
-      "description": "Create user stories, manage epics, run retros"
+      "description": "UI/UX design, wireframes, prototypes, accessibility, design systems"
     },
     "quality-assurance": {
       "prompt": "{file:./agent/quality-assurance.md}",
@@ -59,17 +49,7 @@
         "edit": true,
         "bash": true
       },
-      "description": "Quality gates, test architecture, code review"
-    },
-    "backlog-manager": {
-      "prompt": "{file:./agent/backlog-manager.md}",
-      "mode": "subagent",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      },
-      "description": "Manage backlog, refine stories, plan sprints"
+      "description": "Test architecture, quality gates, requirements traceability, risk assessment"
     },
     "feature-planner": {
       "prompt": "{file:./agent/feature-planner.md}",
@@ -79,7 +59,7 @@
         "edit": true,
         "bash": true
       },
-      "description": "Create PRDs, plan features, prioritize roadmap"
+      "description": "Epics, user stories, prioritization, backlog management, retrospectives"
     },
     "code-developer": {
       "prompt": "{file:./agent/code-developer.md}",
@@ -89,7 +69,7 @@
         "edit": true,
         "bash": true
       },
-      "description": "Implement code, debug, refactor"
+      "description": "Implementation, debugging, refactoring, code best practices"
     },
     "orchestrator": {
       "prompt": "{file:./agent/orchestrator.md}",
@@ -99,17 +79,7 @@
         "edit": true,
         "bash": true
       },
-      "description": "Coordinate workflows, route to specialists"
-    },
-    "master": {
-      "prompt": "{file:./agent/master.md}",
-      "mode": "primary",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true
-      },
-      "description": "Execute any task without specialized persona"
+      "description": "Analyze intent, coordinate workflows, route to optimal agent sequences"
     },
     "system-architect": {
       "prompt": "{file:./agent/system-architect.md}",
@@ -119,7 +89,7 @@
         "edit": true,
         "bash": true
       },
-      "description": "Design systems, select tech, plan architecture"
+      "description": "System design, technology selection, API design, scalability planning"
       },
           "context-builder": {
       "prompt": "{file:./agent/context-builder.md}",
@@ -129,7 +99,7 @@
         "edit": true,
         "bash": true
       },
-      "description": "Initialize project context and documentation"
+      "description": "Initialize project context, discover documentation, create knowledge bases"
     },
     "market-researcher": {
       "prompt": "{file:./agent/market-researcher.md}",
@@ -139,7 +109,7 @@
         "edit": true,
         "bash": true
       },
-      "description": "Research markets, analyze competitors, brainstorm"
+      "description": "Market analysis, competitive research, project discovery, brainstorming"
     }
   },
   "command": {
