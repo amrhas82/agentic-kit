@@ -36,7 +36,7 @@ digraph CreatePRD {
 
   generate [label="Generate PRD\n(what/why, not how)"];
   review [label="Self-review:\nRemove bloat\nClarify vague\nUnknowns → Open Qs", fillcolor=orange];
-  save [label="Save to\n/tasks/prd-[feature].md"];
+  save [label="Save to\n/tasks/[feature]/prd.md"];
 
   present [label="Present PRD\nOffer: A) Feedback\nB) Proceed to tasks", fillcolor=yellow];
   user_choice [label="User chooses", shape=diamond];
@@ -75,9 +75,10 @@ digraph CreatePRD {
 ## CRITICAL RULES
 
 1. **NEVER assume** - Users may be non-technical. Ask essential questions to fill gaps, don't infer
-2. **NEVER answer for user** - Present options with A/B/C/D. May mark ONE as "(Recommended)". User chooses
-3. **Focus on WHAT and WHY** - Not how. Developers figure out implementation
-4. **Self-review before presenting** - Fix bloat/redundancy/gaps internally, then show user final PRD
+2. **NEVER answer for user** - Present options with A/B/C/D. MUST mark one as "(Recommended)" with brief reasoning. User makes final decision with full context
+3. **USE AskUserQuestion tool** - When asking questions, use the `AskUserQuestion` tool to display clickable options. Fallback to markdown format if tool unavailable
+4. **Focus on WHAT and WHY** - Not how. Developers figure out implementation
+5. **Self-review before presenting** - Fix bloat/redundancy/gaps internally, then show user final PRD
 
 ## Phase 1: Input
 
@@ -87,21 +88,36 @@ digraph CreatePRD {
 
 ## Phase 2: Elicitation (Max 2 Rounds, Max 10 Questions)
 
-4. **Round 1:** Ask 3-5 most essential questions
+4. **Round 1:** Ask 3-5 most essential questions using `AskUserQuestion` tool:
+```javascript
+AskUserQuestion({
+  questions: [{
+    question: "Your question here?",
+    header: "Short Label",
+    multiSelect: false,
+    options: [
+      {label: "Option A", description: "What this means"},
+      {label: "Option B (Recommended)", description: "Why recommended"},
+      {label: "Option C", description: "What this means"}
+    ]
+  }]
+})
+```
+
+**Markdown fallback** (if tool unavailable):
 ```
 1. [Question]?
    A) [Option]
    B) [Option]
-   C) [Option]
+   C) [Option] ⭐ Recommended - [brief reason]
    D) Other (specify)
-   *Recommended: A - [reason]* (optional)
 
 2. [Question]?
    A) ...
 ```
-End with: *"Reply with choices (e.g., 1A, 2C, 3B)"*
+End with: *"Reply with choices (e.g., 1A, 2C, 3B) or 'accept recommendations'"*
 
-5. **STOP. WAIT for answers.** If partial answers → follow up on unanswered before proceeding.
+5. **STOP. WAIT for answers.** User needs to see all options AND your recommendation to make informed choice. If partial answers → follow up on unanswered before proceeding.
 
 6. **Round 2 (if critical gaps remain):** Ask remaining essential questions (max 5 more)
    - Same format, STOP and wait
@@ -129,11 +145,11 @@ End with: *"Reply with choices (e.g., 1A, 2C, 3B)"*
    - Note any mentioned tech/framework constraints (don't expand)
    - Move remaining unknowns to Open Questions
 
-10. Save to `/tasks/prd-[feature-name].md`
+10. Save to `/tasks/[feature-name]/prd.md`
 
 11. Present completed PRD and offer:
 ```
-PRD saved to /tasks/prd-[feature-name].md
+PRD saved to /tasks/[feature-name]/prd.md
 Note: Check Open Questions for items needing clarification.
 
 A) Review and provide feedback (I'll incorporate and re-review)
