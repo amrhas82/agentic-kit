@@ -6,8 +6,8 @@
  *
  * Validates:
  * - 4 tools: claude, opencode, ampcode, droid
- * - 3 variants: lite, standard, pro
- * - 12 total combinations
+ * - 1 variant: pro
+ * - 4 total combinations
  */
 
 const path = require('path');
@@ -15,7 +15,7 @@ const fs = require('fs');
 const PackageManager = require('../installer/package-manager');
 
 const TOOLS = ['claude', 'opencode', 'ampcode', 'droid'];
-const VARIANTS = ['lite', 'standard', 'pro'];
+const VARIANTS = ['pro'];
 
 async function getDirectorySize(dirPath) {
   if (!fs.existsSync(dirPath)) {

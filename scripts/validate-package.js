@@ -211,7 +211,7 @@ function validateToolPackages() {
 
     if (variants) {
       // Validate variant structure
-      const requiredVariants = ['lite', 'standard', 'pro'];
+      const requiredVariants = ['pro'];
       requiredVariants.forEach(variant => {
         if (!variants[variant]) {
           error(`${tool}: Missing '${variant}' variant configuration`);

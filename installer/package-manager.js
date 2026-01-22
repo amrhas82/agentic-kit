@@ -10,7 +10,7 @@ const path = require('path');
 class PackageManager {
   constructor() {
     this.packagesDir = path.join(__dirname, '..', 'packages');
-    this.variants = ['lite', 'standard', 'pro'];
+    this.variants = ['pro'];
     this.tools = ['claude', 'opencode', 'ampcode', 'droid'];
     this.variantConfigCache = {}; // Cache for loaded variant configurations
   }
@@ -65,7 +65,7 @@ class PackageManager {
     }
 
     // Validate required variants exist
-    const requiredVariants = ['lite', 'standard', 'pro'];
+    const requiredVariants = ['pro'];
     for (const variant of requiredVariants) {
       if (!config[variant]) {
         throw new Error(`Required variant '${variant}' not found in variants.json for tool ${toolId}`);
@@ -514,8 +514,8 @@ class PackageManager {
       };
     }
 
-    // Check 4: All required variants are present (lite, standard, pro)
-    const requiredVariants = ['lite', 'standard', 'pro'];
+    // Check 4: Required variant is present (pro)
+    const requiredVariants = ['pro'];
     for (const reqVariant of requiredVariants) {
       if (!config[reqVariant]) {
         return {
@@ -590,17 +590,16 @@ class PackageManager {
         }
       };
 
-      // Validate agents
-      await checkContentExists('agents', selectedContent.agents, 'agents', true);
+      // Validate agents (use dynamic directory name)
+      const agentsDirName = availableContent.agentsDir || 'agents';
+      await checkContentExists('agents', selectedContent.agents, agentsDirName, true);
 
       // Validate skills (directories)
-      await checkContentExists('skills', selectedContent.skills, 'skills', false);
+      await checkContentExists('skills', selectedContent.skills || [], 'skills', false);
 
-      // Validate resources
-      await checkContentExists('resources', selectedContent.resources, 'resources', false);
-
-      // Validate hooks
-      await checkContentExists('hooks', selectedContent.hooks, 'hooks', false);
+      // Validate commands (use dynamic directory name)
+      const commandsDirName = availableContent.commandsDir || 'commands';
+      await checkContentExists('commands', selectedContent.commands || [], commandsDirName, true);
 
     } catch (error) {
       return {
