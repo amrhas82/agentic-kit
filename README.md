@@ -11,8 +11,6 @@
 
 **AI development toolkit with 11 specialized agents and 20 commands per tool**
 
-</div>
-
 [![npm version](https://img.shields.io/npm/v/liteagents)](https://www.npmjs.com/package/liteagents)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -21,6 +19,8 @@
 [![Opencode](https://img.shields.io/badge/Opencode-Supported-green)](https://github.com/amrhas82/opencode)
 [![Ampcode](https://img.shields.io/badge/Ampcode-Supported-orange)](https://github.com/amrhas82/ampcode)
 [![Droid](https://img.shields.io/badge/Droid-Supported-red)](https://github.com/amrhas82/droid)
+
+</div>
 
 Specialized AI agents and workflow commands for product management, agile development, and software engineering. Simple installer supports Claude, Opencode, Ampcode, and Droid.
 
