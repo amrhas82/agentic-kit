@@ -17,6 +17,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.5.2] - 2026-02-11
+
+### Added
+- **friction command** — Analyze session logs for failure patterns, behavioral signals, and antigen clusters
+  - 14 weighted signals (user_intervention, false_success, tool_loop, etc.)
+  - Session scoring and quality classification (BAD/FRICTION/ROUGH/OK)
+  - Candidate clustering by (anchor_signal, tool_sequence) for 3-4x compression
+  - Context noise filtering and dedup in clusters
+  - Bundled `friction.js` (2157 lines) with absolute search paths per platform
+- **remember command** — Consolidate stashes and friction output into persistent project memory
+  - Extracts facts and episodes from session stashes via sonnet
+  - Distills friction clusters into behavioral preferences with confidence tiers
+  - Writes unified `.claude/memory/MEMORY.md` (or platform equivalent)
+  - Injects `@MEMORY.md` reference into instruction file (CLAUDE.md/AGENTS.md/AGENT.md)
+- **Hot Memory pipeline** — Lightweight session memory: `/stash` -> `/friction` -> `/remember`
+  - Documented in README and subagentic-manual
+- **Platform-specific paths** across all 4 packages (claude, droid, opencode, ampcode)
+  - Each package uses correct instruction file, project path, and global install path
+- **.gitignore** — Added `.claude/`, `.factory/`, `.opencode/`, `.amp/` project data directories
+
+### Changed
+- **context-builder** — Updated per platform with correct instruction file, project/global paths, tool name, and `@MEMORY.md` discovery
+- **docs-builder** — Synced blueprint.md section and templates across all packages
+- **opencode.jsonc** — Registered friction and remember commands
+- **AGENTS.md/AGENT.md** — Command counts updated 10 -> 12 across all packages
+- **package.json** — Description updated to 22 commands
+- **installer banner** — Updated to v2.5.2 with 22 commands
+
+---
+
 ## [2.4.7] - 2026-02-02
 
 ### Changed
