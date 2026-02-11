@@ -1,7 +1,7 @@
 {
   "name": "liteagents",
-  "version": "2.4.7",
-  "description": "AI development toolkit with 11 specialized agents and 20 commands. Simple one-question installer for Claude, Opencode, Ampcode, and Droid.",
+  "version": "2.5.0",
+  "description": "AI development toolkit with 11 specialized agents and 22 commands. Simple one-question installer for Claude, Opencode, Ampcode, and Droid.",
   "main": "index.js",
   "bin": {
     "liteagents": "./installer/cli.js",

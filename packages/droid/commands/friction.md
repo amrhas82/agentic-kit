@@ -13,8 +13,8 @@ Analyze Claude Code session logs for friction signals, behavioral patterns, and 
 
 **Argument: sessions-path (required)**
 
-Path to the Claude Code sessions directory containing JSONL files.
-- Example: `/friction ~/.claude/projects/-home-hamr-PycharmProjects-aurora/`
+Path to the Droid sessions directory containing JSONL files.
+- Example: `/friction ~/.factory/projects/-home-hamr-PycharmProjects-aurora/`
 - If no argument provided, ask the user for the path. Do NOT guess.
 
 **What it does**

@@ -50,4 +50,10 @@ test-installation-*/
 
 # Aurora runtime data
 .aurora/
+
+# Project-local runtime data (all 4 packages)
+.claude/
+.factory/
+.opencode/
+.amp/
 /tests/
