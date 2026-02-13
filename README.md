@@ -45,7 +45,7 @@ liteagents
 
 - **Claude Code** - 11 subagents + 10 skills + 12 commands
 - **Opencode** - 11 agent references + 22 commands
-- **Ampcode** - 11 subagents + 10 skills + 12 commands
+- **Ampcode** - 11 subagents + 22 commands
 - **Droid** - 11 agent references + 22 commands
 
 **Key Difference:**
@@ -129,6 +129,28 @@ Lightweight session memory that learns from your usage patterns.
 3. **`/remember`** - Consolidate stashes + friction into `.claude/memory/MEMORY.md`. Extracts facts, episodes, and behavioral preferences. Injects into CLAUDE.md via `@MEMORY.md`.
 
 **Result:** Project-local memory that accumulates across sessions — no external dependencies, no databases, just markdown.
+
+```bash
+# Standalone CLI — analyze all projects
+liteagents friction ~/.claude/projects
+
+Per-Project:
+my-app         56% BAD (40/72)  median: 16.0  🔴
+api-service    40% BAD (2/5)    median: 0.5   🟡
+web-client      0% BAD (0/1)    median: 0.0   ✅
+
+Session Extremes:
+WORST: my-app/0203-1630-11eb903a  peak=225  turns=127
+BEST:  web-client/0202-2121-8d8608e1  peak=0  turns=4
+
+Last 2 Weeks:
+2026-02-02  15 sessions  10 BAD  ██████░░░░  67%
+2026-02-03  29 sessions  12 BAD  ████░░░░░░  41%
+2026-02-04   6 sessions   2 BAD  ███░░░░░░░  33%
+
+Verdict: ✓ USEFUL
+Intervention predictability: 93%
+```
 
 ---
 
